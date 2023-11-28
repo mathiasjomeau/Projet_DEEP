@@ -9,21 +9,19 @@
 #include "stm32f1xx_hal.h"
 #include "stm32f1_uart.h"
 #include "stm32f1_sys.h"
-#include "stm32f1_gpio.h"
 #include "macro_types.h"
 #include "systick.h"
 
 #include "test_unitaire.h"
 
-void writeLED(bool_e b)
-{
-	HAL_GPIO_WritePin(LED_GREEN_GPIO, LED_GREEN_PIN, b);
-}
+#include "stm32f1_gpio.h"
+#include "stm32f1_ili9341.h" // Import de la librairie de l'ecran TFT
+#include "stm32f1_adc.h"
+#include "HC-SR04/HCSR04.h"
 
-bool_e readButton(void)
-{
-	return !HAL_GPIO_ReadPin(BLUE_BUTTON_GPIO, BLUE_BUTTON_PIN);
-}
+#include "composants/tft.h"
+
+static void state_machine(void);
 
 static volatile uint32_t t = 0;
 void process_ms(void)
@@ -47,11 +45,6 @@ int main(void)
 	//"Indique que les printf sortent vers le p�riph�rique UART2."
 	SYS_set_std_usart(UART2_ID, UART2_ID, UART2_ID);
 
-	//Initialisation du port de la led Verte (carte Nucleo)
-	BSP_GPIO_PinCfg(LED_GREEN_GPIO, LED_GREEN_PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
-
-	//Initialisation du port du bouton bleu (carte Nucleo)
-	BSP_GPIO_PinCfg(BLUE_BUTTON_GPIO, BLUE_BUTTON_PIN, GPIO_MODE_INPUT,GPIO_PULLUP,GPIO_SPEED_FREQ_HIGH);
 
 	//On ajoute la fonction process_ms � la liste des fonctions appel�es automatiquement chaque ms par la routine d'interruption du p�riph�rique SYSTICK
 	Systick_add_callback_function(&process_ms);
@@ -60,4 +53,42 @@ int main(void)
 	{
 		test_HCSR04();
 	}
+}
+
+static void state_machine(void)
+{
+	typedef enum{
+		INIT,
+		ACCUEIL
+	}state_e;
+
+	static state_e state = INIT;
+
+
+	switch(state)
+	{
+		case INIT :
+			// Ecran TFT
+			TFT_Init();
+
+			// HCSRO4
+			HCSR04_add(&id_sensor, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);
+
+			// Electrovannes
+			BSP_GPIO_PinCfg(ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
+			BSP_GPIO_PinCfg(ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
+
+			HAL_GPIO_WritePin(ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 1); // vanne fermée
+			HAL_GPIO_WritePin(ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 1); // vanne fermée
+
+			// Boutons
+
+			// Changement d'état
+			state = ACCUEIL;
+			break;
+
+		case ACCUEIL :
+			TFT_Acceuil();
+	}
+
 }

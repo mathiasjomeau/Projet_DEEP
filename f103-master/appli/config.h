@@ -113,7 +113,7 @@
 
 #define USE_TFT_PCD8544				0	//Ecran TFT Nokia
 
-// Définition des Electrovannes via les GPIOS
+// Définition des Electrovannes via les GPIO
 #define ELECTROVANNE0_GPIO			GPIOB
 #define ELECTROVANNE0_PIN			GPIO_PIN_13
 
