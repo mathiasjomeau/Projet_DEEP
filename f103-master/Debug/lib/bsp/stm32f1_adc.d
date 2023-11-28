@@ -23,7 +23,9 @@ lib/bsp/stm32f1_adc.o: ../lib/bsp/stm32f1_adc.c ../appli/config.h \
  ../lib/hal/inc/stm32f1xx_hal_uart.h ../lib/hal/inc/stm32f1xx_hal_usart.h \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
- ../lib/hal/inc/stm32f1xx_hal_hcd.h
+ ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/stm32f1_adc.h \
+ ../lib/bsp/macro_types.h ../lib/bsp/stm32f1_gpio.h \
+ ../lib/bsp/stm32f1_timer.h ../lib/bsp/systick.h
 
 ../appli/config.h:
 
@@ -112,3 +114,13 @@ lib/bsp/stm32f1_adc.o: ../lib/bsp/stm32f1_adc.c ../appli/config.h \
 ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h:
 
 ../lib/hal/inc/stm32f1xx_hal_hcd.h:
+
+../lib/bsp/stm32f1_adc.h:
+
+../lib/bsp/macro_types.h:
+
+../lib/bsp/stm32f1_gpio.h:
+
+../lib/bsp/stm32f1_timer.h:
+
+../lib/bsp/systick.h:

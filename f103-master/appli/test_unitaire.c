@@ -4,6 +4,9 @@
 
 #include "stm32f1_ili9341.h" // Import de la librairie de l'ecran TFT
 
+#include "stm32f1_adc.h"
+
+#include "HC-SR04/HCSR04.h"
 
 void test_EcranTFT(void){
 	// Initionalisation de l'écran TFT
@@ -24,6 +27,29 @@ void test_Electrovanne(void){
 	HAL_GPIO_WritePin(ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 0); // vanne ouverte
 	HAL_GPIO_WritePin(ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 1);
 	HAL_GPIO_WritePin(ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 0);
+
+}
+
+void test_MCP9701(void){
+
+	// NON TESTE
+
+	ADC_init();
+
+	int16_t value;
+	int16_t millivolt;
+	uint8_t channel = ADC_4;
+
+	value = ADC_getValue(channel);
+	millivolt = (int16_t)((((int32_t)value)*3300)/4096);		//On la convertie en volts
+	printf("Ch%d : %4d = %1d.%03dV | ",channel, value, millivolt/1000, millivolt%1000);
+
+	printf("\n");
+
+}
+
+void test_HCSR04(void){
+	HCSR04_demo_state_machine();
 
 }
 

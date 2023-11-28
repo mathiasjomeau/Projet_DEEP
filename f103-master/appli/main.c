@@ -58,6 +58,6 @@ int main(void)
 
 	while(1)	//boucle de t�che de fond
 	{
-		test_Electrovanne();
+		test_HCSR04();
 	}
 }

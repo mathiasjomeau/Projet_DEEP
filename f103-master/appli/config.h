@@ -64,15 +64,15 @@
 #define USE_BSP_TIMER			1 //Utilisation de stm32f1_timer.c/h
 
 
-#define USE_ADC					0
+#define USE_ADC					1
 	//Ces configurations permettent d'activer les entr�es analogiques souhait�es.
 	//16 entr�es analogiques peuvent �tre activ�es maximum.
 	//2 entr�es analogiques doivent �tre activ�es minimum. (Vref est un choix possible si vous utilisez une seule entr�e)
-	#define USE_AN0			1	//Broche correspondante : PA0
+	#define USE_AN0			0	//Broche correspondante : PA0
 	#define USE_AN1			0	//Broche correspondante : PA1
 	#define USE_AN2			0	//Broche correspondante : PA2	//Sur la Nucleo, cette broche n'est pas c�bl�e !
 	#define USE_AN3			0	//Broche correspondante : PA3	//Sur la Nucleo, cette broche n'est pas c�bl�e !
-	#define USE_AN4			0	//Broche correspondante : PA4
+	#define USE_AN4			1	//Broche correspondante : PA4
 	#define USE_AN5			0	//Broche correspondante : PA5
 	#define USE_AN6			0	//Broche correspondante : PA6
 	#define USE_AN7			0	//Broche correspondante : PA7
@@ -151,7 +151,7 @@
 #define USE_NFC03A1				0
 #define USE_EPAPER				0
 #define	USE_GPS					0
-#define USE_HCSR04				0
+#define USE_HCSR04				1
 #define USE_HX711				0
 #define USE_DAC_MCP4921			0
 #define USE_IR_EMITTER			0

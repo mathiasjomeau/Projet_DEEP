@@ -1,4 +1,4 @@
-/*
+	/*
  * stm32f1_adc.c
  *
  *  Created on: 4 mai 2016
@@ -22,21 +22,21 @@
 #define ADC_NB_OF_CHANNEL_USED	(USE_AN0 + USE_AN1 + USE_AN2 + USE_AN3 + USE_AN4 + USE_AN5 + USE_AN6 + USE_AN7 + USE_AN8 + USE_AN9 + USE_AN10 + USE_AN11 + USE_AN12 + USE_AN13 + USE_AN14 + USE_AN15 + USE_AN16 + USE_AN17)
 
 #if ADC_NB_OF_CHANNEL_USED > 16
-	#error	"16 entrées analogiques maximum peuvent être activées"
+	#error	"16 entrï¿½es analogiques maximum peuvent ï¿½tre activï¿½es"
 #endif
 #if ADC_NB_OF_CHANNEL_USED < 2
-	#error "Ce module logiciel stm32f1_adc ne fonctionne qu'à partir de 2 canaux activés !"
+	#error "Ce module logiciel stm32f1_adc ne fonctionne qu'ï¿½ partir de 2 canaux activï¿½s !"
 #endif
 
-static volatile uint16_t t = 0;								//Chrono utilisé dans la machine a état. décrémenté toutes les millisecondes.
-static uint32_t adc_converted_value[ADC_CHANNEL_NB];		//Ce tableau contient les valeurs mesurées par l'ADC pour chaque canal.
-static int8_t adc_id[ADC_CHANNEL_NB];						//Ce tableau contient les rang de chaque canal dans le tableau adc_converted_value. Usage privé à ce fichier.
+static volatile uint16_t t = 0;								//Chrono utilisï¿½ dans la machine a ï¿½tat. dï¿½crï¿½mentï¿½ toutes les millisecondes.
+static uint32_t adc_converted_value[ADC_CHANNEL_NB];		//Ce tableau contient les valeurs mesurï¿½es par l'ADC pour chaque canal.
+static int8_t adc_id[ADC_CHANNEL_NB];						//Ce tableau contient les rang de chaque canal dans le tableau adc_converted_value. Usage privï¿½ ï¿½ ce fichier.
 static ADC_HandleTypeDef	hadc;							//Handler pour l'ADC.
 static DMA_HandleTypeDef	hdma;							//Handler pour le DMA.
 
 
 
-/** @brief 	fonction devant être appelée chaque milliseconde si on utilise la DEMO_adc_statemachine
+/** @brief 	fonction devant ï¿½tre appelï¿½e chaque milliseconde si on utilise la DEMO_adc_statemachine
  * @func	void DEMO_adc_process_1ms(void)
  */
 void DEMO_adc_process_1ms(void)
@@ -46,7 +46,7 @@ void DEMO_adc_process_1ms(void)
 }
 
 /**
- * @brief 	Cette fonction est une machine a etat de démonstration qui présente une utilisation de ce module de gestion de l'ADC.
+ * @brief 	Cette fonction est une machine a etat de dï¿½monstration qui prï¿½sente une utilisation de ce module de gestion de l'ADC.
  * @func 	running_e DEMO_adc_state_machine(bool_e ask_for_finish)
  * @param 	exit_asked: demande a l'application de quitter ou non
  * @return	cette fonction retourne un element de l'enumeration running_e (END_OK= l'application est quittee avec succes ou IN_PROGRESS= l'application est toujours en cours)
@@ -99,17 +99,17 @@ void DEMO_adc_statemachine (void)
 
 
 /**
- * @brief	Cette fonction privée initialise en entrées analogiques les ports dont le USE_ANx est défini.
+ * @brief	Cette fonction privï¿½e initialise en entrï¿½es analogiques les ports dont le USE_ANx est dï¿½fini.
  * @func	void PORTS_adc_init(void)
- * @post	A l'issue de l'exécution de cette fonction, le tableau adc_id contient pour chaque canal son rang dans le tableau des valeurs mesurées (adc_converted_value)
- * @post	Chaque canal non utilisé comme analogique a un champ à -1 dans le tableau adc_id.
+ * @post	A l'issue de l'exï¿½cution de cette fonction, le tableau adc_id contient pour chaque canal son rang dans le tableau des valeurs mesurï¿½es (adc_converted_value)
+ * @post	Chaque canal non utilisï¿½ comme analogique a un champ ï¿½ -1 dans le tableau adc_id.
  */
 static void PORTS_adc_init(void)
 {
 	uint8_t channel;
 	ADC_ChannelConfTypeDef sConfig;
 
-	// Initialisation du tableau des id des convertisseurs analogique numérique. Chaque canal non utilisé verra sa case à -1.
+	// Initialisation du tableau des id des convertisseurs analogique numï¿½rique. Chaque canal non utilisï¿½ verra sa case ï¿½ -1.
 	for(channel=0;channel<ADC_CHANNEL_NB;channel++)
 		adc_id[channel] = -1;
 
@@ -297,19 +297,19 @@ static void PORTS_adc_Deinit(void)
 }
 
 /**
- * @brief	Cette fonction initialise le périphérique ADC1, ainsi que le DMA (direct memory access).
+ * @brief	Cette fonction initialise le pï¿½riphï¿½rique ADC1, ainsi que le DMA (direct memory access).
  * @func	void ADC_init(void)
- * @post	A l'issue de l'exécution de cette fonction, des conversions analogiques sont menées en permanence par l'ADC... et mettent à jour un tableau adc_converted_value que l'on peut consulter.
+ * @post	A l'issue de l'exï¿½cution de cette fonction, des conversions analogiques sont menï¿½es en permanence par l'ADC... et mettent ï¿½ jour un tableau adc_converted_value que l'on peut consulter.
  */
 void ADC_init(void)
 {
 	__HAL_RCC_ADC1_CLK_ENABLE();
 	__HAL_RCC_ADC_CONFIG(RCC_ADCPCLK2_DIV6);
 
-	//Déclenchements de l'ADC par le TIMER3 (TRGO)
+	//Dï¿½clenchements de l'ADC par le TIMER3 (TRGO)
 	TIM_HandleTypeDef * htim;
 	TIM_MasterConfigTypeDef sMasterConfig;
-	TIMER_run_us(TIMER3_ID,1000, FALSE);			//1 mesure par ms. (choix arbitraire, c'est un exemple...vous pouvez changer cette période de mesure !)
+	TIMER_run_us(TIMER3_ID,1000, FALSE);			//1 mesure par ms. (choix arbitraire, c'est un exemple...vous pouvez changer cette pï¿½riode de mesure !)
 	htim = TIMER_get_phandler(TIMER3_ID);
 	sMasterConfig.MasterOutputTrigger = TIM_TRGO_OC1;
 	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_ENABLE;
@@ -337,9 +337,9 @@ void ADC_init(void)
 	hdma.XferCpltCallback = NULL;
 	hdma.XferErrorCallback = NULL;
 	hdma.XferHalfCpltCallback = NULL;
-	hdma.Init.Direction = DMA_PERIPH_TO_MEMORY;				//On indique au périphérique DMA qu'il doit copier des données d'un périphérique vers la mémoire.
-	hdma.Init.PeriphInc = DMA_PINC_DISABLE;					//A chaque copie, l'adresse source des données n'est pas incrémentée (il se sert dans le même registre de l'ADC pour chaque nouvelle donnée)
-	hdma.Init.MemInc = DMA_MINC_ENABLE;						//A chaque copie, l'adresse destination des données est  incrémentée (il range les données en mémoire dans un tableau)
+	hdma.Init.Direction = DMA_PERIPH_TO_MEMORY;				//On indique au pï¿½riphï¿½rique DMA qu'il doit copier des donnï¿½es d'un pï¿½riphï¿½rique vers la mï¿½moire.
+	hdma.Init.PeriphInc = DMA_PINC_DISABLE;					//A chaque copie, l'adresse source des donnï¿½es n'est pas incrï¿½mentï¿½e (il se sert dans le mï¿½me registre de l'ADC pour chaque nouvelle donnï¿½e)
+	hdma.Init.MemInc = DMA_MINC_ENABLE;						//A chaque copie, l'adresse destination des donnï¿½es est  incrï¿½mentï¿½e (il range les donnï¿½es en mï¿½moire dans un tableau)
 	hdma.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
 	hdma.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
 	hdma.Init.Mode = DMA_CIRCULAR;
@@ -351,7 +351,7 @@ void ADC_init(void)
 
 	//Configuration des interruptions.
 	HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);				//Si vous souhaitez activer les interruption à chaque fin de remplissage DMA... décommentez cette ligne.
+	HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);				//Si vous souhaitez activer les interruption ï¿½ chaque fin de remplissage DMA... dï¿½commentez cette ligne.
 
 	//Lancement de l'ADC, avec usage du DMA.
 	HAL_ADC_Start_DMA(&hadc,adc_converted_value,ADC_NB_OF_CHANNEL_USED);
@@ -371,17 +371,17 @@ void ADC_Deinit(void)
 
 
 /**
-* @brief  	Cette fonction permet de récupérer les valeurs mesurées par l'ADC.
+* @brief  	Cette fonction permet de rï¿½cupï¿½rer les valeurs mesurï¿½es par l'ADC.
 * @func  	int16_t ADC_getValue(adc_id_e channel)
-* @param	channel : un canal de ADC_0 à ADC_15
-* @retval 	un entier signé sur 16 bits, correspondant à la valeur demandée, pouvant aller de 0 à 4095 (l'ADC mesure sur 12 bits).
-* @retval	Cette fonction retourne -1 si l'on demande un canal ADC qui n'a pas été initialisé (le define USE_ADCx correspondant est commenté)
+* @param	channel : un canal de ADC_0 ï¿½ ADC_15
+* @retval 	un entier signï¿½ sur 16 bits, correspondant ï¿½ la valeur demandï¿½e, pouvant aller de 0 ï¿½ 4095 (l'ADC mesure sur 12 bits).
+* @retval	Cette fonction retourne -1 si l'on demande un canal ADC qui n'a pas ï¿½tï¿½ initialisï¿½ (le define USE_ADCx correspondant est commentï¿½)
 */
 int16_t ADC_getValue(adc_id_e channel)
 {
 	if(adc_id[channel] == -1 || channel >= ADC_CHANNEL_NB)
 	{
-		printf("Lecture de la valeur du canal analogique numérique %d : non utilisé ou non initialisé !\n", channel);
+		printf("Lecture de la valeur du canal analogique numï¿½rique %d : non utilisï¿½ ou non initialisï¿½ !\n", channel);
 		return -1;
 	}
 	return (int16_t)adc_converted_value[adc_id[channel]];
