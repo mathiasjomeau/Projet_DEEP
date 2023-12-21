@@ -21,10 +21,15 @@
 
 #include "tft.h"
 
-#define TRUE 1
-#define FALSE 0
+typedef struct{
+		char name[20];
+		GPIO_TypeDef * GPIO;
+		uint16_t PIN;
+		u_int8_t state;
+}electrovanne_t;
 
 bool_e getWater_level(uint8_t id_sensor, uint16_t * distance);
+void setElectrovanne(electrovanne_t ev);
 static void state_machine(void);
 
 static volatile uint32_t t = 0;
@@ -88,6 +93,10 @@ bool_e getWater_level(uint8_t id_sensor, uint16_t * distance)
 	return ret;
 }
 
+void setElectrovanne(electrovanne_t ev)
+{
+	HAL_GPIO_WritePin(ev.GPIO, ev.PIN, ev.state);
+}
 
 int main(void)
 {
@@ -128,40 +137,33 @@ static void state_machine(void)
 		MODE_OFF
 	}state_e;
 
-	typedef struct{
-		uint16_t name;
-		GPIO_TypeDef GPIO;
-		uint16_t PIN;
-		u_int8_t state;
-	}electrovanne_s;
 
 	static state_e state = INIT;
-
-	static uint16_t water_level;
 
 	switch(state)
 	{
 		case INIT :
 
-			// Init des variables
-			//static char current_mode[] = "";
-			//struct electrovanne_s electrovanne_eau_courante = {"Electrovanne eau courante", ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 0};
-			//struct electrovanne_s electrovanne_eau_pluie = {"Electrovanne eau pluie", ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 1};
-			//static float temperature = 0.0;
-
 			// Ecran TFT
 			TFT_Init();
+
+
+			static uint16_t water_level;
+			static electrovanne_t electrovanne_EC = {"Electrovanne EC", ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 0};
+			static electrovanne_t electrovanne_EP = {"Electrovanne EP", ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 1};
+
+			//static char current_mode[] = "";
+			//static float temperature = 0.0;
 
 			// HCSRO4
 			static uint8_t id_sensor;
 			HCSR04_add(&id_sensor, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);
 
 			// Electrovannes
-			BSP_GPIO_PinCfg(ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
-			BSP_GPIO_PinCfg(ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
-
-			//HAL_GPIO_WritePin(ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, state_vanne1);
-			//HAL_GPIO_WritePin(ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, state_vanne2);
+			BSP_GPIO_PinCfg(electrovanne_EC.GPIO, electrovanne_EC.PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
+			BSP_GPIO_PinCfg(electrovanne_EP.GPIO, electrovanne_EP.PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
+			setElectrovanne(electrovanne_EC); // Vanne ouverte
+			setElectrovanne(electrovanne_EP); // Vanne fermée
 
 			// Boutons
 
