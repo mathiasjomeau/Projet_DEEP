@@ -7,7 +7,8 @@
 C_SRCS += \
 ../appli/foo.c \
 ../appli/main.c \
-../appli/test_unitaire.c 
+../appli/test_unitaire.c \
+../appli/tft.c 
 
 S_UPPER_SRCS += \
 ../appli/assembleur.S 
@@ -16,7 +17,8 @@ OBJS += \
 ./appli/assembleur.o \
 ./appli/foo.o \
 ./appli/main.o \
-./appli/test_unitaire.o 
+./appli/test_unitaire.o \
+./appli/tft.o 
 
 S_UPPER_DEPS += \
 ./appli/assembleur.d 
@@ -24,7 +26,8 @@ S_UPPER_DEPS += \
 C_DEPS += \
 ./appli/foo.d \
 ./appli/main.d \
-./appli/test_unitaire.d 
+./appli/test_unitaire.d \
+./appli/tft.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

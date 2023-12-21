@@ -19,15 +19,73 @@
 #include "stm32f1_adc.h"
 #include "HC-SR04/HCSR04.h"
 
-#include "composants/tft.h"
+#include "tft.h"
 
+#define TRUE 1
+#define FALSE 0
+
+bool_e getWater_level(uint8_t id_sensor, uint16_t * distance);
 static void state_machine(void);
 
 static volatile uint32_t t = 0;
+
 void process_ms(void)
 {
 	if(t)
 		t--;
+}
+
+bool_e getWater_level(uint8_t id_sensor, uint16_t * distance)
+{
+	static uint32_t tlocal;
+	uint16_t PERIOD_MEASURE = 100;
+
+	typedef enum{
+			LAUNCH_MEASURE,
+			WAIT_DURING_MEASURE,
+			WAIT_BEFORE_NEXT_MEASURE
+	}state_hcsr04;
+	static state_hcsr04 state_capteur = LAUNCH_MEASURE;
+	bool_e ret = FALSE;
+
+	switch(state_capteur){
+		case LAUNCH_MEASURE:
+			HCSR04_run_measure(id_sensor);
+			tlocal = HAL_GetTick();
+			state_capteur = WAIT_DURING_MEASURE;
+			break;
+		case WAIT_DURING_MEASURE:
+			switch(HCSR04_get_value(id_sensor, distance))
+			{
+				case HAL_BUSY:
+					//rien � faire... on attend...
+					break;
+				case HAL_OK:
+					ret = TRUE;
+					state_capteur = WAIT_BEFORE_NEXT_MEASURE;
+					break;
+				case HAL_ERROR:
+					printf("sensor %d - erreur ou mesure non lanc�e\n", id_sensor);
+					state_capteur = WAIT_BEFORE_NEXT_MEASURE;
+					break;
+
+				case HAL_TIMEOUT:
+					printf("sensor %d - timeout\n", id_sensor);
+					state_capteur = WAIT_BEFORE_NEXT_MEASURE;
+					break;
+			}
+			break;
+
+		case WAIT_BEFORE_NEXT_MEASURE:
+			if(HAL_GetTick() > tlocal + PERIOD_MEASURE)
+				state_capteur = LAUNCH_MEASURE;
+			break;
+
+		default:
+			break;
+	}
+
+	return ret;
 }
 
 
@@ -49,9 +107,13 @@ int main(void)
 	//On ajoute la fonction process_ms � la liste des fonctions appel�es automatiquement chaque ms par la routine d'interruption du p�riph�rique SYSTICK
 	Systick_add_callback_function(&process_ms);
 
+
+	TFT_Init();
+
 	while(1)	//boucle de t�che de fond
 	{
-		test_HCSR04();
+		HCSR04_process_main();
+		state_machine();
 	}
 }
 
@@ -59,36 +121,73 @@ static void state_machine(void)
 {
 	typedef enum{
 		INIT,
-		ACCUEIL
+		ACCUEIL,
+		ACTUALISATION,
+		MODE_AUTO,
+		MODE_MANUEL,
+		MODE_OFF
 	}state_e;
+
+	typedef struct{
+		uint16_t name;
+		GPIO_TypeDef GPIO;
+		uint16_t PIN;
+		u_int8_t state;
+	}electrovanne_s;
 
 	static state_e state = INIT;
 
+	static uint16_t water_level;
 
 	switch(state)
 	{
 		case INIT :
+
+			// Init des variables
+			//static char current_mode[] = "";
+			//struct electrovanne_s electrovanne_eau_courante = {"Electrovanne eau courante", ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 0};
+			//struct electrovanne_s electrovanne_eau_pluie = {"Electrovanne eau pluie", ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 1};
+			//static float temperature = 0.0;
+
 			// Ecran TFT
 			TFT_Init();
 
 			// HCSRO4
+			static uint8_t id_sensor;
 			HCSR04_add(&id_sensor, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);
 
 			// Electrovannes
 			BSP_GPIO_PinCfg(ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
 			BSP_GPIO_PinCfg(ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
 
-			HAL_GPIO_WritePin(ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 1); // vanne fermée
-			HAL_GPIO_WritePin(ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 1); // vanne fermée
+			//HAL_GPIO_WritePin(ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, state_vanne1);
+			//HAL_GPIO_WritePin(ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, state_vanne2);
 
 			// Boutons
+
 
 			// Changement d'état
 			state = ACCUEIL;
 			break;
 
 		case ACCUEIL :
-			TFT_Acceuil();
+			if(getWater_level(id_sensor, &water_level))
+			{
+				printf("distance : %d\n", water_level);
+				TFT_Acceuil(water_level);
+			}
+			break;
+
+		case ACTUALISATION :
+
+			break;
+
+		case MODE_AUTO:
+			break;
+		case MODE_MANUEL:
+			break;
+		case MODE_OFF:
+			break;
 	}
 
 }

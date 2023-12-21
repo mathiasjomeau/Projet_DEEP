@@ -1,0 +1,2 @@
+tft.c:8:6:TFT_Init	8	static
+tft.c:16:6:TFT_Acceuil	64	static

@@ -182,8 +182,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="appli"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="composants"/>
+						<entry excluding="composants" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="appli"/>
 						<entry excluding="bsp/SEN0188_Fingerprint/SENO_1888.c|bsp/SEN0188_Fingerprint/SEN0188_Fingerprint.c|middleware/NFC03A1|middleware/FatFs" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib"/>
 					</sourceEntries>
 				</configuration>
@@ -303,8 +302,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="appli"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="composants"/>
+						<entry excluding="composants" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="appli"/>
 						<entry excluding="middleware/MIDI/libopencm3/ld|middleware/MIDI/libopencm3/lib|middleware/MIDI/libopencm3/lib/dispatch|middleware/MIDI/libopencm3/lib/stm32/st_usbfs_v2.c|middleware/MIDI/libopencm3/lib/stm32/st_usbfs_v1.c|middleware/MIDI/libopencm3/lib/stm32/common|middleware/MIDI/libopencm3/lib/stm32/common/adc_common_v2.c|middleware/MIDI/libopencm3/lib/stm32/common/adc_common_v2_multi.c|middleware/MIDI/libopencm3/tests|middleware/MIDI/libopencm3/tests/shared|middleware/MIDI/usb_dfu|bsp/MatrixKeyboard|bsp/DHT11|bsp/GPS|bsp/dmx|bsp/epaper|bsp/SEN0188_Fingerprint|bsp/MCP23S17|bsp/BH1750FVI|bsp/APDS9960|middleware/NFC03A1|bsp/MCP23017|middleware/FatFs|bsp/CapacitiveKeyboard|bsp/MLX90614|bsp/ESP8266|bsp/iks01a1|bsp/DriverLed_STP16CP05|hal|bsp/NFC03A1|bsp/tft_pcd8544" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lib/hal"/>
 					</sourceEntries>

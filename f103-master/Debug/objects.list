@@ -2,6 +2,7 @@
 "./appli/foo.o"
 "./appli/main.o"
 "./appli/test_unitaire.o"
+"./appli/tft.o"
 "./lib/bsp/APDS9960/apds9960.o"
 "./lib/bsp/APDS9960/apds9960_algo_color.o"
 "./lib/bsp/BH1750FVI/bh1750fvi.o"

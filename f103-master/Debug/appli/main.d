@@ -24,9 +24,11 @@ appli/main.o: ../appli/main.c ../lib/hal/inc/stm32f1xx_hal.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
  ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/stm32f1_uart.h \
  ../lib/bsp/macro_types.h ../appli/config.h ../lib/bsp/stm32f1_sys.h \
- ../lib/bsp/stm32f1_uart.h ../lib/bsp/stm32f1_gpio.h \
- ../lib/bsp/macro_types.h ../lib/bsp/systick.h ../appli/test_unitaire.h \
- ../appli/config.h
+ ../lib/bsp/stm32f1_uart.h ../lib/bsp/macro_types.h ../lib/bsp/systick.h \
+ ../appli/test_unitaire.h ../appli/config.h ../lib/bsp/stm32f1_gpio.h \
+ ../lib/bsp/tft_ili9341/stm32f1_ili9341.h \
+ ../lib/bsp/tft_ili9341/stm32f1_fonts.h ../lib/bsp/stm32f1_adc.h \
+ ../lib/bsp/HC-SR04/HCSR04.h ../appli/tft.h
 
 ../lib/hal/inc/stm32f1xx_hal.h:
 
@@ -124,8 +126,6 @@ appli/main.o: ../appli/main.c ../lib/hal/inc/stm32f1xx_hal.h \
 
 ../lib/bsp/stm32f1_uart.h:
 
-../lib/bsp/stm32f1_gpio.h:
-
 ../lib/bsp/macro_types.h:
 
 ../lib/bsp/systick.h:
@@ -133,3 +133,15 @@ appli/main.o: ../appli/main.c ../lib/hal/inc/stm32f1xx_hal.h \
 ../appli/test_unitaire.h:
 
 ../appli/config.h:
+
+../lib/bsp/stm32f1_gpio.h:
+
+../lib/bsp/tft_ili9341/stm32f1_ili9341.h:
+
+../lib/bsp/tft_ili9341/stm32f1_fonts.h:
+
+../lib/bsp/stm32f1_adc.h:
+
+../lib/bsp/HC-SR04/HCSR04.h:
+
+../appli/tft.h:

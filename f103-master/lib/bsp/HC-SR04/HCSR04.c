@@ -370,7 +370,7 @@ HAL_StatusTypeDef HCSR04_get_value(uint8_t id, uint16_t * distance)
 			break;
 		case HCSR04_STATE_INEXISTANT:	//no break;		//il est anormal de demander la valeur d'un capteur non initialis�
 		case HCSR04_STATE_INITIALIZED:	//no break;		//il est anormal de demander la valeur d'un capteur non lanc� en mesure.
-		case HCSR04_STATE_ERROR:						//erreur interne lors du calcul de distance
+		case HCSR04_STATE_ERROR:	//erreur interne lors du calcul de distance
 			ret = HAL_ERROR;
 			break;
 		default:
