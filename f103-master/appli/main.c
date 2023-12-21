@@ -21,6 +21,7 @@
 
 #include "tft.h"
 
+
 typedef struct{
 		char name[20];
 		GPIO_TypeDef * GPIO;
@@ -33,6 +34,7 @@ void setElectrovanne(electrovanne_t ev);
 static void state_machine(void);
 
 static volatile uint32_t t = 0;
+
 
 void process_ms(void)
 {
@@ -93,6 +95,8 @@ bool_e getWater_level(uint8_t id_sensor, uint16_t * distance)
 	return ret;
 }
 
+
+
 void setElectrovanne(electrovanne_t ev)
 {
 	HAL_GPIO_WritePin(ev.GPIO, ev.PIN, ev.state);
@@ -137,7 +141,6 @@ static void state_machine(void)
 		MODE_OFF
 	}state_e;
 
-
 	static state_e state = INIT;
 
 	switch(state)
@@ -148,11 +151,11 @@ static void state_machine(void)
 			TFT_Init();
 
 
-			static uint16_t water_level;
+			static uint16_t water_level = 0;
 			static electrovanne_t electrovanne_EC = {"Electrovanne EC", ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 0};
 			static electrovanne_t electrovanne_EP = {"Electrovanne EP", ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 1};
 
-			//static char current_mode[] = "";
+			static uint8_t current_mode = 1;
 			//static float temperature = 0.0;
 
 			// HCSRO4
@@ -173,11 +176,13 @@ static void state_machine(void)
 			break;
 
 		case ACCUEIL :
-			if(getWater_level(id_sensor, &water_level))
-			{
-				printf("distance : %d\n", water_level);
-				TFT_Acceuil(water_level);
-			}
+			//if(getWater_level(id_sensor, &water_level))
+			//{
+				//printf("distance : %d\n", water_level);
+				//TFT_Acceuil(water_level);
+			//}
+			TFT_Acceuil();
+			TFT_Mode_State(current_mode);
 			break;
 
 		case ACTUALISATION :
@@ -193,3 +198,5 @@ static void state_machine(void)
 	}
 
 }
+
+
