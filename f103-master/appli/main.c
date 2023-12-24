@@ -176,13 +176,15 @@ static void state_machine(void)
 			break;
 
 		case ACCUEIL :
-			//if(getWater_level(id_sensor, &water_level))
-			//{
-				//printf("distance : %d\n", water_level);
-				//TFT_Acceuil(water_level);
-			//}
-			TFT_Acceuil();
-			TFT_Mode_State(current_mode);
+			if(getWater_level(id_sensor, &water_level))
+			{
+				TFT_Acceuil();
+				TFT_Mode_State(current_mode);
+				TFT_Update_capteurs(water_level, electrovanne_EC.state, electrovanne_EP.state);
+				state = ACTUALISATION;
+			}
+
+
 			break;
 
 		case ACTUALISATION :

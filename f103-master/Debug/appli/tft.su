@@ -1,4 +1,4 @@
 tft.c:8:6:TFT_Init	8	static
 tft.c:16:6:TFT_Acceuil	24	static
 tft.c:36:6:TFT_Update_capteurs	168	static
-tft.c:58:6:TFT_Mode_State	24	static
+tft.c:65:6:TFT_Mode_State	24	static

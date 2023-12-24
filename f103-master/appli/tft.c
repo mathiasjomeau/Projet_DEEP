@@ -35,7 +35,14 @@ void TFT_Acceuil()
 
 void TFT_Update_capteurs(uint16_t water_level, uint8_t EC_state, uint8_t EP_state){
 
-	char *etats[] = {"fermée", "ouverte"};
+	char *etats[] = {"Ouverte", "Fermee"};
+
+	//Reint des valeurs pour les capteurs pour éviter tout soucis d'affichage
+	ILI9341_Puts(30,170, "                                              ", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	ILI9341_Puts(30,185, "                                              ", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	ILI9341_Puts(30,200, "                                              ", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	ILI9341_Puts(30,215, "                                              ", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
 
 	// Conversion des données en char
 	char water_level_char[30];
@@ -50,8 +57,8 @@ void TFT_Update_capteurs(uint16_t water_level, uint8_t EC_state, uint8_t EP_stat
 	snprintf(EP_state_char, sizeof(EP_state_char), "Electrovanne Eau pluie : %s", etats[EP_state]);
 
 	ILI9341_Puts(30,170, water_level_char, &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,185, "Electrovanne Cuve : Ouverte", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,200, "Electrovanne Eau Courante : Ouverte", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	ILI9341_Puts(30,185, EP_state_char, &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	ILI9341_Puts(30,200, EC_state_char, &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	ILI9341_Puts(30,215, "Temperature de l'eau : 20 C", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 }
 
