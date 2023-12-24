@@ -8,6 +8,8 @@
 
 #include "HC-SR04/HCSR04.h"
 
+#include "button.h"
+
 void test_EcranTFT(void){
 	// Initionalisation de l'écran TFT
 	ILI9341_Init();
@@ -50,6 +52,12 @@ void test_MCP9701(void){
 
 void test_HCSR04(void){
 	HCSR04_demo_state_machine();
+
+}
+
+void test_button(GPIO_TypeDef * GPIO, uint16_t PIN){
+	BUTTON_init(GPIO, PIN);
+	BUTTON_state_machine(GPIO, PIN);
 
 }
 

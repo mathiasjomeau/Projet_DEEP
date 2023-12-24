@@ -1,4 +1,5 @@
 "./appli/assembleur.o"
+"./appli/button.o"
 "./appli/foo.o"
 "./appli/main.o"
 "./appli/test_unitaire.o"

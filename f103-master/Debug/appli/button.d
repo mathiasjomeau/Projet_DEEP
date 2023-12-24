@@ -1,5 +1,5 @@
-appli/test_unitaire.o: ../appli/test_unitaire.c ../appli/test_unitaire.h \
- ../appli/config.h ../lib/hal/inc/stm32f1xx_hal.h \
+appli/button.o: ../appli/button.c ../appli/button.h \
+ ../lib/bsp/stm32f1_gpio.h ../lib/hal/inc/stm32f1xx_hal.h \
  ../lib/hal/inc/stm32f1xx_hal_conf.h ../lib/hal/inc/stm32f1xx_hal_rcc.h \
  ../lib/hal/inc/stm32f1xx_hal_def.h ../lib/CMSIS/device/stm32f1xx.h \
  ../lib/CMSIS/device/stm32f103xb.h ../lib/CMSIS/core/core_cm3.h \
@@ -23,14 +23,12 @@ appli/test_unitaire.o: ../appli/test_unitaire.c ../appli/test_unitaire.h \
  ../lib/hal/inc/stm32f1xx_hal_uart.h ../lib/hal/inc/stm32f1xx_hal_usart.h \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
- ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/stm32f1_gpio.h \
- ../lib/bsp/tft_ili9341/stm32f1_ili9341.h ../appli/config.h \
- ../lib/bsp/tft_ili9341/stm32f1_fonts.h ../lib/bsp/stm32f1_adc.h \
- ../lib/bsp/macro_types.h ../lib/bsp/HC-SR04/HCSR04.h ../appli/button.h
+ ../lib/hal/inc/stm32f1xx_hal_hcd.h ../appli/config.h \
+ ../lib/bsp/macro_types.h ../lib/bsp/systick.h ../lib/bsp/macro_types.h
 
-../appli/test_unitaire.h:
+../appli/button.h:
 
-../appli/config.h:
+../lib/bsp/stm32f1_gpio.h:
 
 ../lib/hal/inc/stm32f1xx_hal.h:
 
@@ -118,18 +116,10 @@ appli/test_unitaire.o: ../appli/test_unitaire.c ../appli/test_unitaire.h \
 
 ../lib/hal/inc/stm32f1xx_hal_hcd.h:
 
-../lib/bsp/stm32f1_gpio.h:
-
-../lib/bsp/tft_ili9341/stm32f1_ili9341.h:
-
 ../appli/config.h:
-
-../lib/bsp/tft_ili9341/stm32f1_fonts.h:
-
-../lib/bsp/stm32f1_adc.h:
 
 ../lib/bsp/macro_types.h:
 
-../lib/bsp/HC-SR04/HCSR04.h:
+../lib/bsp/systick.h:
 
-../appli/button.h:
+../lib/bsp/macro_types.h:

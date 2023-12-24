@@ -18,7 +18,6 @@
 #include "stm32f1_ili9341.h" // Import de la librairie de l'ecran TFT
 #include "stm32f1_adc.h"
 #include "HC-SR04/HCSR04.h"
-
 #include "tft.h"
 
 
@@ -28,6 +27,12 @@ typedef struct{
 		uint16_t PIN;
 		u_int8_t state;
 }electrovanne_t;
+
+typedef struct{
+		char name[20];
+		GPIO_TypeDef * GPIO;
+		uint16_t PIN;
+}button_t;
 
 bool_e getWater_level(uint8_t id_sensor, uint16_t * distance);
 void setElectrovanne(electrovanne_t ev);
@@ -111,22 +116,23 @@ int main(void)
 	//Initialisation de l'UART2 � la vitesse de 115200 bauds/secondes (92kbits/s) PA2 : Tx  | PA3 : Rx.
 		//Attention, les pins PA2 et PA3 ne sont pas reli�es jusqu'au connecteur de la Nucleo.
 		//Ces broches sont redirig�es vers la sonde de d�bogage, la liaison UART �tant ensuite encapsul�e sur l'USB vers le PC de d�veloppement.
-	UART_init(UART2_ID,115200);
+	//UART_init(UART2_ID,115200);
+	UART_init(UART1_ID,115200);
 
 	//"Indique que les printf sortent vers le p�riph�rique UART2."
-	SYS_set_std_usart(UART2_ID, UART2_ID, UART2_ID);
+	//SYS_set_std_usart(UART2_ID, UART2_ID, UART2_ID);
+	SYS_set_std_usart(UART1_ID, UART1_ID, UART1_ID);
 
 
 	//On ajoute la fonction process_ms � la liste des fonctions appel�es automatiquement chaque ms par la routine d'interruption du p�riph�rique SYSTICK
 	Systick_add_callback_function(&process_ms);
 
 
-	TFT_Init();
-
 	while(1)	//boucle de t�che de fond
 	{
-		HCSR04_process_main();
-		state_machine();
+		//HCSR04_process_main();
+		//state_machine();
+		test_button(BUTTON_D_GPIO, BUTTON_D_PIN);
 	}
 }
 
@@ -154,13 +160,15 @@ static void state_machine(void)
 			static uint16_t water_level = 0;
 			static electrovanne_t electrovanne_EC = {"Electrovanne EC", ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 0};
 			static electrovanne_t electrovanne_EP = {"Electrovanne EP", ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 1};
-
+			static button_t button_H = {"Bouton Haut", BUTTON_U_GPIO, BUTTON_U_PIN};
+			static button_t button_B = {"Bouton Bas", BUTTON_D_GPIO, BUTTON_D_PIN};
+			static button_t button_E = {"Bouton Entree", BUTTON_R_GPIO, BUTTON_R_PIN};
 			static uint8_t current_mode = 1;
 			//static float temperature = 0.0;
 
 			// HCSRO4
 			static uint8_t id_sensor;
-			HCSR04_add(&id_sensor, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);
+			//HCSR04_add(&id_sensor, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);
 
 			// Electrovannes
 			BSP_GPIO_PinCfg(electrovanne_EC.GPIO, electrovanne_EC.PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
@@ -169,6 +177,9 @@ static void state_machine(void)
 			setElectrovanne(electrovanne_EP); // Vanne fermée
 
 			// Boutons
+			//BSP_GPIO_PinCfg(button_H.GPIO, button_H.PIN, GPIO_MODE_INPUT,GPIO_PULLUP,GPIO_SPEED_FREQ_HIGH);
+			//BSP_GPIO_PinCfg(button_B.GPIO, button_B.PIN, GPIO_MODE_INPUT,GPIO_PULLUP,GPIO_SPEED_FREQ_HIGH);
+			//BSP_GPIO_PinCfg(button_E.GPIO, button_E.PIN, GPIO_MODE_INPUT,GPIO_PULLUP,GPIO_SPEED_FREQ_HIGH);
 
 
 			// Changement d'état
@@ -176,13 +187,15 @@ static void state_machine(void)
 			break;
 
 		case ACCUEIL :
-			if(getWater_level(id_sensor, &water_level))
-			{
-				TFT_Acceuil();
-				TFT_Mode_State(current_mode);
-				TFT_Update_capteurs(water_level, electrovanne_EC.state, electrovanne_EP.state);
-				state = ACTUALISATION;
-			}
+
+			//TFT_Acceuil();
+			//if(getWater_level(id_sensor, &water_level))
+			//{
+				//TFT_Acceuil();
+				//TFT_Mode_State(current_mode);
+				//TFT_Update_capteurs(water_level, electrovanne_EC.state, electrovanne_EP.state);
+				//state = ACTUALISATION;
+			//}
 
 
 			break;

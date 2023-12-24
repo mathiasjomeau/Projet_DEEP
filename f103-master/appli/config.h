@@ -113,12 +113,22 @@
 
 #define USE_TFT_PCD8544				0	//Ecran TFT Nokia
 
-// Définition des Electrovannes via les GPIO
+// Définition des Electrovannes
 #define ELECTROVANNE0_GPIO			GPIOB
 #define ELECTROVANNE0_PIN			GPIO_PIN_13
 
 #define ELECTROVANNE1_GPIO			GPIOB
 #define ELECTROVANNE1_PIN			GPIO_PIN_14
+
+// Définition des Boutons
+#define BUTTON_D_GPIO				GPIOA
+#define BUTTON_D_PIN				GPIO_PIN_0
+
+#define BUTTON_U_GPIO				GPIOA
+#define BUTTON_U_PIN				GPIO_PIN_1
+
+#define BUTTON_R_GPIO				GPIOA
+#define BUTTON_R_PIN				GPIO_PIN_2
 
 //Carte capteur IKS01A1 :
 #define USE_SENSOR_HTS221		0//Humidit� et temp�rature
