@@ -6,7 +6,9 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../appli/button.c \
+../appli/electrovanne.c \
 ../appli/foo.c \
+../appli/hcsr04.c \
 ../appli/main.c \
 ../appli/test_unitaire.c \
 ../appli/tft.c 
@@ -17,7 +19,9 @@ S_UPPER_SRCS += \
 OBJS += \
 ./appli/assembleur.o \
 ./appli/button.o \
+./appli/electrovanne.o \
 ./appli/foo.o \
+./appli/hcsr04.o \
 ./appli/main.o \
 ./appli/test_unitaire.o \
 ./appli/tft.o 
@@ -27,7 +31,9 @@ S_UPPER_DEPS += \
 
 C_DEPS += \
 ./appli/button.d \
+./appli/electrovanne.d \
 ./appli/foo.d \
+./appli/hcsr04.d \
 ./appli/main.d \
 ./appli/test_unitaire.d \
 ./appli/tft.d 

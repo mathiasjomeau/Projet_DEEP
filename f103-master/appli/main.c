@@ -19,23 +19,15 @@
 #include "stm32f1_adc.h"
 #include "HC-SR04/HCSR04.h"
 #include "tft.h"
+#include "button.h"
+#include "electrovanne.h"
+#include "hcsr04.h"
 
+#include "config.h"
 
-typedef struct{
-		char name[20];
-		GPIO_TypeDef * GPIO;
-		uint16_t PIN;
-		u_int8_t state;
-}electrovanne_t;
+// Cuve Sphérique
+//static uint16_t PROFONDEUR_CUVE =  4000; // en mm
 
-typedef struct{
-		char name[20];
-		GPIO_TypeDef * GPIO;
-		uint16_t PIN;
-}button_t;
-
-bool_e getWater_level(uint8_t id_sensor, uint16_t * distance);
-void setElectrovanne(electrovanne_t ev);
 static void state_machine(void);
 
 static volatile uint32_t t = 0;
@@ -47,65 +39,6 @@ void process_ms(void)
 		t--;
 }
 
-bool_e getWater_level(uint8_t id_sensor, uint16_t * distance)
-{
-	static uint32_t tlocal;
-	uint16_t PERIOD_MEASURE = 100;
-
-	typedef enum{
-			LAUNCH_MEASURE,
-			WAIT_DURING_MEASURE,
-			WAIT_BEFORE_NEXT_MEASURE
-	}state_hcsr04;
-	static state_hcsr04 state_capteur = LAUNCH_MEASURE;
-	bool_e ret = FALSE;
-
-	switch(state_capteur){
-		case LAUNCH_MEASURE:
-			HCSR04_run_measure(id_sensor);
-			tlocal = HAL_GetTick();
-			state_capteur = WAIT_DURING_MEASURE;
-			break;
-		case WAIT_DURING_MEASURE:
-			switch(HCSR04_get_value(id_sensor, distance))
-			{
-				case HAL_BUSY:
-					//rien � faire... on attend...
-					break;
-				case HAL_OK:
-					ret = TRUE;
-					state_capteur = WAIT_BEFORE_NEXT_MEASURE;
-					break;
-				case HAL_ERROR:
-					printf("sensor %d - erreur ou mesure non lanc�e\n", id_sensor);
-					state_capteur = WAIT_BEFORE_NEXT_MEASURE;
-					break;
-
-				case HAL_TIMEOUT:
-					printf("sensor %d - timeout\n", id_sensor);
-					state_capteur = WAIT_BEFORE_NEXT_MEASURE;
-					break;
-			}
-			break;
-
-		case WAIT_BEFORE_NEXT_MEASURE:
-			if(HAL_GetTick() > tlocal + PERIOD_MEASURE)
-				state_capteur = LAUNCH_MEASURE;
-			break;
-
-		default:
-			break;
-	}
-
-	return ret;
-}
-
-
-
-void setElectrovanne(electrovanne_t ev)
-{
-	HAL_GPIO_WritePin(ev.GPIO, ev.PIN, ev.state);
-}
 
 int main(void)
 {
@@ -131,8 +64,9 @@ int main(void)
 	while(1)	//boucle de t�che de fond
 	{
 		//HCSR04_process_main();
-		//state_machine();
-		test_button(BUTTON_D_GPIO, BUTTON_D_PIN);
+		BUTTON_process_main();
+		state_machine();
+
 	}
 }
 
@@ -141,66 +75,86 @@ static void state_machine(void)
 	typedef enum{
 		INIT,
 		ACCUEIL,
-		ACTUALISATION,
 		MODE_AUTO,
 		MODE_MANUEL,
 		MODE_OFF
 	}state_e;
 
 	static state_e state = INIT;
+	static state_e previous_state = INIT;
+	bool_e entrance = (state!=previous_state)?TRUE:FALSE;
+
+	button_event_e button_H_event;
+	button_event_e button_B_event;
+	button_event_e button_E_event;
+	button_H_event = BUTTON_getEvent(0);
+	button_B_event = BUTTON_getEvent(1);
+	button_E_event = BUTTON_getEvent(2);
 
 	switch(state)
 	{
 		case INIT :
-
 			// Ecran TFT
 			TFT_Init();
 
-
-			static uint16_t water_level = 0;
+			//Définitions
+			static hcsr_04_t hcsr04_EP = {"HCSR04 Cuve", 1, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7, 0};
 			static electrovanne_t electrovanne_EC = {"Electrovanne EC", ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 0};
 			static electrovanne_t electrovanne_EP = {"Electrovanne EP", ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 1};
-			static button_t button_H = {"Bouton Haut", BUTTON_U_GPIO, BUTTON_U_PIN};
-			static button_t button_B = {"Bouton Bas", BUTTON_D_GPIO, BUTTON_D_PIN};
-			static button_t button_E = {"Bouton Entree", BUTTON_R_GPIO, BUTTON_R_PIN};
-			static uint8_t current_mode = 1;
+
+			static state_e mode[3] = {MODE_AUTO, MODE_MANUEL, MODE_OFF};
+			static uint8_t mode_chosing = 0;
+			static uint8_t current_mode = 2;
 			//static float temperature = 0.0;
 
 			// HCSRO4
-			static uint8_t id_sensor;
-			//HCSR04_add(&id_sensor, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);
+			//HCSR04_Init(&hcsr04_EP);
 
 			// Electrovannes
-			BSP_GPIO_PinCfg(electrovanne_EC.GPIO, electrovanne_EC.PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
-			BSP_GPIO_PinCfg(electrovanne_EP.GPIO, electrovanne_EP.PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
-			setElectrovanne(electrovanne_EC); // Vanne ouverte
-			setElectrovanne(electrovanne_EP); // Vanne fermée
+			ELECTROVANNE_Init(&electrovanne_EC);
+			ELECTROVANNE_Init(&electrovanne_EP);
 
 			// Boutons
-			//BSP_GPIO_PinCfg(button_H.GPIO, button_H.PIN, GPIO_MODE_INPUT,GPIO_PULLUP,GPIO_SPEED_FREQ_HIGH);
-			//BSP_GPIO_PinCfg(button_B.GPIO, button_B.PIN, GPIO_MODE_INPUT,GPIO_PULLUP,GPIO_SPEED_FREQ_HIGH);
-			//BSP_GPIO_PinCfg(button_E.GPIO, button_E.PIN, GPIO_MODE_INPUT,GPIO_PULLUP,GPIO_SPEED_FREQ_HIGH);
+			BUTTON_add(0, BUTTON_U_GPIO, BUTTON_U_PIN);
+			//BUTTON_add(1, BUTTON_D_GPIO, BUTTON_D_PIN);
+			//BUTTON_add(2, BUTTON_R_GPIO, BUTTON_R_PIN);
 
-
-			// Changement d'état
+			previous_state = state;
 			state = ACCUEIL;
-			break;
-
-		case ACCUEIL :
-
-			//TFT_Acceuil();
-			//if(getWater_level(id_sensor, &water_level))
-			//{
-				//TFT_Acceuil();
-				//TFT_Mode_State(current_mode);
-				//TFT_Update_capteurs(water_level, electrovanne_EC.state, electrovanne_EP.state);
-				//state = ACTUALISATION;
-			//}
-
 
 			break;
 
-		case ACTUALISATION :
+		case ACCUEIL:
+			if (entrance)
+			{
+				TFT_Acceuil();
+				TFT_Update_capteurs(hcsr04_EP.value, electrovanne_EC.state, electrovanne_EP.state);
+				TFT_Change_CurrentMode(current_mode);
+				TFT_Select_Mode(mode_chosing);
+				previous_state = ACCUEIL;
+			}
+
+			/*if (button_H_event == BUTTON_EVENT_SHORT_PRESS)
+			{
+				mode_chosing = (uint8_t) ((mode_chosing+2) % 3);
+				TFT_Select_Mode(mode_chosing);
+				printf("button_H \n");
+			}
+			if (button_B_event == BUTTON_EVENT_SHORT_PRESS)
+			{
+				mode_chosing = (uint8_t) ((mode_chosing+1) % 3);
+				TFT_Select_Mode(mode_chosing);
+				printf("button_B \n");
+			}
+
+			if (button_E_event == BUTTON_EVENT_SHORT_PRESS)
+			{
+				current_mode = mode_chosing;
+				TFT_Change_CurrentMode(current_mode);
+				printf("button_E \n");
+				//state = mode[mode_chosing];
+			}
+			*/
 
 			break;
 

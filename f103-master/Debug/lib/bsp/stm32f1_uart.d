@@ -24,7 +24,8 @@ lib/bsp/stm32f1_uart.o: ../lib/bsp/stm32f1_uart.c \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
  ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/stm32f1_uart.h \
- ../lib/bsp/macro_types.h ../appli/config.h ../lib/bsp/stm32f1_gpio.h
+ ../lib/bsp/macro_types.h ../appli/config.h ../lib/bsp/macro_types.h \
+ ../lib/bsp/stm32f1_gpio.h
 
 ../lib/hal/inc/stm32f1xx_hal.h:
 
@@ -117,5 +118,7 @@ lib/bsp/stm32f1_uart.o: ../lib/bsp/stm32f1_uart.c \
 ../lib/bsp/macro_types.h:
 
 ../appli/config.h:
+
+../lib/bsp/macro_types.h:
 
 ../lib/bsp/stm32f1_gpio.h:

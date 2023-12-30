@@ -23,7 +23,7 @@ lib/bsp/VL53L0X/vl53l0x_api.o: ../lib/bsp/VL53L0X/vl53l0x_api.c \
  ../lib/hal/inc/stm32f1xx_hal_uart.h ../lib/hal/inc/stm32f1xx_hal_usart.h \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
- ../lib/hal/inc/stm32f1xx_hal_hcd.h
+ ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/macro_types.h
 
 ../appli/config.h:
 
@@ -112,3 +112,5 @@ lib/bsp/VL53L0X/vl53l0x_api.o: ../lib/bsp/VL53L0X/vl53l0x_api.c \
 ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h:
 
 ../lib/hal/inc/stm32f1xx_hal_hcd.h:
+
+../lib/bsp/macro_types.h:

@@ -2,4 +2,3 @@ test_unitaire.c:13:6:test_EcranTFT	16	static
 test_unitaire.c:24:6:test_Electrovanne	16	static
 test_unitaire.c:35:6:test_MCP9701	32	static
 test_unitaire.c:53:6:test_HCSR04	8	static
-test_unitaire.c:58:6:test_button	16	static

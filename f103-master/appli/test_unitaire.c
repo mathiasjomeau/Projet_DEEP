@@ -55,9 +55,9 @@ void test_HCSR04(void){
 
 }
 
-void test_button(GPIO_TypeDef * GPIO, uint16_t PIN){
-	BUTTON_init(GPIO, PIN);
-	BUTTON_state_machine(GPIO, PIN);
+//void test_button(GPIO_TypeDef * GPIO, uint16_t PIN){
+	//BUTTON_init(GPIO, PIN);
+	//BUTTON_state_machine(GPIO, PIN);
 
-}
+//}
 

@@ -24,11 +24,10 @@ lib/bsp/tft_ili9341/stm32f1_ili9341.o: \
  ../lib/hal/inc/stm32f1xx_hal_uart.h ../lib/hal/inc/stm32f1xx_hal_usart.h \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
- ../lib/hal/inc/stm32f1xx_hal_hcd.h \
+ ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/macro_types.h \
  ../lib/bsp/tft_ili9341/stm32f1_ili9341.h \
  ../lib/bsp/tft_ili9341/stm32f1_fonts.h ../lib/bsp/stm32f1_spi.h \
- ../lib/bsp/macro_types.h ../lib/bsp/macro_types.h \
- ../lib/bsp/stm32f1_gpio.h
+ ../lib/bsp/macro_types.h ../lib/bsp/stm32f1_gpio.h
 
 ../appli/config.h:
 
@@ -118,13 +117,13 @@ lib/bsp/tft_ili9341/stm32f1_ili9341.o: \
 
 ../lib/hal/inc/stm32f1xx_hal_hcd.h:
 
+../lib/bsp/macro_types.h:
+
 ../lib/bsp/tft_ili9341/stm32f1_ili9341.h:
 
 ../lib/bsp/tft_ili9341/stm32f1_fonts.h:
 
 ../lib/bsp/stm32f1_spi.h:
-
-../lib/bsp/macro_types.h:
 
 ../lib/bsp/macro_types.h:
 

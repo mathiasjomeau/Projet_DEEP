@@ -25,7 +25,8 @@ lib/middleware/MIDI/usbd_midi.o: ../lib/middleware/MIDI/usbd_midi.c \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
  ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/middleware/MIDI/usbd_core.h \
- ../lib/middleware/MIDI/usbd_ctlreq.h ../appli/config.h
+ ../lib/middleware/MIDI/usbd_ctlreq.h ../appli/config.h \
+ ../lib/bsp/macro_types.h
 
 ../lib/middleware/MIDI/usbd_midi.h:
 
@@ -126,3 +127,5 @@ lib/middleware/MIDI/usbd_midi.o: ../lib/middleware/MIDI/usbd_midi.c \
 ../lib/middleware/MIDI/usbd_ctlreq.h:
 
 ../appli/config.h:
+
+../lib/bsp/macro_types.h:

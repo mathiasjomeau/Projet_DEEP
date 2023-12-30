@@ -8,6 +8,7 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 #include "stm32f1xx_hal.h"
+#include "macro_types.h"
 
 //Choix de la cible utilis�e.
 #define NUCLEO	0
@@ -225,6 +226,23 @@
 	#define USE_BSP_TIMER		1
 #endif
 
+typedef struct{
+		char name[20];
+		uint8_t id_sensor;
+		GPIO_TypeDef * GPIO_TRIG;
+		uint16_t PIN_TRIG;
+		GPIO_TypeDef * GPIO_ECHO;
+		uint16_t PIN_ECHO;
+		uint16_t value;
+}hcsr_04_t;
+
+
+typedef struct{
+		char name[20];
+		GPIO_TypeDef * GPIO;
+		uint16_t PIN;
+		u_int8_t state;
+}electrovanne_t;
 
 
 #endif /* CONFIG_H_ */

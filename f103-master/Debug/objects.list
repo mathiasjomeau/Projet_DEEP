@@ -1,6 +1,8 @@
 "./appli/assembleur.o"
 "./appli/button.o"
+"./appli/electrovanne.o"
 "./appli/foo.o"
+"./appli/hcsr04.o"
 "./appli/main.o"
 "./appli/test_unitaire.o"
 "./appli/tft.o"

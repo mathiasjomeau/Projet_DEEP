@@ -23,7 +23,7 @@ lib/bsp/hx711/hx711.o: ../lib/bsp/hx711/hx711.c ../lib/bsp/hx711/hx711.h \
  ../lib/hal/inc/stm32f1xx_hal_uart.h ../lib/hal/inc/stm32f1xx_hal_usart.h \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
- ../lib/hal/inc/stm32f1xx_hal_hcd.h
+ ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/macro_types.h
 
 ../lib/bsp/hx711/hx711.h:
 
@@ -114,3 +114,5 @@ lib/bsp/hx711/hx711.o: ../lib/bsp/hx711/hx711.c ../lib/bsp/hx711/hx711.h \
 ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h:
 
 ../lib/hal/inc/stm32f1xx_hal_hcd.h:
+
+../lib/bsp/macro_types.h:

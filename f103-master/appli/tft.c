@@ -1,5 +1,6 @@
-#include "stm32f1_ili9341.h"
 #include "tft.h"
+
+#include "stm32f1_ili9341.h"
 #include <stdio.h>
 
 
@@ -9,7 +10,6 @@ void TFT_Init(void)
 	ILI9341_Init();
 	ILI9341_Rotate(ILI9341_Orientation_Landscape_2);
 	ILI9341_Fill(ILI9341_COLOR_WHITE);
-
 }
 
 void TFT_Acceuil()
@@ -61,9 +61,8 @@ void TFT_Update_capteurs(uint16_t water_level, uint8_t EC_state, uint8_t EP_stat
 	ILI9341_Puts(30,215, "Temperature de l'eau : 20 C", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 }
 
-void TFT_Mode_State(uint8_t mode){
-	// Réinit des couleurs et du texte
-	ILI9341_Puts(30,60, "Mode actif :", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+void TFT_Select_Mode(uint8_t mode){
+	// Réinit des couleurs
 	ILI9341_Puts(30,90, " - Mode Auto", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	ILI9341_Puts(30,110, " - Mode Manuel", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	ILI9341_Puts(30,130, " - Mode Off", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -71,21 +70,42 @@ void TFT_Mode_State(uint8_t mode){
 	switch (mode)
 	{
 		// Mode Auto
-		case 1:
-			ILI9341_Puts(30,60, "Mode actif : Mode Auto", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		case 0:
 			ILI9341_Puts(30,90, " - Mode Auto", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
 			break;
 
 		// Mode Manuel
-		case 2:
-			ILI9341_Puts(30,60, "Mode actif : Mode Manuel", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		case 1:
 			ILI9341_Puts(30,110, " - Mode Manuel", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
 			break;
 
-		// Mode Auto
-		case 3:
-			ILI9341_Puts(30,60, "Mode actif : Mode Off", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		// Mode Off
+		case 2:
 			ILI9341_Puts(30,130, " - Mode Off", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
+			break;
+	}
+}
+
+void TFT_Change_CurrentMode (uint8_t mode)
+{
+	// Réinit du texte
+	ILI9341_Puts(30,60, "Mode actif :               ", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
+	switch (mode)
+	{
+		// Mode Auto
+		case 0:
+			ILI9341_Puts(30,60, "Mode actif : Mode Auto", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			break;
+
+		// Mode Manuel
+		case 1:
+			ILI9341_Puts(30,60, "Mode actif : Mode Manuel", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			break;
+
+		// Mode Off
+		case 2:
+			ILI9341_Puts(30,60, "Mode actif : Mode Off", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 			break;
 	}
 }

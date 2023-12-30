@@ -24,7 +24,7 @@ lib/bsp/iks01a1/lsm6ds3/LSM6DS3_ACC_GYRO_driver_HL.o: \
  ../lib/hal/inc/stm32f1xx_hal_uart.h ../lib/hal/inc/stm32f1xx_hal_usart.h \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
- ../lib/hal/inc/stm32f1xx_hal_hcd.h
+ ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/macro_types.h
 
 ../appli/config.h:
 
@@ -113,3 +113,5 @@ lib/bsp/iks01a1/lsm6ds3/LSM6DS3_ACC_GYRO_driver_HL.o: \
 ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h:
 
 ../lib/hal/inc/stm32f1xx_hal_hcd.h:
+
+../lib/bsp/macro_types.h:

@@ -24,7 +24,8 @@ lib/bsp/stm32f1_stepper_motor.o: ../lib/bsp/stm32f1_stepper_motor.c \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
  ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/macro_types.h \
- ../lib/bsp/stm32f1_timer.h ../lib/bsp/stm32f1_stepper_motor.h
+ ../lib/bsp/macro_types.h ../lib/bsp/stm32f1_timer.h \
+ ../lib/bsp/stm32f1_stepper_motor.h
 
 ../appli/config.h:
 
@@ -113,6 +114,8 @@ lib/bsp/stm32f1_stepper_motor.o: ../lib/bsp/stm32f1_stepper_motor.c \
 ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h:
 
 ../lib/hal/inc/stm32f1xx_hal_hcd.h:
+
+../lib/bsp/macro_types.h:
 
 ../lib/bsp/macro_types.h:
 

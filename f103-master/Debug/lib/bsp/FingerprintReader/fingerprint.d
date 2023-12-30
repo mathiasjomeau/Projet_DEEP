@@ -24,7 +24,8 @@ lib/bsp/FingerprintReader/fingerprint.o: \
  ../lib/hal/inc/stm32f1xx_hal_uart.h ../lib/hal/inc/stm32f1xx_hal_usart.h \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
- ../lib/hal/inc/stm32f1xx_hal_hcd.h ../appli/config.h
+ ../lib/hal/inc/stm32f1xx_hal_hcd.h ../appli/config.h \
+ ../lib/bsp/macro_types.h
 
 ../lib/hal/inc/stm32f1xx_hal.h:
 
@@ -113,3 +114,5 @@ lib/bsp/FingerprintReader/fingerprint.o: \
 ../lib/hal/inc/stm32f1xx_hal_hcd.h:
 
 ../appli/config.h:
+
+../lib/bsp/macro_types.h:

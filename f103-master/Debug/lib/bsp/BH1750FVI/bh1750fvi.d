@@ -23,9 +23,9 @@ lib/bsp/BH1750FVI/bh1750fvi.o: ../lib/bsp/BH1750FVI/bh1750fvi.c \
  ../lib/hal/inc/stm32f1xx_hal_uart.h ../lib/hal/inc/stm32f1xx_hal_usart.h \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
- ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/stm32f1_uart.h \
- ../lib/bsp/macro_types.h ../lib/bsp/stm32f1_sys.h \
- ../lib/bsp/stm32f1_uart.h
+ ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/macro_types.h \
+ ../lib/bsp/stm32f1_uart.h ../lib/bsp/macro_types.h \
+ ../lib/bsp/stm32f1_sys.h ../lib/bsp/stm32f1_uart.h
 
 ../appli/config.h:
 
@@ -114,6 +114,8 @@ lib/bsp/BH1750FVI/bh1750fvi.o: ../lib/bsp/BH1750FVI/bh1750fvi.c \
 ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h:
 
 ../lib/hal/inc/stm32f1xx_hal_hcd.h:
+
+../lib/bsp/macro_types.h:
 
 ../lib/bsp/stm32f1_uart.h:
 
