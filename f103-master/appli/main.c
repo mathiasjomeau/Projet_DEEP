@@ -58,11 +58,12 @@ int main(void)
 	//On ajoute la fonction process_ms � la liste des fonctions appel�es automatiquement chaque ms par la routine d'interruption du p�riph�rique SYSTICK
 	Systick_add_callback_function(&process_ms);
 
-
 	while(1)	//boucle de t�che de fond
 	{
 		//HCSR04_process_main();
-		BUTTON_process_main();
+		BUTTON_state_machine(0);
+		BUTTON_state_machine(1);
+		BUTTON_state_machine(2);
 		state_machine();
 
 	}
@@ -82,12 +83,12 @@ static void state_machine(void)
 	static state_e previous_state = INIT;
 	bool_e entrance = (state!=previous_state)?TRUE:FALSE;
 
-	button_event_e button_H_event;
+	/*button_event_e button_H_event;
 	button_event_e button_B_event;
 	button_event_e button_E_event;
 	button_H_event = BUTTON_getEvent(0);
 	button_B_event = BUTTON_getEvent(1);
-	button_E_event = BUTTON_getEvent(2);
+	button_E_event = BUTTON_getEvent(2);*/
 
 	static uint16_t profondeur_EP;
 	uint16_t distance;
@@ -121,8 +122,8 @@ static void state_machine(void)
 
 			// Boutons
 			BUTTON_add(0, BUTTON_U_GPIO, BUTTON_U_PIN);
-			//BUTTON_add(1, BUTTON_D_GPIO, BUTTON_D_PIN);
-			//BUTTON_add(2, BUTTON_R_GPIO, BUTTON_R_PIN);
+			BUTTON_add(1, BUTTON_D_GPIO, BUTTON_D_PIN);
+			BUTTON_add(2, BUTTON_R_GPIO, BUTTON_R_PIN);
 
 			previous_state = state;
 			state = MODE_OFF;

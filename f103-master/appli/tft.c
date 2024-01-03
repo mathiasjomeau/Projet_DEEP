@@ -94,32 +94,34 @@ void TFT_Acceuil()
 
 void TFT_Acceuil_Update(uint8_t id_mode, uint16_t water_level, uint8_t EC_state, uint8_t EP_state)
 {
-	updateDynamicLine_Text(Screens_Addresse[0][0],"                          ");
+	//updateDynamicLine_Text(Screens_Addresse[0][0],"                          ");
 	updateDynamicLine_Foreground(Screens_Addresse[0][1], ILI9341_COLOR_BLACK);
 	updateDynamicLine_Background(Screens_Addresse[0][1], ILI9341_COLOR_WHITE);
 	updateDynamicLine_Foreground(Screens_Addresse[0][2], ILI9341_COLOR_BLACK);
 	updateDynamicLine_Background(Screens_Addresse[0][2], ILI9341_COLOR_WHITE);
 	updateDynamicLine_Foreground(Screens_Addresse[0][3], ILI9341_COLOR_BLACK);
 	updateDynamicLine_Background(Screens_Addresse[0][3], ILI9341_COLOR_WHITE);
-	updateDynamicLine_Text(Screens_Addresse[0][4], "                                    ");
-	updateDynamicLine_Text(Screens_Addresse[0][5], "                                    ");
-	updateDynamicLine_Text(Screens_Addresse[0][6], "                                    ");
-	updateDynamicLine_Text(Screens_Addresse[0][7], "                                    ");
+	//updateDynamicLine_Text(Screens_Addresse[0][4], "                                    ");
+	//updateDynamicLine_Text(Screens_Addresse[0][5], "                                    ");
+	//updateDynamicLine_Text(Screens_Addresse[0][6], "                                    ");
+	//updateDynamicLine_Text(Screens_Addresse[0][7], "                                    ");
 
-	char * current_mode_char;
+	updateDynamicLine_Foreground(Screens_Addresse[0][id_mode], ILI9341_COLOR_WHITE);
+	updateDynamicLine_Background(Screens_Addresse[0][id_mode], ILI9341_COLOR_GRAY);
+
+	/*char * current_mode_char;
 	snprintf(current_mode_char, sizeof(current_mode_char), "Mode actif : %d", current_mode_char);
 
 	updateDynamicLine_Text(Screens_Addresse[0][0], current_mode_char);
 
-	updateDynamicLine_Foreground(Screens_Addresse[0][id_mode], ILI9341_COLOR_WHITE);
-	updateDynamicLine_Background(Screens_Addresse[0][id_mode], ILI9341_COLOR_GRAY);
+
 
 	char * water_level_char;
 	snprintf(water_level_char, sizeof(water_level_char), "Niveau de la cuve : %d", water_level);
 
 	updateDynamicLine_Text(Screens_Addresse[0][4], water_level_char);
 	updateDynamicLine_Text(Screens_Addresse[0][5], EC_state);
-	updateDynamicLine_Text(Screens_Addresse[0][6], EP_state);
+	updateDynamicLine_Text(Screens_Addresse[0][6], EP_state);*/
 
 }
 /*

@@ -11,8 +11,6 @@
 
 #define LONG_PRESS_DURATION	1000	//unit� : [1ms] => 1 seconde.
 
-#define NB_BUTTONS 3
-
 typedef enum
 {
 	BUTTON_STATE_INEXISTANT,
@@ -33,6 +31,7 @@ static button_t buttons[NB_BUTTONS];
 
 static void process_ms(void);
 
+
 static volatile bool_e flag_10ms;
 static volatile uint32_t t = 0;
 
@@ -48,92 +47,78 @@ static void process_ms(void)
 
 void BUTTON_add(uint8_t id, GPIO_TypeDef * GPIO, uint16_t PIN)
 {
-	for(uint8_t i = 0; i<NB_BUTTONS; i++)
-	{
-		if(buttons[i].state == BUTTON_STATE_INEXISTANT)
+	//for(uint8_t i = 0; i<NB_BUTTONS; i++)
+	//{
+		if(buttons[id].state == BUTTON_STATE_INEXISTANT)
 		{
 			//*id = i;
-			buttons[i].state = INIT;
-			buttons[i].GPIO = GPIO;
-			buttons[i].PIN  = PIN;
-			buttons[i].button_event = BUTTON_EVENT_NONE;
+			buttons[id].state = INIT;
+			buttons[id].GPIO = GPIO;
+			buttons[id].PIN  = PIN;
+			buttons[id].button_event = BUTTON_EVENT_NONE;
 
 			BSP_GPIO_PinCfg(GPIO, PIN, GPIO_MODE_INPUT,GPIO_PULLUP,GPIO_SPEED_FREQ_HIGH);
 
 			Systick_add_callback_function(&process_ms);
 		}
-	}
+	//}
 }
-
-/*void BUTTON_init(button_t * button)
-{
-	BSP_GPIO_PinCfg(button->GPIO, button->PIN, GPIO_MODE_INPUT,GPIO_PULLUP,GPIO_SPEED_FREQ_HIGH);
-
-	Systick_add_callback_function(&process_ms);
-
-}*/
-
 
 /**
 	Elle doit �tre appel�e en boucle tr�s r�guli�rement.
 	Pr�condition : avoir appel� auparavant BUTTON_init();
 	Si un appui vient d'�tre fait, elle renverra BUTTON_EVENT_SHORT_PRESS ou BUTTON_EVENT_LONG_PRESS
 */
-void BUTTON_process_main()
+void BUTTON_state_machine(uint8_t id)
 {
 	if (flag_10ms)
 	{
 		bool_e current_button;
 		flag_10ms = FALSE;
 
+			current_button = !HAL_GPIO_ReadPin(buttons[id].GPIO, buttons[id].PIN);
 
-		for (uint8_t i ; i<NB_BUTTONS ; i++)
-		{
-			current_button = !HAL_GPIO_ReadPin(buttons[i].GPIO, buttons[i].PIN);
-
-			switch(buttons[i].state)
+			switch(buttons[id].state)
 			{
 				case BUTTON_STATE_INEXISTANT:
 					break;
 				case INIT:
-					buttons[i].state = WAIT_BUTTON;
+					buttons[id].state = WAIT_BUTTON;
+					buttons[id].button_event = BUTTON_EVENT_NONE;
 					break;
 				case WAIT_BUTTON:
-					buttons[i].button_event = BUTTON_EVENT_NONE;
-
 					if(current_button)
 					{
-						printf("[%d] button pressed\n", i);
+						printf("[%d] button pressed\n", id);
 						t=LONG_PRESS_DURATION;
-						buttons[i].state = BUTTON_PRESSED;
+						buttons[id].state = BUTTON_PRESSED;
 					}
 					break;
 				case BUTTON_PRESSED:
 					if(t==0)
 					{
-						buttons[i].button_event = BUTTON_EVENT_LONG_PRESS;
-						printf("[%d] long press event\n", i);
-						buttons[i].state = WAIT_RELEASE;						}
+						buttons[id].button_event = BUTTON_EVENT_LONG_PRESS;
+						printf("[%d] long press event\n", id);
+						buttons[id].state = WAIT_RELEASE;						}
 					else if(!current_button)
 					{
-						buttons[i].button_event = BUTTON_EVENT_SHORT_PRESS;
-						printf("[%d] short press event\n", i);
-						buttons[i].state = WAIT_BUTTON;
+						buttons[id].button_event = BUTTON_EVENT_SHORT_PRESS;
+						printf("[%d] short press event\n", id);
+						buttons[id].state = WAIT_BUTTON;
 					}
 					break;
 
 				case WAIT_RELEASE:
 					if(!current_button)
 					{
-						printf("[%d] release button after long press\n", i);
-						buttons[i].state = WAIT_BUTTON;
+						printf("[%d] release button after long press\n", id);
+						buttons[id].state = WAIT_BUTTON;
 					}
 					break;
 				default:
-					buttons[i].state = INIT;
+					buttons[id].state = INIT;
 					break;
 			}
-		}
 	}
 }
 

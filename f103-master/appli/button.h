@@ -11,6 +11,8 @@
 #include "stm32f1_gpio.h"
 #include "config.h"
 
+#define NB_BUTTONS 3
+
 typedef enum
 {
 	BUTTON_EVENT_NONE,
@@ -20,7 +22,8 @@ typedef enum
 
 void BUTTON_add(uint8_t id, GPIO_TypeDef * GPIO, uint16_t PIN);
 
-void BUTTON_process_main(void);
+void BUTTON_state_machine(uint8_t id);
+//void BUTTON_process_main(void);
 
 button_event_e BUTTON_getEvent(uint8_t id);
 
