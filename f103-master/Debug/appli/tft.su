@@ -1,5 +1,7 @@
-tft.c:8:6:TFT_Init	8	static
-tft.c:15:6:TFT_Acceuil	24	static
-tft.c:35:6:TFT_Update_capteurs	168	static
-tft.c:64:6:TFT_Select_Mode	24	static
-tft.c:89:6:TFT_Change_CurrentMode	24	static
+tft.c:25:6:displayDynamicLine	24	static
+tft.c:33:6:updateDynamicLine_Text	48	static
+tft.c:41:6:updateDynamicLine_Foreground	48	static
+tft.c:48:6:updateDynamicLine_Background	48	static
+tft.c:56:6:TFT_Init	8	static
+tft.c:63:6:TFT_Acceuil	440	static
+tft.c:95:6:TFT_Acceuil_Update	80	static

@@ -244,5 +244,4 @@ typedef struct{
 		u_int8_t state;
 }electrovanne_t;
 
-
 #endif /* CONFIG_H_ */

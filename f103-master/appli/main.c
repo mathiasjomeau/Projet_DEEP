@@ -26,19 +26,17 @@
 #include "config.h"
 
 // Cuve Sphérique
-//static uint16_t PROFONDEUR_CUVE =  4000; // en mm
+static uint16_t PROFONDEUR_CUVE =  4000; // en mm
 
 static void state_machine(void);
 
 static volatile uint32_t t = 0;
-
 
 void process_ms(void)
 {
 	if(t)
 		t--;
 }
-
 
 int main(void)
 {
@@ -91,6 +89,13 @@ static void state_machine(void)
 	button_B_event = BUTTON_getEvent(1);
 	button_E_event = BUTTON_getEvent(2);
 
+	static uint16_t profondeur_EP;
+	uint16_t distance;
+	if (HCSR04_GetDistance(0, &distance))
+	{
+		profondeur_EP = (uint16_t) (PROFONDEUR_CUVE - distance);
+	}
+
 	switch(state)
 	{
 		case INIT :
@@ -120,11 +125,12 @@ static void state_machine(void)
 			//BUTTON_add(2, BUTTON_R_GPIO, BUTTON_R_PIN);
 
 			previous_state = state;
-			state = ACCUEIL;
+			state = MODE_OFF;
 
 			break;
 
 		case ACCUEIL:
+			/*
 			if (entrance)
 			{
 				TFT_Acceuil();
@@ -133,6 +139,7 @@ static void state_machine(void)
 				TFT_Select_Mode(mode_chosing);
 				previous_state = ACCUEIL;
 			}
+			*/
 
 			/*if (button_H_event == BUTTON_EVENT_SHORT_PRESS)
 			{
@@ -159,10 +166,41 @@ static void state_machine(void)
 			break;
 
 		case MODE_AUTO:
+			if(entrance)
+			{
+				//TFT_Mode_Auto();
+				previous_state = MODE_AUTO;
+				//TFT_Update_capteurs(hcsr04_EP.value, electrovanne_EC.state, electrovanne_EP.state);
+			}
+			// Sécu de 20cm, on coupe la vanne de l'eau de pluie
+			if (profondeur_EP < 200)
+			{
+				electrovanne_EP.state = 1;
+				electrovanne_EC.state = 0;
+				ELECTROVANNE_Set(&electrovanne_EP);
+				ELECTROVANNE_Set(&electrovanne_EC);
+			}
+			// condition à rajouter pour la température
+			else
+			{
+				electrovanne_EP.state = 0;
+				electrovanne_EC.state = 1;
+				ELECTROVANNE_Set(&electrovanne_EP);
+				ELECTROVANNE_Set(&electrovanne_EC);
+			}
+
+
 			break;
+
 		case MODE_MANUEL:
 			break;
 		case MODE_OFF:
+			if (entrance)
+			{
+				TFT_Acceuil();
+				TFT_Acceuil_Update(1, 0, 0, 0);
+				previous_state = MODE_OFF;
+			}
 			break;
 	}
 

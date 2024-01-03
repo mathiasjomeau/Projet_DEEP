@@ -81,16 +81,15 @@ void BUTTON_add(uint8_t id, GPIO_TypeDef * GPIO, uint16_t PIN)
 */
 void BUTTON_process_main()
 {
-	static uint8_t test;
-	for (uint8_t i ; i<NB_BUTTONS ; i++)
+	if (flag_10ms)
 	{
 		bool_e current_button;
+		flag_10ms = FALSE;
 
-		if(flag_10ms)	//le cadencement de cette portion de code � 10ms permet d'�liminer l'effet des rebonds sur le signal en provenance du bouton.
+
+		for (uint8_t i ; i<NB_BUTTONS ; i++)
 		{
-			flag_10ms = FALSE;
 			current_button = !HAL_GPIO_ReadPin(buttons[i].GPIO, buttons[i].PIN);
-
 
 			switch(buttons[i].state)
 			{
@@ -104,13 +103,9 @@ void BUTTON_process_main()
 
 					if(current_button)
 					{
-						if (i==1)
-						{
-							test++;
-						}
 						printf("[%d] button pressed\n", i);
-						t=LONG_PRESS_DURATION;	//Action r�alis�e sur la transition.
-						buttons[i].state = BUTTON_PRESSED;	//Changement d'�tat conditionn� � "if(current_button)"
+						t=LONG_PRESS_DURATION;
+						buttons[i].state = BUTTON_PRESSED;
 					}
 					break;
 				case BUTTON_PRESSED:
@@ -118,13 +113,12 @@ void BUTTON_process_main()
 					{
 						buttons[i].button_event = BUTTON_EVENT_LONG_PRESS;
 						printf("[%d] long press event\n", i);
-						buttons[i].state = WAIT_RELEASE;		//le temps est �coul�, c'�tait un appui long !
-					}
+						buttons[i].state = WAIT_RELEASE;						}
 					else if(!current_button)
 					{
 						buttons[i].button_event = BUTTON_EVENT_SHORT_PRESS;
 						printf("[%d] short press event\n", i);
-						buttons[i].state = WAIT_BUTTON;	//le bouton a �t� rel�ch� avant l'�coulement du temps, c'�tait un appui court !
+						buttons[i].state = WAIT_BUTTON;
 					}
 					break;
 
