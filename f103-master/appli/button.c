@@ -84,7 +84,6 @@ void BUTTON_state_machine(uint8_t id)
 					break;
 				case INIT:
 					buttons[id].state = WAIT_BUTTON;
-					buttons[id].button_event = BUTTON_EVENT_NONE;
 					break;
 				case WAIT_BUTTON:
 					if(current_button)
@@ -124,7 +123,9 @@ void BUTTON_state_machine(uint8_t id)
 
 button_event_e BUTTON_getEvent(uint8_t id)
 {
-	return buttons[id].button_event;
+	button_event_e ret = buttons[id].button_event;
+	buttons[id].button_event = BUTTON_EVENT_NONE;
+	return ret;
 }
 
 

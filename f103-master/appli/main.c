@@ -126,48 +126,49 @@ static void state_machine(void)
 			BUTTON_add(2, BUTTON_R_GPIO, BUTTON_R_PIN);
 
 			previous_state = state;
-			state = MODE_OFF;
+			state = ACCUEIL;
 
 			break;
 
 		case ACCUEIL:
-			/*
+
 			if (entrance)
 			{
 				TFT_Acceuil();
-				TFT_Update_capteurs(hcsr04_EP.value, electrovanne_EC.state, electrovanne_EP.state);
-				TFT_Change_CurrentMode(current_mode);
-				TFT_Select_Mode(mode_chosing);
+				TFT_Acceuil_Update(mode_chosing, 0, electrovanne_EC.state, electrovanne_EP.state);
 				previous_state = ACCUEIL;
 			}
-			*/
 
-			/*if (button_H_event == BUTTON_EVENT_SHORT_PRESS)
+
+			if (BUTTON_getEvent(0) == BUTTON_EVENT_SHORT_PRESS)
 			{
 				mode_chosing = (uint8_t) ((mode_chosing+2) % 3);
-				TFT_Select_Mode(mode_chosing);
+				TFT_Acceuil_Update(mode_chosing, 0, electrovanne_EC.state, electrovanne_EP.state);
 				printf("button_H \n");
 			}
-			if (button_B_event == BUTTON_EVENT_SHORT_PRESS)
+
+			else if (BUTTON_getEvent(1) == BUTTON_EVENT_SHORT_PRESS)
 			{
 				mode_chosing = (uint8_t) ((mode_chosing+1) % 3);
-				TFT_Select_Mode(mode_chosing);
+				TFT_Acceuil_Update(mode_chosing, 0, electrovanne_EC.state, electrovanne_EP.state);
 				printf("button_B \n");
 			}
 
-			if (button_E_event == BUTTON_EVENT_SHORT_PRESS)
+			else if (BUTTON_getEvent(2) == BUTTON_EVENT_SHORT_PRESS)
 			{
 				current_mode = mode_chosing;
-				TFT_Change_CurrentMode(current_mode);
 				printf("button_E \n");
-				//state = mode[mode_chosing];
+				state = mode[mode_chosing];
 			}
-			*/
 
 			break;
 
 		case MODE_AUTO:
-			if(entrance)
+
+			printf("coucou mode auto");
+
+			state = ACCUEIL;
+			/*if(entrance)
 			{
 				//TFT_Mode_Auto();
 				previous_state = MODE_AUTO;
@@ -192,16 +193,20 @@ static void state_machine(void)
 
 
 			break;
+			*/
+			break ;
 
 		case MODE_MANUEL:
+
+			printf("coucou mode manuel");
+
+			state = ACCUEIL;
 			break;
 		case MODE_OFF:
-			if (entrance)
-			{
-				TFT_Acceuil();
-				TFT_Acceuil_Update(1, 0, 0, 0);
-				previous_state = MODE_OFF;
-			}
+
+			printf("coucou mode off");
+
+			state = ACCUEIL;
 			break;
 	}
 

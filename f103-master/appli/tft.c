@@ -106,8 +106,8 @@ void TFT_Acceuil_Update(uint8_t id_mode, uint16_t water_level, uint8_t EC_state,
 	//updateDynamicLine_Text(Screens_Addresse[0][6], "                                    ");
 	//updateDynamicLine_Text(Screens_Addresse[0][7], "                                    ");
 
-	updateDynamicLine_Foreground(Screens_Addresse[0][id_mode], ILI9341_COLOR_WHITE);
-	updateDynamicLine_Background(Screens_Addresse[0][id_mode], ILI9341_COLOR_GRAY);
+	updateDynamicLine_Foreground(Screens_Addresse[0][id_mode+1], ILI9341_COLOR_WHITE);
+	updateDynamicLine_Background(Screens_Addresse[0][id_mode+1], ILI9341_COLOR_GRAY);
 
 	/*char * current_mode_char;
 	snprintf(current_mode_char, sizeof(current_mode_char), "Mode actif : %d", current_mode_char);
