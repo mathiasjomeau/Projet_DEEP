@@ -39,8 +39,8 @@
 #endif
 
 //Choisir les broches pour l'UART1, parmi ces deux possibilit�s :
-#define UART1_ON_PB6_PB7
-//#define UART1_ON_PA9_PA10
+//#define UART1_ON_PB6_PB7
+#define UART1_ON_PA9_PA10
 
 //Choisir les broches pour l'UART2, parmi ces deux possibilit�s :
 #define UART2_ON_PA2_PA3
@@ -225,17 +225,6 @@
 	#undef USE_BSP_TIMER
 	#define USE_BSP_TIMER		1
 #endif
-
-typedef struct{
-		char name[20];
-		uint8_t id_sensor;
-		GPIO_TypeDef * GPIO_TRIG;
-		uint16_t PIN_TRIG;
-		GPIO_TypeDef * GPIO_ECHO;
-		uint16_t PIN_ECHO;
-		uint16_t value;
-}hcsr_04_t;
-
 
 typedef struct{
 		char name[20];

@@ -58,14 +58,23 @@ int main(void)
 	//On ajoute la fonction process_ms � la liste des fonctions appel�es automatiquement chaque ms par la routine d'interruption du p�riph�rique SYSTICK
 	Systick_add_callback_function(&process_ms);
 
+	/*static uint8_t id_sensor;
+	uint16_t distance;
+
+	HCSR04_Init(&id_sensor, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);*/
 	while(1)	//boucle de t�che de fond
 	{
-		//HCSR04_process_main();
+		/*HCSR04_process_main();
 		BUTTON_state_machine(0);
 		BUTTON_state_machine(1);
 		BUTTON_state_machine(2);
 		state_machine();
-
+		*/
+		HCSR04_process_main();
+		state_machine();
+		//printf("coucou\n");
+		//if (HCSR04_GetDistance(id_sensor, &distance))
+			//printf("sensor %d - distance : %d\n", id_sensor, distance);
 	}
 }
 
@@ -76,26 +85,23 @@ static void state_machine(void)
 		ACCUEIL,
 		MODE_AUTO,
 		MODE_MANUEL,
-		MODE_OFF
+		MODE_OFF,
+		TEST
 	}state_e;
 
 	static state_e state = INIT;
 	static state_e previous_state = INIT;
 	bool_e entrance = (state!=previous_state)?TRUE:FALSE;
 
-	/*button_event_e button_H_event;
-	button_event_e button_B_event;
-	button_event_e button_E_event;
-	button_H_event = BUTTON_getEvent(0);
-	button_B_event = BUTTON_getEvent(1);
-	button_E_event = BUTTON_getEvent(2);*/
-
+	static uint8_t id_sensor;
 	static uint16_t profondeur_EP;
 	uint16_t distance;
-	if (HCSR04_GetDistance(0, &distance))
+
+	if (HCSR04_GetDistance(id_sensor, &distance))
 	{
 		profondeur_EP = (uint16_t) (PROFONDEUR_CUVE - distance);
 	}
+
 
 	switch(state)
 	{
@@ -104,7 +110,7 @@ static void state_machine(void)
 			TFT_Init();
 
 			//Définitions
-			static hcsr_04_t hcsr04_EP = {"HCSR04 Cuve", 1, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7, 0};
+			//static hcsr_04_t hcsr04_EP = {"HCSR04 Cuve", 1, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7, 0};
 			static electrovanne_t electrovanne_EC = {"Electrovanne EC", ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 0};
 			static electrovanne_t electrovanne_EP = {"Electrovanne EP", ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 1};
 
@@ -114,7 +120,7 @@ static void state_machine(void)
 			//static float temperature = 0.0;
 
 			// HCSRO4
-			//HCSR04_Init(&hcsr04_EP);
+			HCSR04_Init(&id_sensor, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);
 
 			// Electrovannes
 			ELECTROVANNE_Init(&electrovanne_EC);
@@ -126,7 +132,7 @@ static void state_machine(void)
 			BUTTON_add(2, BUTTON_R_GPIO, BUTTON_R_PIN);
 
 			previous_state = state;
-			state = ACCUEIL;
+			state = TEST;
 
 			break;
 
@@ -207,6 +213,9 @@ static void state_machine(void)
 			printf("coucou mode off");
 
 			state = ACCUEIL;
+			break;
+
+		case TEST:
 			break;
 	}
 

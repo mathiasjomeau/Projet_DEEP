@@ -18,5 +18,5 @@ stm32f1_uart.c:405:6:USART1_IRQHandler	8	static
 stm32f1_uart.c:410:6:USART2_IRQHandler	8	static
 stm32f1_uart.c:415:6:USART3_IRQHandler	8	static
 stm32f1_uart.c:427:6:HAL_UART_RxCpltCallback	24	static
-stm32f1_uart.c:445:6:HAL_UART_MspInit	56	static
+stm32f1_uart.c:445:6:HAL_UART_MspInit	48	static
 stm32f1_uart.c:510:6:HAL_UART_ErrorCallback	16	static

@@ -1,29 +1,32 @@
 #include "hcsr04.h"
 
+#define PERIOD_MEASURE			100
 
-void HCSR04_Init(hcsr_04_t * hcsr04)
+void HCSR04_Init(uint8_t * id, GPIO_TypeDef * TRIG_GPIO, uint16_t TRIG_PIN, GPIO_TypeDef * ECHO_GPIO, uint16_t ECHO_PIN)
 {
-	HCSR04_add(&hcsr04->id_sensor, hcsr04->GPIO_TRIG, hcsr04->PIN_TRIG, hcsr04->GPIO_ECHO, hcsr04->PIN_ECHO);
+	HCSR04_add(id, TRIG_GPIO, TRIG_PIN, ECHO_GPIO, ECHO_PIN);
 }
 
 bool_e HCSR04_GetDistance(uint8_t id_sensor, uint16_t * distance)
 {
-	static uint32_t tlocal;
-	uint16_t PERIOD_MEASURE = 100;
+	typedef enum
+	{
+		LAUNCH_MEASURE,
+		WAIT_DURING_MEASURE,
+		WAIT_BEFORE_NEXT_MEASURE
+	}state_e;
 
-	typedef enum{
-			LAUNCH_MEASURE,
-			WAIT_DURING_MEASURE,
-			WAIT_BEFORE_NEXT_MEASURE
-	}state_hcsr04;
-	static state_hcsr04 state_capteur = LAUNCH_MEASURE;
 	bool_e ret = FALSE;
 
-	switch(state_capteur){
+	static state_e state = LAUNCH_MEASURE;
+	static uint32_t tlocal;
+
+	switch(state)
+	{
 		case LAUNCH_MEASURE:
 			HCSR04_run_measure(id_sensor);
 			tlocal = HAL_GetTick();
-			state_capteur = WAIT_DURING_MEASURE;
+			state = WAIT_DURING_MEASURE;
 			break;
 		case WAIT_DURING_MEASURE:
 			switch(HCSR04_get_value(id_sensor, distance))
@@ -32,26 +35,25 @@ bool_e HCSR04_GetDistance(uint8_t id_sensor, uint16_t * distance)
 					//rien � faire... on attend...
 					break;
 				case HAL_OK:
+					//printf("sensor %d - distance : %s\n", id_sensor, distance);
+					state = WAIT_BEFORE_NEXT_MEASURE;
 					ret = TRUE;
-					state_capteur = WAIT_BEFORE_NEXT_MEASURE;
 					break;
 				case HAL_ERROR:
-					//printf("sensor %d - erreur ou mesure non lanc�e\n", hcsr04.id_sensor);
-					state_capteur = WAIT_BEFORE_NEXT_MEASURE;
+					printf("sensor %d - erreur ou mesure non lanc�e\n", id_sensor);
+					state = WAIT_BEFORE_NEXT_MEASURE;
 					break;
 
 				case HAL_TIMEOUT:
-					//printf("sensor %d - timeout\n", hcsr04.id_sensor);
-					state_capteur = WAIT_BEFORE_NEXT_MEASURE;
+					printf("sensor %d - timeout\n", id_sensor);
+					state = WAIT_BEFORE_NEXT_MEASURE;
 					break;
 			}
 			break;
-
 		case WAIT_BEFORE_NEXT_MEASURE:
 			if(HAL_GetTick() > tlocal + PERIOD_MEASURE)
-				state_capteur = LAUNCH_MEASURE;
+				state = LAUNCH_MEASURE;
 			break;
-
 		default:
 			break;
 	}
