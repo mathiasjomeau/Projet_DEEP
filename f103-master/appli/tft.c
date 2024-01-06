@@ -7,7 +7,7 @@
 typedef struct{
 	uint16_t position_x;
 	uint16_t position_y;
-	char text[30];
+	char text[40];
 	FontDef_t * font;
 	uint16_t foreground;
 	uint16_t background;
@@ -15,7 +15,7 @@ typedef struct{
 	uint8_t id;
 }DynamicLine_t;
 
-void updateDynamicLine_Text(DynamicLine_t pDynamicLine, char *newText);
+void updateDynamicLine_Text(DynamicLine_t pDynamicLine, char * new_text);
 void updateDynamicLine_Foreground(DynamicLine_t pDynamicLine, uint16_t newForeground);
 void updateDynamicLine_Background(DynamicLine_t pDynamicLine, uint16_t newBackground);
 void displayDynamicLine(DynamicLine_t pDynamicLine);
@@ -30,9 +30,10 @@ void displayDynamicLine(DynamicLine_t pDynamicLine)
                      pDynamicLine.font, pDynamicLine.foreground, pDynamicLine.background);
 }
 
-void updateDynamicLine_Text(DynamicLine_t pDynamicLine, char *newText)
+void updateDynamicLine_Text(DynamicLine_t pDynamicLine, char * new_text)
 {
-	snprintf(pDynamicLine.text, sizeof(pDynamicLine.text), "%s", newText);
+	sprintf(pDynamicLine.text, "                                ");
+	snprintf(pDynamicLine.text, sizeof(pDynamicLine.text), "%s", new_text);
 	Screens_Addresse[pDynamicLine.screen][pDynamicLine.id] = pDynamicLine;
 	displayDynamicLine(pDynamicLine);
 }
@@ -65,11 +66,11 @@ void TFT_Acceuil()
 	DynamicLine_t mode_actif = {30, 60, "Mode actif :", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 0, 0};
 	DynamicLine_t mode_auto = {30,90, " - Mode Auto", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 0, 1};
 	DynamicLine_t mode_manuel = {30,110, " - Mode Manuel", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 0, 2};
-	DynamicLine_t mode_off = {30,130, " - Mode Off", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 0, 3};
+	DynamicLine_t mode_off = {30,130, " - Parametres", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 0, 3};
 	DynamicLine_t niveau_cuve = {30,170, "Niveau de la cuve :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 0, 4};
 	DynamicLine_t electrovanne_EP = {30,185, "Electrovanne Cuve :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 0, 5};
 	DynamicLine_t electrovanne_EC = {30,200, "Electrovanne Eau Courante :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 0, 6};
-	DynamicLine_t temp_eau = {30,215, "Electrovanne Cuve :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 0, 7};
+	DynamicLine_t temp_eau = {30,215, "Temperature :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 0, 7};
 
 	ILI9341_Fill(ILI9341_COLOR_WHITE);
 
@@ -88,40 +89,66 @@ void TFT_Acceuil()
 	displayDynamicLine(electrovanne_EP);
 	displayDynamicLine(electrovanne_EC);
 	displayDynamicLine(temp_eau);
-
-
 }
 
-void TFT_Acceuil_Update(uint8_t id_mode, uint16_t water_level, uint8_t EC_state, uint8_t EP_state)
+void TFT_Acceuil_Update(uint8_t mode, uint8_t current_mode, uint8_t id_mode,
+		uint16_t water_level, uint8_t EC_state, uint8_t EP_state)
 {
-	//updateDynamicLine_Text(Screens_Addresse[0][0],"                          ");
-	updateDynamicLine_Foreground(Screens_Addresse[0][1], ILI9341_COLOR_BLACK);
-	updateDynamicLine_Background(Screens_Addresse[0][1], ILI9341_COLOR_WHITE);
-	updateDynamicLine_Foreground(Screens_Addresse[0][2], ILI9341_COLOR_BLACK);
-	updateDynamicLine_Background(Screens_Addresse[0][2], ILI9341_COLOR_WHITE);
-	updateDynamicLine_Foreground(Screens_Addresse[0][3], ILI9341_COLOR_BLACK);
-	updateDynamicLine_Background(Screens_Addresse[0][3], ILI9341_COLOR_WHITE);
-	//updateDynamicLine_Text(Screens_Addresse[0][4], "                                    ");
-	//updateDynamicLine_Text(Screens_Addresse[0][5], "                                    ");
-	//updateDynamicLine_Text(Screens_Addresse[0][6], "                                    ");
-	//updateDynamicLine_Text(Screens_Addresse[0][7], "                                    ");
+	switch (mode)
+	{
+	char water_level_char [30];
+	char EP_state_char [40];
+	char EC_state_char [40];
+		case 1: // Update Current Mode
+			switch (current_mode)
+			{
+				case 0:
+					updateDynamicLine_Text(Screens_Addresse[0][0], "Mode actif : Mode Auto  " );
+					break;
+				case 1:
+					updateDynamicLine_Text(Screens_Addresse[0][0], "Mode actif : Mode Manuel" );
+					break;
+			}
+			break;
 
-	updateDynamicLine_Foreground(Screens_Addresse[0][id_mode+1], ILI9341_COLOR_WHITE);
-	updateDynamicLine_Background(Screens_Addresse[0][id_mode+1], ILI9341_COLOR_GRAY);
+		case 2: // Update Selected mode
+			updateDynamicLine_Foreground(Screens_Addresse[0][1], ILI9341_COLOR_BLACK);
+			updateDynamicLine_Background(Screens_Addresse[0][1], ILI9341_COLOR_WHITE);
+			updateDynamicLine_Foreground(Screens_Addresse[0][2], ILI9341_COLOR_BLACK);
+			updateDynamicLine_Background(Screens_Addresse[0][2], ILI9341_COLOR_WHITE);
+			updateDynamicLine_Foreground(Screens_Addresse[0][3], ILI9341_COLOR_BLACK);
+			updateDynamicLine_Background(Screens_Addresse[0][3], ILI9341_COLOR_WHITE);
 
-	/*char * current_mode_char;
-	snprintf(current_mode_char, sizeof(current_mode_char), "Mode actif : %d", current_mode_char);
+			updateDynamicLine_Foreground(Screens_Addresse[0][id_mode+1], ILI9341_COLOR_WHITE);
+			updateDynamicLine_Background(Screens_Addresse[0][id_mode+1], ILI9341_COLOR_GRAY);
 
-	updateDynamicLine_Text(Screens_Addresse[0][0], current_mode_char);
+			break;
+
+		case 3: // Update Capteurs
+			sprintf(water_level_char, "Niveau de la cuve : %d%%", water_level);
+			updateDynamicLine_Text(Screens_Addresse[0][4], water_level_char);
+
+			char * state [2] = {"Ouverte", "Fermee"};
+
+			sprintf(EP_state_char, "Electrovanne Cuve : %s", state[EP_state]);
+			updateDynamicLine_Text(Screens_Addresse[0][5], EP_state_char);
+
+			sprintf(EC_state_char, "Electrovanne Eau Courante : %s", state[EC_state]);
+			updateDynamicLine_Text(Screens_Addresse[0][6], EC_state_char);
+
+			break;
+	}
 
 
 
-	char * water_level_char;
-	snprintf(water_level_char, sizeof(water_level_char), "Niveau de la cuve : %d", water_level);
 
-	updateDynamicLine_Text(Screens_Addresse[0][4], water_level_char);
-	updateDynamicLine_Text(Screens_Addresse[0][5], EC_state);
-	updateDynamicLine_Text(Screens_Addresse[0][6], EP_state);*/
+	/*char EC_state_char [30];
+	snprintf(EC_state_char, sizeof(EC_state_char), "Electrovanne Cuve : %d", EC_state);
+	updateDynamicLine_Text(Screens_Addresse[0][5], EC_state_char);
+
+	char EP_state_char [30];
+	snprintf(EP_state_char, sizeof(EP_state_char), "Electrovanne Eau Courante : %d", EP_state);
+	updateDynamicLine_Text(Screens_Addresse[0][6], EP_state_char);*/
 
 }
 /*

@@ -1,3 +1,3 @@
 main.c:35:6:process_ms	4	static
 main.c:41:5:main	8	static
-main.c:81:13:state_machine	24	static
+main.c:75:13:state_machine	32	static

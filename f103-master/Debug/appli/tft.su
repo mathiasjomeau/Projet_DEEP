@@ -1,7 +1,7 @@
 tft.c:25:6:displayDynamicLine	24	static
-tft.c:33:6:updateDynamicLine_Text	48	static
-tft.c:41:6:updateDynamicLine_Foreground	48	static
-tft.c:48:6:updateDynamicLine_Background	48	static
-tft.c:56:6:TFT_Init	8	static
-tft.c:63:6:TFT_Acceuil	440	static
-tft.c:95:6:TFT_Acceuil_Update	72	static
+tft.c:33:6:updateDynamicLine_Text	56	static
+tft.c:42:6:updateDynamicLine_Foreground	56	static
+tft.c:49:6:updateDynamicLine_Background	56	static
+tft.c:57:6:TFT_Init	8	static
+tft.c:64:6:TFT_Acceuil	512	static
+tft.c:94:6:TFT_Acceuil_Update	200	static

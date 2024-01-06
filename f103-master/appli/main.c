@@ -64,17 +64,11 @@ int main(void)
 	HCSR04_Init(&id_sensor, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);*/
 	while(1)	//boucle de t�che de fond
 	{
-		/*HCSR04_process_main();
 		BUTTON_state_machine(0);
 		BUTTON_state_machine(1);
 		BUTTON_state_machine(2);
-		state_machine();
-		*/
 		HCSR04_process_main();
 		state_machine();
-		//printf("coucou\n");
-		//if (HCSR04_GetDistance(id_sensor, &distance))
-			//printf("sensor %d - distance : %d\n", id_sensor, distance);
 	}
 }
 
@@ -85,8 +79,7 @@ static void state_machine(void)
 		ACCUEIL,
 		MODE_AUTO,
 		MODE_MANUEL,
-		MODE_OFF,
-		TEST
+		PARAMETRES,
 	}state_e;
 
 	static state_e state = INIT;
@@ -94,14 +87,14 @@ static void state_machine(void)
 	bool_e entrance = (state!=previous_state)?TRUE:FALSE;
 
 	static uint8_t id_sensor;
-	static uint16_t profondeur_EP;
+	static uint16_t profondeur_pourcentage;
+	static uint16_t previous_profondeur_pourcentage = 0;
 	uint16_t distance;
 
 	if (HCSR04_GetDistance(id_sensor, &distance))
 	{
-		profondeur_EP = (uint16_t) (PROFONDEUR_CUVE - distance);
+		profondeur_pourcentage = (uint16_t) ((PROFONDEUR_CUVE - distance) * 100 / PROFONDEUR_CUVE);
 	}
-
 
 	switch(state)
 	{
@@ -114,9 +107,9 @@ static void state_machine(void)
 			static electrovanne_t electrovanne_EC = {"Electrovanne EC", ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 0};
 			static electrovanne_t electrovanne_EP = {"Electrovanne EP", ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 1};
 
-			static state_e mode[3] = {MODE_AUTO, MODE_MANUEL, MODE_OFF};
+			static state_e mode[3] = {MODE_AUTO, MODE_MANUEL, PARAMETRES};
 			static uint8_t mode_chosing = 0;
-			static uint8_t current_mode = 2;
+			static uint8_t current_mode = 1;
 			//static float temperature = 0.0;
 
 			// HCSRO4
@@ -132,7 +125,7 @@ static void state_machine(void)
 			BUTTON_add(2, BUTTON_R_GPIO, BUTTON_R_PIN);
 
 			previous_state = state;
-			state = TEST;
+			state = ACCUEIL;
 
 			break;
 
@@ -141,31 +134,40 @@ static void state_machine(void)
 			if (entrance)
 			{
 				TFT_Acceuil();
-				TFT_Acceuil_Update(mode_chosing, 0, electrovanne_EC.state, electrovanne_EP.state);
+				TFT_Acceuil_Update(1, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
+				TFT_Acceuil_Update(2, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
+				TFT_Acceuil_Update(3, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
 				previous_state = ACCUEIL;
 			}
-
 
 			if (BUTTON_getEvent(0) == BUTTON_EVENT_SHORT_PRESS)
 			{
 				mode_chosing = (uint8_t) ((mode_chosing+2) % 3);
-				TFT_Acceuil_Update(mode_chosing, 0, electrovanne_EC.state, electrovanne_EP.state);
-				printf("button_H \n");
+				TFT_Acceuil_Update(2, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
 			}
 
 			else if (BUTTON_getEvent(1) == BUTTON_EVENT_SHORT_PRESS)
 			{
 				mode_chosing = (uint8_t) ((mode_chosing+1) % 3);
-				TFT_Acceuil_Update(mode_chosing, 0, electrovanne_EC.state, electrovanne_EP.state);
-				printf("button_B \n");
+				TFT_Acceuil_Update(2, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
 			}
 
 			else if (BUTTON_getEvent(2) == BUTTON_EVENT_SHORT_PRESS)
 			{
-				current_mode = mode_chosing;
-				printf("button_E \n");
+				if (mode_chosing == 0 || mode_chosing == 1)
+				{
+					current_mode = mode_chosing;
+					TFT_Acceuil_Update(1, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
+				}
 				state = mode[mode_chosing];
 			}
+
+			if (profondeur_pourcentage != previous_profondeur_pourcentage)
+			{
+				TFT_Acceuil_Update(3, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
+				previous_profondeur_pourcentage = profondeur_pourcentage;
+			}
+
 
 			break;
 
@@ -208,14 +210,11 @@ static void state_machine(void)
 
 			state = ACCUEIL;
 			break;
-		case MODE_OFF:
+		case PARAMETRES:
 
-			printf("coucou mode off");
+			printf("coucou mode parametre");
 
 			state = ACCUEIL;
-			break;
-
-		case TEST:
 			break;
 	}
 
