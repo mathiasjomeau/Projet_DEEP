@@ -3,13 +3,17 @@
 
 #include "config.h"
 
-#define NB_SCREENS 4
-#define NB_MAX_PARAMETERS 8
+#define NB_MAX_PARAMETERS 30
 
 void TFT_Init(void);
 
+void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_e EP_state);
+
 void TFT_Acceuil(void);
-void TFT_Acceuil_Update(uint8_t mode, uint8_t current_mode, uint8_t id_mode, uint16_t water_level, uint8_t EC_state, uint8_t EP_state);
+void TFT_Acceuil_Update(uint8_t mode, uint8_t current_mode, uint8_t id_mode);
+
+void TFT_Mode_Manuel(void);
+void TFT_Mode_Manual_Update(uint8_t id_mode);
 /*
 void TFT_Mode_Auto(void);
 

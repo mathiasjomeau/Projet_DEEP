@@ -25,15 +25,27 @@
 
 #include "config.h"
 
+#define ID_ELECTROVANNE_CUVE	0
+#define ID_ELECTROVANNE_EAU		1
+#define ID_BUTTON_H				0
+#define ID_BUTTON_B				1
+#define ID_BUTTON_E				2
+
 // Cuve Sphérique
 static uint16_t PROFONDEUR_CUVE =  4000; // en mm
 
+static void process_ms(void);
 static void state_machine(void);
 
 static volatile uint32_t t = 0;
+static volatile bool_e flag_5s;
 
-void process_ms(void)
+static void process_ms(void)
 {
+	static uint32_t t5s = 0;
+	t5s = (t5s + 1)%5000;
+	if(!t5s)
+		flag_5s = TRUE;
 	if(t)
 		t--;
 }
@@ -58,15 +70,11 @@ int main(void)
 	//On ajoute la fonction process_ms � la liste des fonctions appel�es automatiquement chaque ms par la routine d'interruption du p�riph�rique SYSTICK
 	Systick_add_callback_function(&process_ms);
 
-	/*static uint8_t id_sensor;
-	uint16_t distance;
-
-	HCSR04_Init(&id_sensor, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);*/
 	while(1)	//boucle de t�che de fond
 	{
-		BUTTON_state_machine(0);
-		BUTTON_state_machine(1);
-		BUTTON_state_machine(2);
+		BUTTON_state_machine(ID_BUTTON_H);
+		BUTTON_state_machine(ID_BUTTON_B);
+		BUTTON_state_machine(ID_BUTTON_E);
 		HCSR04_process_main();
 		state_machine();
 	}
@@ -86,15 +94,27 @@ static void state_machine(void)
 	static state_e previous_state = INIT;
 	bool_e entrance = (state!=previous_state)?TRUE:FALSE;
 
+	button_event_e button_H = BUTTON_getEvent(ID_BUTTON_H);
+	button_event_e button_B = BUTTON_getEvent(ID_BUTTON_B);
+	button_event_e button_E = BUTTON_getEvent(ID_BUTTON_E);
+
+	bool_e state_electrovanne_cuve = ELECTROVANNE_GetState(ID_ELECTROVANNE_CUVE);
+	bool_e state_electrovanne_eau = ELECTROVANNE_GetState(ID_ELECTROVANNE_EAU);
+
 	static uint8_t id_sensor;
 	static uint16_t profondeur_pourcentage;
-	static uint16_t previous_profondeur_pourcentage = 0;
 	uint16_t distance;
-
 	if (HCSR04_GetDistance(id_sensor, &distance))
-	{
 		profondeur_pourcentage = (uint16_t) ((PROFONDEUR_CUVE - distance) * 100 / PROFONDEUR_CUVE);
+
+	if (flag_5s)
+	{
+		TFT_InformationsSensors_Update(profondeur_pourcentage, state_electrovanne_cuve, state_electrovanne_eau);
+		flag_5s = FALSE;
 	}
+
+	static uint8_t mode_chosing;
+	static uint8_t current_mode;
 
 	switch(state)
 	{
@@ -102,27 +122,21 @@ static void state_machine(void)
 			// Ecran TFT
 			TFT_Init();
 
-			//Définitions
-			//static hcsr_04_t hcsr04_EP = {"HCSR04 Cuve", 1, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7, 0};
-			static electrovanne_t electrovanne_EC = {"Electrovanne EC", ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN, 0};
-			static electrovanne_t electrovanne_EP = {"Electrovanne EP", ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN, 1};
-
-			static state_e mode[3] = {MODE_AUTO, MODE_MANUEL, PARAMETRES};
-			static uint8_t mode_chosing = 0;
-			static uint8_t current_mode = 1;
-			//static float temperature = 0.0;
-
 			// HCSRO4
 			HCSR04_Init(&id_sensor, GPIOB, GPIO_PIN_6, GPIOB, GPIO_PIN_7);
 
 			// Electrovannes
-			ELECTROVANNE_Init(&electrovanne_EC);
-			ELECTROVANNE_Init(&electrovanne_EP);
+			ELECTROVANNE_Add(ID_ELECTROVANNE_CUVE, ELECTROVANNE0_GPIO, ELECTROVANNE0_PIN);
+			ELECTROVANNE_Add(ID_ELECTROVANNE_EAU, ELECTROVANNE1_GPIO, ELECTROVANNE1_PIN);
+			ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, FALSE);
+			ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, TRUE);
 
 			// Boutons
 			BUTTON_add(0, BUTTON_U_GPIO, BUTTON_U_PIN);
 			BUTTON_add(1, BUTTON_D_GPIO, BUTTON_D_PIN);
 			BUTTON_add(2, BUTTON_R_GPIO, BUTTON_R_PIN);
+
+			current_mode = 1;
 
 			previous_state = state;
 			state = ACCUEIL;
@@ -133,41 +147,36 @@ static void state_machine(void)
 
 			if (entrance)
 			{
+				mode_chosing = 0;
 				TFT_Acceuil();
-				TFT_Acceuil_Update(1, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
-				TFT_Acceuil_Update(2, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
-				TFT_Acceuil_Update(3, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
+				TFT_Acceuil_Update(1, current_mode, mode_chosing);
+				TFT_Acceuil_Update(2, current_mode, mode_chosing);
 				previous_state = ACCUEIL;
 			}
 
-			if (BUTTON_getEvent(0) == BUTTON_EVENT_SHORT_PRESS)
+			static state_e mode[3] = {MODE_AUTO, MODE_MANUEL, PARAMETRES};
+
+			if (button_H == BUTTON_EVENT_SHORT_PRESS)
 			{
 				mode_chosing = (uint8_t) ((mode_chosing+2) % 3);
-				TFT_Acceuil_Update(2, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
+				TFT_Acceuil_Update(2, current_mode, mode_chosing);
 			}
 
-			else if (BUTTON_getEvent(1) == BUTTON_EVENT_SHORT_PRESS)
+			else if (button_B == BUTTON_EVENT_SHORT_PRESS)
 			{
 				mode_chosing = (uint8_t) ((mode_chosing+1) % 3);
-				TFT_Acceuil_Update(2, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
+				TFT_Acceuil_Update(2, current_mode, mode_chosing);
 			}
 
-			else if (BUTTON_getEvent(2) == BUTTON_EVENT_SHORT_PRESS)
+			else if (button_E == BUTTON_EVENT_SHORT_PRESS)
 			{
 				if (mode_chosing == 0 || mode_chosing == 1)
 				{
 					current_mode = mode_chosing;
-					TFT_Acceuil_Update(1, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
+					TFT_Acceuil_Update(1, current_mode, mode_chosing);
 				}
 				state = mode[mode_chosing];
 			}
-
-			if (profondeur_pourcentage != previous_profondeur_pourcentage)
-			{
-				TFT_Acceuil_Update(3, current_mode, mode_chosing, profondeur_pourcentage, electrovanne_EC.state, electrovanne_EP.state);
-				previous_profondeur_pourcentage = profondeur_pourcentage;
-			}
-
 
 			break;
 
@@ -176,43 +185,56 @@ static void state_machine(void)
 			printf("coucou mode auto");
 
 			state = ACCUEIL;
-			/*if(entrance)
-			{
-				//TFT_Mode_Auto();
-				previous_state = MODE_AUTO;
-				//TFT_Update_capteurs(hcsr04_EP.value, electrovanne_EC.state, electrovanne_EP.state);
-			}
-			// Sécu de 20cm, on coupe la vanne de l'eau de pluie
-			if (profondeur_EP < 200)
-			{
-				electrovanne_EP.state = 1;
-				electrovanne_EC.state = 0;
-				ELECTROVANNE_Set(&electrovanne_EP);
-				ELECTROVANNE_Set(&electrovanne_EC);
-			}
-			// condition à rajouter pour la température
-			else
-			{
-				electrovanne_EP.state = 0;
-				electrovanne_EC.state = 1;
-				ELECTROVANNE_Set(&electrovanne_EP);
-				ELECTROVANNE_Set(&electrovanne_EC);
-			}
 
-
-			break;
-			*/
 			break ;
 
 		case MODE_MANUEL:
 
-			printf("coucou mode manuel");
+			if (entrance)
+			{
+				mode_chosing = 0;
+				TFT_Mode_Manuel();
+				TFT_Mode_Manual_Update(mode_chosing);
+				previous_state = MODE_MANUEL;
+			}
 
-			state = ACCUEIL;
+			if (button_H == BUTTON_EVENT_SHORT_PRESS)
+			{
+				mode_chosing = (uint8_t) ((mode_chosing+2) % 3);
+				TFT_Mode_Manual_Update(mode_chosing);
+			}
+
+			else if (button_B == BUTTON_EVENT_SHORT_PRESS)
+			{
+				mode_chosing = (uint8_t) ((mode_chosing+1) % 3);
+				TFT_Mode_Manual_Update(mode_chosing);
+			}
+
+			else if (button_E == BUTTON_EVENT_SHORT_PRESS)
+			{
+				switch (mode_chosing)
+				{
+					case 0: // Modif Electovanne Cuve
+						ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, !state_electrovanne_cuve);
+						break;
+					case 1: // Modif Electovanne Eau
+						ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, !state_electrovanne_eau);
+						break;
+					case 2: // Retour Acceuil
+						state = ACCUEIL;
+						break;
+
+				}
+			}
+
 			break;
+
 		case PARAMETRES:
 
 			printf("coucou mode parametre");
+			// modifier la taille de la cuve
+			// modifier les paramètres du mode auto
+			// activer ou desac des alertes
 
 			state = ACCUEIL;
 			break;

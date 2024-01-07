@@ -226,11 +226,4 @@
 	#define USE_BSP_TIMER		1
 #endif
 
-typedef struct{
-		char name[20];
-		GPIO_TypeDef * GPIO;
-		uint16_t PIN;
-		u_int8_t state;
-}electrovanne_t;
-
 #endif /* CONFIG_H_ */
