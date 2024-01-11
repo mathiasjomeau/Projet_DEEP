@@ -10,6 +10,7 @@ C_SRCS += \
 ../appli/foo.c \
 ../appli/hcsr04.c \
 ../appli/main.c \
+../appli/mcp9701.c \
 ../appli/test_unitaire.c \
 ../appli/tft.c 
 
@@ -23,6 +24,7 @@ OBJS += \
 ./appli/foo.o \
 ./appli/hcsr04.o \
 ./appli/main.o \
+./appli/mcp9701.o \
 ./appli/test_unitaire.o \
 ./appli/tft.o 
 
@@ -35,6 +37,7 @@ C_DEPS += \
 ./appli/foo.d \
 ./appli/hcsr04.d \
 ./appli/main.d \
+./appli/mcp9701.d \
 ./appli/test_unitaire.d \
 ./appli/tft.d 
 

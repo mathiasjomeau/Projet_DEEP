@@ -22,6 +22,7 @@
 #include "button.h"
 #include "electrovanne.h"
 #include "hcsr04.h"
+#include "mcp9701.h"
 
 #include "config.h"
 
@@ -34,8 +35,24 @@
 // Cuve Sphérique
 static uint16_t PROFONDEUR_CUVE =  4000; // en mm
 
+typedef enum{
+	OK,
+	CUVE_50prct,
+	CUVE_10prct
+} state_mode_auto;
+
 static void process_ms(void);
 static void state_machine(void);
+state_mode_auto mode_auto(uint16_t profondeur_pourcentage);
+
+
+
+state_mode_auto mode_auto(uint16_t profondeur_pourcentage)
+{
+	state_mode_auto ret;
+	ret = OK;
+	return ret;
+}
 
 static volatile uint32_t t = 0;
 static volatile bool_e flag_5s;
@@ -49,6 +66,7 @@ static void process_ms(void)
 	if(t)
 		t--;
 }
+
 
 int main(void)
 {
@@ -88,6 +106,7 @@ static void state_machine(void)
 		MODE_AUTO,
 		MODE_MANUEL,
 		PARAMETRES,
+		ANNONCE,
 	}state_e;
 
 	static state_e state = INIT;
@@ -104,12 +123,15 @@ static void state_machine(void)
 	static uint8_t id_sensor;
 	static uint16_t profondeur_pourcentage;
 	uint16_t distance;
+	static float eau_temperature;
+
 	if (HCSR04_GetDistance(id_sensor, &distance))
 		profondeur_pourcentage = (uint16_t) ((PROFONDEUR_CUVE - distance) * 100 / PROFONDEUR_CUVE);
 
 	if (flag_5s)
 	{
-		TFT_InformationsSensors_Update(profondeur_pourcentage, state_electrovanne_cuve, state_electrovanne_eau);
+		MCP9701_GetTemperature(&eau_temperature);
+		TFT_InformationsSensors_Update(profondeur_pourcentage, state_electrovanne_cuve, state_electrovanne_eau, eau_temperature);
 		flag_5s = FALSE;
 	}
 
@@ -136,6 +158,9 @@ static void state_machine(void)
 			BUTTON_add(1, BUTTON_D_GPIO, BUTTON_D_PIN);
 			BUTTON_add(2, BUTTON_R_GPIO, BUTTON_R_PIN);
 
+			// MCP9701
+			MCP9701_Init();
+
 			current_mode = 1;
 
 			previous_state = state;
@@ -152,6 +177,11 @@ static void state_machine(void)
 				TFT_Acceuil_Update(1, current_mode, mode_chosing);
 				TFT_Acceuil_Update(2, current_mode, mode_chosing);
 				previous_state = ACCUEIL;
+			}
+
+			if (current_mode == MODE_AUTO)
+			{
+				state = MODE_AUTO;
 			}
 
 			static state_e mode[3] = {MODE_AUTO, MODE_MANUEL, PARAMETRES};
@@ -178,13 +208,31 @@ static void state_machine(void)
 				state = mode[mode_chosing];
 			}
 
+
 			break;
 
 		case MODE_AUTO:
-
-			printf("coucou mode auto");
-
-			state = ACCUEIL;
+			// Message disant que le mode auto a été activé. On fait un rajout sur le l'écran, on ne le
+			// reinitialise pas.
+			if (entrance)
+			{
+				TFT_Annonce("Activation", "Mode Automatique");
+				state = ANNONCE;
+			}
+			else
+			{
+				switch (mode_auto(profondeur_pourcentage))
+				{
+				case OK:
+					break;
+				case CUVE_50prct:
+					break;
+				case CUVE_10prct:
+					break;
+				default:
+					break;
+				}
+			}
 
 			break ;
 
@@ -223,7 +271,6 @@ static void state_machine(void)
 					case 2: // Retour Acceuil
 						state = ACCUEIL;
 						break;
-
 				}
 			}
 
@@ -238,6 +285,16 @@ static void state_machine(void)
 
 			state = ACCUEIL;
 			break;
+
+		case ANNONCE:
+			if (entrance)
+				previous_state = ANNONCE;
+			if (button_E == BUTTON_EVENT_SHORT_PRESS)
+				state = ACCUEIL;
+			break;
+
+		default:
+			state = ACCUEIL;
 	}
 
 }

@@ -7,13 +7,15 @@
 
 void TFT_Init(void);
 
-void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_e EP_state);
+void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_e EP_state, float eau_temperature);
 
 void TFT_Acceuil(void);
 void TFT_Acceuil_Update(uint8_t mode, uint8_t current_mode, uint8_t id_mode);
 
 void TFT_Mode_Manuel(void);
 void TFT_Mode_Manual_Update(uint8_t id_mode);
+
+void TFT_Annonce (char * ligne1, char * ligne2);
 /*
 void TFT_Mode_Auto(void);
 

@@ -4,6 +4,7 @@
 "./appli/foo.o"
 "./appli/hcsr04.o"
 "./appli/main.o"
+"./appli/mcp9701.o"
 "./appli/test_unitaire.o"
 "./appli/tft.o"
 "./lib/bsp/APDS9960/apds9960.o"

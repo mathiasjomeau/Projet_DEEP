@@ -69,7 +69,7 @@ void displayInformationsSensors()
 	DynamicLine_t niveau_cuve = {30,170, "Niveau de la cuve :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 4};
 	DynamicLine_t electrovanne_EP = {30,185, "Electrovanne Cuve :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 5};
 	DynamicLine_t electrovanne_EC = {30,200, "Electrovanne Eau :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 6};
-	DynamicLine_t temp_eau = {30,215, "Temperature :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 7};
+	DynamicLine_t temp_eau = {30,215, "Temperature Eau:", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 7};
 
 	displayDynamicLine(niveau_cuve);
 	displayDynamicLine(electrovanne_EP);
@@ -77,11 +77,12 @@ void displayInformationsSensors()
 	displayDynamicLine(temp_eau);
 }
 
-void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_e EP_state)
+void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_e EP_state, float eau_temperature)
 {
 	char water_level_char [30];
 	char EP_state_char [40];
 	char EC_state_char [40];
+	char eau_temperature_char [30];
 
 	sprintf(water_level_char, "Niveau de la cuve : %d%%", water_level);
 	updateDynamicLine_Text(Screens_Addresse[4], water_level_char);
@@ -93,6 +94,9 @@ void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_
 
 	sprintf(EP_state_char, "Electrovanne Eau Courante : %s ", state[EP_state]);
 	updateDynamicLine_Text(Screens_Addresse[6], EP_state_char);
+
+	sprintf(eau_temperature_char, "Temperature Eau : %.1f", eau_temperature);
+	updateDynamicLine_Text(Screens_Addresse[7], eau_temperature_char);
 }
 
 void updateSelectedMenu(uint8_t ids[], uint8_t id_modeselected)
@@ -181,128 +185,14 @@ void TFT_Mode_Manual_Update(uint8_t id_mode)
 	id_mode = (uint8_t) (id_mode + 10);
 	updateSelectedMenu(ids_mode, id_mode);
 }
-/*
 
-void TFT_Mode_Auto()
+void TFT_Annonce (char * ligne1, char * ligne2)
 {
-	ILI9341_Fill(ILI9341_COLOR_WHITE);
+	ILI9341_DrawFilledRectangle(200, 100, 600, 400, ILI9341_COLOR_WHITE);
+	ILI9341_PutBigs(100, 20, ligne1, &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 2, 2);
+	ILI9341_PutBigs(100, 20, ligne2, &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 2, 2);
 
-	ILI9341_PutBigs(100, 20, "HYDRESEO", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 2, 2);
-
-	ILI9341_DrawLine(0, 50, 400, 50, ILI9341_COLOR_BLACK);
-
-	ILI9341_Puts(135,60, "MODE", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(100,85, "AUTOMATIQUE", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-	ILI9341_Puts(30,120, " - Retour", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-	ILI9341_DrawLine(0, 160, 400, 160, ILI9341_COLOR_BLACK);
-
-	ILI9341_Puts(30,170, "Niveau de la cuve :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,185, "Electrovanne Cuve :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,200, "Electrovanne Eau Courante :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,215, "Temperature de l'eau :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
+	ILI9341_Puts(100, 20, "OK", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
 }
-
-void TFT_Mode_Manuel()
-{
-	ILI9341_Fill(ILI9341_COLOR_WHITE);
-
-	ILI9341_PutBigs(100, 20, "HYDRESEO", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 2, 2);
-
-	ILI9341_DrawLine(0, 50, 400, 50, ILI9341_COLOR_BLACK);
-
-	ILI9341_Puts(100,60, "MODE MANUEL", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-
-	ILI9341_Puts(30,90, " - Vanne EP", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,110, " - Vanne EC", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,130, " - Retour", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-	ILI9341_DrawLine(0, 160, 400, 160, ILI9341_COLOR_BLACK);
-
-	ILI9341_Puts(30,170, "Niveau de la cuve :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,185, "Electrovanne Cuve :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,200, "Electrovanne Eau Courante :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,215, "Temperature de l'eau :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-}
-
-void TFT_Update_capteurs(uint16_t water_level, uint8_t EC_state, uint8_t EP_state){
-
-	char *etats[] = {"Ouverte", "Fermee"};
-
-	//Reint des valeurs pour les capteurs pour éviter tout soucis d'affichage
-	ILI9341_Puts(30,170, "                                              ", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,185, "                                              ", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,200, "                                              ", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,215, "                                              ", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-
-	// Conversion des données en char
-	char water_level_char[30];
-	char EC_state_char[50];
-	char EP_state_char[50];
-
-	snprintf(water_level_char, sizeof(water_level_char), "Niveau de la cuve : %d", water_level);
-	snprintf(EC_state_char, sizeof(EC_state_char), "Electrovanne Eau courante : %s", etats[EC_state]);
-	snprintf(EP_state_char, sizeof(EP_state_char), "Electrovanne Eau pluie : %s", etats[EP_state]);
-
-	ILI9341_Puts(30,170, water_level_char, &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,185, EP_state_char, &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,200, EC_state_char, &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,215, "Temperature de l'eau : 20 C", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-}
-
-void TFT_Select_Mode(uint8_t mode){
-	// Réinit des couleurs
-	ILI9341_Puts(30,90, " - Mode Auto", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,110, " - Mode Manuel", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	ILI9341_Puts(30,130, " - Mode Off", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-	switch (mode)
-	{
-		// Mode Auto
-		case 0:
-			ILI9341_Puts(30,90, " - Mode Auto", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
-			break;
-
-		// Mode Manuel
-		case 1:
-			ILI9341_Puts(30,110, " - Mode Manuel", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
-			break;
-
-		// Mode Off
-		case 2:
-			ILI9341_Puts(30,130, " - Mode Off", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
-			break;
-	}
-}
-
-void TFT_Change_CurrentMode (uint8_t mode)
-{
-	// Réinit du texte
-	ILI9341_Puts(30,60, "Mode actif :               ", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-	switch (mode)
-	{
-		// Mode Auto
-		case 0:
-			ILI9341_Puts(30,60, "Mode actif : Mode Auto", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-			break;
-
-		// Mode Manuel
-		case 1:
-			ILI9341_Puts(30,60, "Mode actif : Mode Manuel", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-			break;
-
-		// Mode Off
-		case 2:
-			ILI9341_Puts(30,60, "Mode actif : Mode Off", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-			break;
-	}
-}
- */
 
 
