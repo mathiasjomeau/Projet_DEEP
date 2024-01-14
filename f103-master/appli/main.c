@@ -80,6 +80,7 @@ int main(void)
 
 		state_machine();
 	}
+
 }
 
 /**

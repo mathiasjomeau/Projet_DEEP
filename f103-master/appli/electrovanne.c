@@ -13,7 +13,7 @@
 #define NUMBER_ELECTROVANNE 2
 
 /**
-* @struct electrovanne_e
+* @struct electrovanne_t
 * @brief Structure définissant une électrovanne
 */
 typedef struct {

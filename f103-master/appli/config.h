@@ -1,9 +1,12 @@
-/*
- * config.h
- *
- *  Created on: 31 mars 2016
- *      Author: Nirgal
- */
+/**
+  ******************************************************************************
+  * @file    config.h
+  * @author  Nirgal
+  * @date    31-Mars-2016
+  * @brief   Fichier de config du projet
+  * @brief   Modification le 14 Janvier 2024 par Mathias Jomeau
+  ******************************************************************************
+*/
 
 #ifndef CONFIG_H_
 #define CONFIG_H_
