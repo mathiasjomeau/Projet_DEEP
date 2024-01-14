@@ -35,24 +35,8 @@
 // Cuve Sphérique
 static uint16_t PROFONDEUR_CUVE =  4000; // en mm
 
-typedef enum{
-	OK,
-	CUVE_50prct,
-	CUVE_10prct
-} state_mode_auto;
-
 static void process_ms(void);
 static void state_machine(void);
-state_mode_auto mode_auto(uint16_t profondeur_pourcentage);
-
-
-
-state_mode_auto mode_auto(uint16_t profondeur_pourcentage)
-{
-	state_mode_auto ret;
-	ret = OK;
-	return ret;
-}
 
 static volatile uint32_t t = 0;
 static volatile bool_e flag_5s;
@@ -135,6 +119,7 @@ static void state_machine(void)
 		flag_5s = FALSE;
 	}
 
+	static bool_e entrance_mode_auto;
 	static uint8_t mode_chosing;
 	static uint8_t current_mode;
 
@@ -162,7 +147,7 @@ static void state_machine(void)
 			MCP9701_Init();
 
 			current_mode = 1;
-
+			entrance_mode_auto = FALSE;
 			previous_state = state;
 			state = ACCUEIL;
 
@@ -177,11 +162,6 @@ static void state_machine(void)
 				TFT_Acceuil_Update(1, current_mode, mode_chosing);
 				TFT_Acceuil_Update(2, current_mode, mode_chosing);
 				previous_state = ACCUEIL;
-			}
-
-			if (current_mode == MODE_AUTO)
-			{
-				state = MODE_AUTO;
 			}
 
 			static state_e mode[3] = {MODE_AUTO, MODE_MANUEL, PARAMETRES};
@@ -205,35 +185,56 @@ static void state_machine(void)
 					current_mode = mode_chosing;
 					TFT_Acceuil_Update(1, current_mode, mode_chosing);
 				}
+				if (mode_chosing == 0)
+				{
+					entrance_mode_auto = TRUE;
+				}
+
 				state = mode[mode_chosing];
 			}
 
+			if (current_mode == MODE_AUTO)
+			{
+				state = MODE_AUTO;
+			}
 
 			break;
 
 		case MODE_AUTO:
-			// Message disant que le mode auto a été activé. On fait un rajout sur le l'écran, on ne le
-			// reinitialise pas.
-			if (entrance)
+			if (entrance_mode_auto)
 			{
-				TFT_Annonce("Activation", "Mode Automatique");
+				TFT_Annonce("   Activation", " Mode Automatique");
+				entrance_mode_auto = FALSE;
 				state = ANNONCE;
+			}
+
+			if (profondeur_pourcentage < 50 && profondeur_pourcentage > 10)
+			{
+				TFT_Annonce("    Attention", "     Cuve 50%");
+			}
+			else if (profondeur_pourcentage < 10 && profondeur_pourcentage > 0)
+			{
+				TFT_Annonce("   Danger Pompe", "     Cuve 10%");
+				ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, FALSE);
+				ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, TRUE);
+			}
+			else if (eau_temperature < 5 && eau_temperature > 0)
+			{
+				TFT_Annonce("    Attention", "Temperature < 5 C");
+			}
+			else if (eau_temperature < 0)
+			{
+				TFT_Annonce("    Attention", "Temperature < 0 C");
+				ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, FALSE);
+				ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, TRUE);
 			}
 			else
 			{
-				switch (mode_auto(profondeur_pourcentage))
-				{
-				case OK:
-					break;
-				case CUVE_50prct:
-					break;
-				case CUVE_10prct:
-					break;
-				default:
-					break;
-				}
+				ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, TRUE);
+				ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, FALSE);
 			}
 
+			state = ANNONCE;
 			break ;
 
 		case MODE_MANUEL:
@@ -287,7 +288,7 @@ static void state_machine(void)
 			break;
 
 		case ANNONCE:
-			if (entrance)
+			if(entrance)
 				previous_state = ANNONCE;
 			if (button_E == BUTTON_EVENT_SHORT_PRESS)
 				state = ACCUEIL;
@@ -295,6 +296,7 @@ static void state_machine(void)
 
 		default:
 			state = ACCUEIL;
+			break;
 	}
 
 }
