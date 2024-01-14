@@ -12,18 +12,13 @@
 #include "macro_types.h"
 #include "systick.h"
 
-#include "test_unitaire.h"
-
-#include "stm32f1_gpio.h"
-#include "stm32f1_ili9341.h" // Import de la librairie de l'ecran TFT
-#include "stm32f1_adc.h"
-#include "HC-SR04/HCSR04.h"
 #include "tft.h"
 #include "button.h"
 #include "electrovanne.h"
 #include "hcsr04.h"
 #include "mcp9701.h"
 
+#include "test_unitaire.h"
 #include "config.h"
 
 #define ID_ELECTROVANNE_CUVE	0
@@ -31,7 +26,6 @@
 #define ID_BUTTON_H				0
 #define ID_BUTTON_B				1
 #define ID_BUTTON_E				2
-
 
 static uint16_t PROFONDEUR_CUVE =  40; // en dm
 
@@ -243,7 +237,10 @@ static void state_machine(void)
 				ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, FALSE);
 			}
 
-			state = ANNONCE;
+			if (activation_alertes)
+				state = ANNONCE;
+			else
+				state = ACCUEIL;
 			break ;
 
 		case MODE_MANUEL:

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define NB_MAX_PARAMETERS 30
 
 typedef struct{
 	uint16_t position_x;
@@ -59,7 +60,6 @@ void updateDynamicLine_Background(DynamicLine_t pDynamicLine, uint16_t newBackgr
 
 void displayTitle()
 {
-	ILI9341_Fill(ILI9341_COLOR_WHITE);
 	ILI9341_PutBigs(100, 20, "HYDRESEO", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 2, 2);
 	ILI9341_DrawLine(0, 50, 400, 50, ILI9341_COLOR_BLACK);
 }
@@ -125,6 +125,8 @@ void TFT_Acceuil()
 	DynamicLine_t mode_manuel = {30,110, " - Mode Manuel", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 2};
 	DynamicLine_t mode_off = {30,130, " - Parametres", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 3};
 
+	ILI9341_DrawFilledRectangle(0, 55, 350, 155, ILI9341_COLOR_WHITE);
+
 	displayTitle();
 
 	displayDynamicLine(mode_actif);
@@ -164,21 +166,17 @@ void TFT_Acceuil_Update(uint8_t mode, uint8_t current_mode, uint8_t id_mode)
 
 void TFT_Mode_Manuel()
 {
+	ILI9341_DrawFilledRectangle(0, 55, 350, 155, ILI9341_COLOR_WHITE);
+
 	DynamicLine_t electrovanne_cuve = {30, 90, " - Electrovanne Cuve", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 10};
 	DynamicLine_t electrovanne_eau_courante = {30,110, " - Electrovanne Eau", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 11};
 	DynamicLine_t retour = {30,130, " - Retour", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 12};
-
-	displayTitle();
 
 	ILI9341_Puts(100, 60, "Mode Manuel", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 	displayDynamicLine(electrovanne_cuve);
 	displayDynamicLine(electrovanne_eau_courante);
 	displayDynamicLine(retour);
-
-	ILI9341_DrawLine(0, 160, 400, 160, ILI9341_COLOR_BLACK);
-
-	displayInformationsSensors();
 }
 
 void TFT_Mode_Manual_Update(uint8_t id_mode)
@@ -190,21 +188,17 @@ void TFT_Mode_Manual_Update(uint8_t id_mode)
 
 void TFT_Mode_Parametre()
 {
+	ILI9341_DrawFilledRectangle(0, 55, 350, 155, ILI9341_COLOR_WHITE);
+
 	DynamicLine_t modif_taille_cuve = {30, 90, " - Taille Cuve", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 13};
 	DynamicLine_t activation_annonces = {30,110, " - Activation Alertes", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 14};
 	DynamicLine_t retour = {30,130, " - Retour", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 15};
-
-	displayTitle();
 
 	ILI9341_Puts(100, 60, "Pamametres", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 	displayDynamicLine(modif_taille_cuve);
 	displayDynamicLine(activation_annonces);
 	displayDynamicLine(retour);
-
-	ILI9341_DrawLine(0, 160, 400, 160, ILI9341_COLOR_BLACK);
-
-	displayInformationsSensors();
 }
 
 void TFT_Mode_Parametre_Update(uint8_t id_mode)
@@ -218,8 +212,6 @@ void TFT_Parametre_Cuve()
 {
 	DynamicLine_t taille_cuve = {130, 110, "", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 16};
 
-	displayTitle();
-
 	ILI9341_DrawFilledRectangle(20, 60, 300, 150, ILI9341_COLOR_WHITE);
 	ILI9341_DrawRectangle(20, 60, 300, 150, ILI9341_COLOR_BLACK);
 
@@ -228,10 +220,6 @@ void TFT_Parametre_Cuve()
 	displayDynamicLine(taille_cuve);
 
 	ILI9341_Puts(260, 130, "OK", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
-
-	ILI9341_DrawLine(0, 160, 400, 160, ILI9341_COLOR_BLACK);
-
-	displayInformationsSensors();
 }
 
 void TFT_Parametre_Cuve_Update(uint16_t taille_cuve)
@@ -245,8 +233,6 @@ void TFT_Parametre_Alertes()
 {
 	DynamicLine_t activation_true = {135, 115, "", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 17};
 
-	displayTitle();
-
 	ILI9341_DrawFilledRectangle(20, 60, 300, 150, ILI9341_COLOR_WHITE);
 	ILI9341_DrawRectangle(20, 60, 300, 150, ILI9341_COLOR_BLACK);
 
@@ -256,9 +242,6 @@ void TFT_Parametre_Alertes()
 
 	ILI9341_Puts(260, 130, "OK", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
 
-	ILI9341_DrawLine(0, 160, 400, 160, ILI9341_COLOR_BLACK);
-
-	displayInformationsSensors();
 }
 
 void TFT_Parametre_Alertes_Update(bool_e activation)

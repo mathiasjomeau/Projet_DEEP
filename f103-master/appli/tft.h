@@ -3,8 +3,6 @@
 
 #include "config.h"
 
-#define NB_MAX_PARAMETERS 30
-
 void TFT_Init(void);
 
 void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_e EP_state, float eau_temperature);
