@@ -1,4 +1,4 @@
-button.c:38:13:process_ms	4	static
-button.c:48:6:BUTTON_add	24	static
-button.c:72:6:BUTTON_state_machine	24	static
-button.c:124:16:BUTTON_getEvent	24	static
+button.c:53:13:process_ms	4	static
+button.c:69:6:BUTTON_add	24	static
+button.c:88:6:BUTTON_state_machine	24	static
+button.c:141:16:BUTTON_getEvent	24	static

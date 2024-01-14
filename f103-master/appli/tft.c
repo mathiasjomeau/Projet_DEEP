@@ -1,3 +1,12 @@
+/**
+  ******************************************************************************
+  * @file    tft.c
+  * @author  Mathias Jomeau
+  * @date    14-January-2024
+  * @brief   Fonctions pour la gestion de l'écran TFT
+  ******************************************************************************
+*/
+
 #include "tft.h"
 #include "stm32f1_ili9341.h"
 #include <stdio.h>
@@ -5,6 +14,11 @@
 
 #define NB_MAX_PARAMETERS 30
 
+/**
+ * @struct DynamicLine_t
+ * @brief Structure pour définir une ligne dynamique
+ * @pre Utiliser uniquement pour des lignes où ses paramètres peuvent changer
+ */
 typedef struct{
 	uint16_t position_x;
 	uint16_t position_y;
@@ -19,14 +33,16 @@ void updateDynamicLine_Text(DynamicLine_t pDynamicLine, char * new_text);
 void updateDynamicLine_Foreground(DynamicLine_t pDynamicLine, uint16_t newForeground);
 void updateDynamicLine_Background(DynamicLine_t pDynamicLine, uint16_t newBackground);
 void displayDynamicLine(DynamicLine_t pDynamicLine);
-
 void displayTitle(void);
 void displayInformationsSensors(void);
-
 void updateSelectedMenu(uint8_t ids[], uint8_t id_modeselected);
 
 DynamicLine_t Screens_Addresse [NB_MAX_PARAMETERS];
 
+/**
+ * @brief Affiche une ligne dynamique.
+ * @param pDynamicLine Ligne dynamique à afficher.
+ */
 void displayDynamicLine(DynamicLine_t pDynamicLine)
 {
 	Screens_Addresse[pDynamicLine.id] = pDynamicLine;
@@ -35,6 +51,11 @@ void displayDynamicLine(DynamicLine_t pDynamicLine)
                      pDynamicLine.font, pDynamicLine.foreground, pDynamicLine.background);
 }
 
+/**
+ * @brief Met à jour le texte d'une ligne dynamique.
+ * @param pDynamicLine Ligne dynamique à mettre à jour.
+ * @param new_text Nouveau texte.
+ */
 void updateDynamicLine_Text(DynamicLine_t pDynamicLine, char * new_text)
 {
 	sprintf(pDynamicLine.text, "                                   ");
@@ -43,7 +64,11 @@ void updateDynamicLine_Text(DynamicLine_t pDynamicLine, char * new_text)
 	displayDynamicLine(pDynamicLine);
 }
 
-
+/**
+ * @brief Met à jour la couleur du texte d'une ligne dynamique.
+ * @param pDynamicLine Ligne dynamique à mettre à jour.
+ * @param newForeground Nouvelle couleur du texte.
+ */
 void updateDynamicLine_Foreground(DynamicLine_t pDynamicLine, uint16_t newForeground)
 {
 	pDynamicLine.foreground = newForeground;
@@ -51,6 +76,11 @@ void updateDynamicLine_Foreground(DynamicLine_t pDynamicLine, uint16_t newForegr
 	displayDynamicLine(pDynamicLine);
 }
 
+/**
+ * @brief Met à jour la couleur de fond d'une ligne dynamique.
+ * @param pDynamicLine Ligne dynamique à mettre à jour.
+ * @param newBackground Nouvelle couleur de fond.
+ */
 void updateDynamicLine_Background(DynamicLine_t pDynamicLine, uint16_t newBackground)
 {
 	pDynamicLine.background = newBackground;
@@ -58,12 +88,19 @@ void updateDynamicLine_Background(DynamicLine_t pDynamicLine, uint16_t newBackgr
 	displayDynamicLine(pDynamicLine);
 }
 
+/**
+ * @brief Affiche le titre sur l'écran TFT.
+ */
 void displayTitle()
 {
 	ILI9341_PutBigs(100, 20, "HYDRESEO", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 2, 2);
 	ILI9341_DrawLine(0, 50, 400, 50, ILI9341_COLOR_BLACK);
 }
 
+
+/**
+ * @brief Affiche les informations des capteurs sur l'écran TFT.
+ */
 void displayInformationsSensors()
 {
 	DynamicLine_t niveau_cuve = {30,170, "Niveau de la cuve :", &Font_7x10, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 4};
@@ -77,6 +114,13 @@ void displayInformationsSensors()
 	displayDynamicLine(temp_eau);
 }
 
+/**
+ * @brief Met à jour les informations des capteurs affichées sur l'écran TFT.
+ * @param water_level Niveau d'eau en pourcentage.
+ * @param EC_state État de l'électrovanne de la cuve.
+ * @param EP_state État de l'électrovanne d'eau.
+ * @param eau_temperature Température de l'eau.
+ */
 void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_e EP_state, float eau_temperature)
 {
 	char water_level_char [30];
@@ -87,7 +131,7 @@ void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_
 	sprintf(water_level_char, "Niveau de la cuve : %d%%", water_level);
 	updateDynamicLine_Text(Screens_Addresse[4], water_level_char);
 
-	char * state [2] = {"Fermee", "Ouverte"};
+	char * state [2] = {"Fermee", "Ouverte"}; // Etats des Electrovannes possible
 
 	sprintf(EC_state_char, "Electrovanne Cuve : %s ", state[EC_state]);
 	updateDynamicLine_Text(Screens_Addresse[5], EC_state_char);
@@ -99,6 +143,11 @@ void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_
 	updateDynamicLine_Text(Screens_Addresse[7], eau_temperature_char);
 }
 
+/**
+ * @brief Met à jour le menu sélectionné sur l'écran TFT.
+ * @param ids Tableau d'identifiants des lignes dynamiques.
+ * @param id_modeselected Identifiant du mode sélectionné.
+ */
 void updateSelectedMenu(uint8_t ids[], uint8_t id_modeselected)
 {
 	for (uint8_t i = 1 ; i < ids[0] ; i++)
@@ -110,7 +159,10 @@ void updateSelectedMenu(uint8_t ids[], uint8_t id_modeselected)
 	updateDynamicLine_Background(Screens_Addresse[id_modeselected], ILI9341_COLOR_GRAY);
 }
 
-
+/**
+ * @brief Initialise l'écran TFT.
+ * Elle doit être appelée avant toute utilisation de l'écran.
+ */
 void TFT_Init(void)
 {
 	ILI9341_Init();
@@ -118,6 +170,9 @@ void TFT_Init(void)
 	ILI9341_Fill(ILI9341_COLOR_WHITE);
 }
 
+/**
+ * @brief Affiche l'écran d'accueil sur l'écran TFT.
+ */
 void TFT_Acceuil()
 {
 	DynamicLine_t mode_actif = {30, 60, "Mode actif :", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 0};
@@ -139,6 +194,12 @@ void TFT_Acceuil()
 	displayInformationsSensors();
 }
 
+/**
+ * @brief Met à jour l'écran d'accueil
+ * @param mode Mode à afficher.
+ * @param current_mode Mode actuel.
+ * @param id_mode Identifiant du mode à surligner dans la sélection des menus
+ */
 void TFT_Acceuil_Update(uint8_t mode, uint8_t current_mode, uint8_t id_mode)
 {
 	uint8_t ids_mode [4] = {4, 1, 2, 3};
@@ -164,6 +225,9 @@ void TFT_Acceuil_Update(uint8_t mode, uint8_t current_mode, uint8_t id_mode)
 	}
 }
 
+/**
+ * @brief Affiche l'écran du mode manuel sur l'écran TFT.
+ */
 void TFT_Mode_Manuel()
 {
 	ILI9341_DrawFilledRectangle(0, 55, 350, 155, ILI9341_COLOR_WHITE);
@@ -179,6 +243,10 @@ void TFT_Mode_Manuel()
 	displayDynamicLine(retour);
 }
 
+/**
+ * @brief Met à jour l'écran du mode manuel
+ * @param id_mode Identifiant du mode à surligner dans la sélection des menus
+ */
 void TFT_Mode_Manual_Update(uint8_t id_mode)
 {
 	uint8_t ids_mode [4] = {4, 10, 11, 12};
@@ -186,6 +254,9 @@ void TFT_Mode_Manual_Update(uint8_t id_mode)
 	updateSelectedMenu(ids_mode, id_mode);
 }
 
+/**
+ * @brief Affiche l'écran des paramètres sur l'écran TFT.
+ */
 void TFT_Mode_Parametre()
 {
 	ILI9341_DrawFilledRectangle(0, 55, 350, 155, ILI9341_COLOR_WHITE);
@@ -201,6 +272,10 @@ void TFT_Mode_Parametre()
 	displayDynamicLine(retour);
 }
 
+/**
+ * @brief Met à jour l'écran du mode paramètres
+ * @param id_mode Identifiant du mode à surligner dans la sélection des menus
+ */
 void TFT_Mode_Parametre_Update(uint8_t id_mode)
 {
 	uint8_t ids_mode [4] = {4, 13, 14, 15};
@@ -208,6 +283,9 @@ void TFT_Mode_Parametre_Update(uint8_t id_mode)
 	updateSelectedMenu(ids_mode, id_mode);
 }
 
+/**
+ * @brief Affiche l'écran de modification de la cuve sur l'écran TFT.
+ */
 void TFT_Parametre_Cuve()
 {
 	DynamicLine_t taille_cuve = {130, 110, "", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 16};
@@ -222,6 +300,10 @@ void TFT_Parametre_Cuve()
 	ILI9341_Puts(260, 130, "OK", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
 }
 
+/**
+ * @brief Met à jour l'écran de modification de la cuve avec la taille spécifiée.
+ * @param taille_cuve Taille de la cuve en dm
+ */
 void TFT_Parametre_Cuve_Update(uint16_t taille_cuve)
 {
 	char taille_cuve_char [30];
@@ -229,6 +311,9 @@ void TFT_Parametre_Cuve_Update(uint16_t taille_cuve)
 	updateDynamicLine_Text(Screens_Addresse[16], taille_cuve_char);
 }
 
+/**
+ * @brief Affiche l'écran de modification des alertes sur l'écran TFT.
+ */
 void TFT_Parametre_Alertes()
 {
 	DynamicLine_t activation_true = {135, 115, "", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 17};
@@ -244,6 +329,10 @@ void TFT_Parametre_Alertes()
 
 }
 
+/**
+ * @brief Met à jour l'écran de modification des alertes avec l'état d'activation spécifié.
+ * @param activation État d'activation des alertes.
+ */
 void TFT_Parametre_Alertes_Update(bool_e activation)
 {
 	switch (activation)
@@ -257,6 +346,11 @@ void TFT_Parametre_Alertes_Update(bool_e activation)
 	}
 }
 
+/**
+ * @brief Affiche un écran d'annonce sur l'écran TFT.
+ * @param ligne1 Texte de la première ligne d'annonce.
+ * @param ligne2 Texte de la deuxième ligne d'annonce.
+ */
 void TFT_Annonce (char * ligne1, char * ligne2)
 {
 	ILI9341_DrawFilledRectangle(20, 60, 300, 150, ILI9341_COLOR_WHITE);

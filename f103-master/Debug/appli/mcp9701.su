@@ -1,4 +1,4 @@
-mcp9701.c:12:6:ADC_process_1ms	4	static
-mcp9701.c:18:7:Conversion_TensionToTemp	32	static
-mcp9701.c:30:6:MCP9701_Init	8	static
-mcp9701.c:36:6:MCP9701_GetTemperature	24	static
+mcp9701.c:26:6:ADC_process_1ms	4	static
+mcp9701.c:37:7:Conversion_TensionToTemp	32	static
+mcp9701.c:53:6:MCP9701_Init	8	static
+mcp9701.c:64:6:MCP9701_GetTemperature	24	static

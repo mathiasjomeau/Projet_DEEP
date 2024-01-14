@@ -1,11 +1,12 @@
 /**
   ******************************************************************************
   * @file    main.c
-  * @author  Nirgal
-  * @date    03-July-2019
-  * @brief   Default main function.
+  * @author  Mathias Jomeau
+  * @date    14-January-2024
+  * @brief   Fichier Principal
   ******************************************************************************
 */
+
 #include "stm32f1xx_hal.h"
 #include "stm32f1_uart.h"
 #include "stm32f1_sys.h"
@@ -35,6 +36,11 @@ static void state_machine(void);
 static volatile uint32_t t = 0;
 static volatile bool_e flag_5s;
 
+/**
+ * @brief Fonction de traitement appelée périodiquement toutes les millisecondes pour gérer une période de 5s
+ * @pre Fonction ajouté à la routine d'interruption du périphique SYSTICK
+ */
+
 static void process_ms(void)
 {
 	static uint32_t t5s = 0;
@@ -45,37 +51,41 @@ static void process_ms(void)
 		t--;
 }
 
-
+/**
+ * @brief Fonction au coeur du programme
+ */
 int main(void)
 {
 	//Initialisation de la couche logicielle HAL (Hardware Abstraction Layer)
 	//Cette ligne doit rester la premi�re �tape de la fonction main().
 	HAL_Init();
 
-	//Initialisation de l'UART2 � la vitesse de 115200 bauds/secondes (92kbits/s) PA2 : Tx  | PA3 : Rx.
-		//Attention, les pins PA2 et PA3 ne sont pas reli�es jusqu'au connecteur de la Nucleo.
-		//Ces broches sont redirig�es vers la sonde de d�bogage, la liaison UART �tant ensuite encapsul�e sur l'USB vers le PC de d�veloppement.
-	//UART_init(UART2_ID,115200);
+	//Initialisation de l'UART1
 	UART_init(UART1_ID,115200);
 
-	//"Indique que les printf sortent vers le p�riph�rique UART2."
-	//SYS_set_std_usart(UART2_ID, UART2_ID, UART2_ID);
+	//Indique que les printf sortent vers le p�riph�rique UART2
 	SYS_set_std_usart(UART1_ID, UART1_ID, UART1_ID);
 
-
-	//On ajoute la fonction process_ms � la liste des fonctions appel�es automatiquement chaque ms par la routine d'interruption du p�riph�rique SYSTICK
+	//On ajoute la fonction process_ms à la liste des fonctions appelées automatiquement chaque ms par la routine d'interruption du périphérique SYSTICK
 	Systick_add_callback_function(&process_ms);
 
-	while(1)	//boucle de t�che de fond
+	while(1)	//boucle de tâche de fond
 	{
+		// Taches de fond pour les boutons
 		BUTTON_state_machine(ID_BUTTON_H);
 		BUTTON_state_machine(ID_BUTTON_B);
 		BUTTON_state_machine(ID_BUTTON_E);
+		// Tache de fond pour le capteur de distance
 		HCSR04_process_main();
+
 		state_machine();
 	}
 }
 
+/**
+ * @brief Machine à états principale du programme.
+ * @pre Fonction qui doit être appelée le plus souvent possible pour un bon fonctionnement
+ */
 static void state_machine(void)
 {
 	typedef enum{
@@ -93,10 +103,12 @@ static void state_machine(void)
 	static state_e previous_state = INIT;
 	bool_e entrance = (state!=previous_state)?TRUE:FALSE;
 
+	// Récupération des événements des boutons
 	button_event_e button_H = BUTTON_getEvent(ID_BUTTON_H);
 	button_event_e button_B = BUTTON_getEvent(ID_BUTTON_B);
 	button_event_e button_E = BUTTON_getEvent(ID_BUTTON_E);
 
+	// Récupération des états des electrovannes
 	bool_e state_electrovanne_cuve = ELECTROVANNE_GetState(ID_ELECTROVANNE_CUVE);
 	bool_e state_electrovanne_eau = ELECTROVANNE_GetState(ID_ELECTROVANNE_EAU);
 
@@ -105,9 +117,12 @@ static void state_machine(void)
 	uint16_t distance;
 	static float eau_temperature;
 
+	// Changement de la profondeur si seulement la distance est vérifiée
+	// Un facteur x100 est appliquée pour convertir en mm pour être compatible avec la valeur du capteur de distance
 	if (HCSR04_GetDistance(id_sensor, &distance))
 		profondeur_pourcentage = (uint16_t) (((PROFONDEUR_CUVE*100) - distance) * 100 / (PROFONDEUR_CUVE*100));
 
+	// Acutalisation des valeurs de capteurs et des états des electrovannes toutes les 5s
 	if (flag_5s)
 	{
 		MCP9701_GetTemperature(&eau_temperature);
@@ -216,6 +231,8 @@ static void state_machine(void)
 			{
 				if (activation_alertes)
 					TFT_Annonce("   Danger Pompe", "     Cuve 10%");
+
+				// Changement des electrovannes par sécurité
 				ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, FALSE);
 				ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, TRUE);
 			}
@@ -228,10 +245,12 @@ static void state_machine(void)
 			{
 				if (activation_alertes)
 					TFT_Annonce("    Attention", "Temperature < 0 C");
+
+				// Changement des electrovannes par sécurité
 				ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, FALSE);
 				ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, TRUE);
 			}
-			else
+			else //Si toutes conditions sont optimales, on modifie l'états des electrovannes
 			{
 				ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, TRUE);
 				ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, FALSE);
@@ -324,7 +343,7 @@ static void state_machine(void)
 		case ANNONCE:
 			if(entrance)
 				previous_state = ANNONCE;
-			if (button_E == BUTTON_EVENT_SHORT_PRESS)
+			if (button_E == BUTTON_EVENT_SHORT_PRESS) // On attend que l'utilisateur valide l'alerte
 				state = ACCUEIL;
 			break;
 
