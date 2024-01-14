@@ -15,6 +15,13 @@ void TFT_Acceuil_Update(uint8_t mode, uint8_t current_mode, uint8_t id_mode);
 void TFT_Mode_Manuel(void);
 void TFT_Mode_Manual_Update(uint8_t id_mode);
 
+void TFT_Mode_Parametre(void);
+void TFT_Mode_Parametre_Update(uint8_t id_mode);
+void TFT_Parametre_Cuve(void);
+void TFT_Parametre_Cuve_Update(uint16_t taille_cuve);
+void TFT_Parametre_Alertes(void);
+void TFT_Parametre_Alertes_Update(bool_e activation);
+
 void TFT_Annonce (char * ligne1, char * ligne2);
 /*
 void TFT_Mode_Auto(void);

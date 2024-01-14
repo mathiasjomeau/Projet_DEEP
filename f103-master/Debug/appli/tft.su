@@ -10,5 +10,11 @@ tft.c:114:6:TFT_Init	8	static
 tft.c:121:6:TFT_Acceuil	280	static
 tft.c:140:6:TFT_Acceuil_Update	88	static
 tft.c:165:6:TFT_Mode_Manuel	224	static
-tft.c:182:6:TFT_Mode_Manual_Update	24	static
-tft.c:189:6:TFT_Annonce	32	static
+tft.c:184:6:TFT_Mode_Manual_Update	24	static
+tft.c:191:6:TFT_Mode_Parametre	224	static
+tft.c:210:6:TFT_Mode_Parametre_Update	24	static
+tft.c:217:6:TFT_Parametre_Cuve	112	static
+tft.c:237:6:TFT_Parametre_Cuve_Update	112	static
+tft.c:244:6:TFT_Parametre_Alertes	112	static
+tft.c:264:6:TFT_Parametre_Alertes_Update	80	static
+tft.c:277:6:TFT_Annonce	32	static

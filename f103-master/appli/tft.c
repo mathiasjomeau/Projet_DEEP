@@ -95,7 +95,7 @@ void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_
 	sprintf(EP_state_char, "Electrovanne Eau Courante : %s ", state[EP_state]);
 	updateDynamicLine_Text(Screens_Addresse[6], EP_state_char);
 
-	sprintf(eau_temperature_char, "Temperature Eau : %.1f", eau_temperature);
+	sprintf(eau_temperature_char, "Temperature Eau : %.1f C", eau_temperature);
 	updateDynamicLine_Text(Screens_Addresse[7], eau_temperature_char);
 }
 
@@ -164,11 +164,13 @@ void TFT_Acceuil_Update(uint8_t mode, uint8_t current_mode, uint8_t id_mode)
 
 void TFT_Mode_Manuel()
 {
-	DynamicLine_t electrovanne_cuve = {30, 70, " - Electrovanne Cuve", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 10};
-	DynamicLine_t electrovanne_eau_courante = {30,90, " - Electrovanne Eau", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 11};
-	DynamicLine_t retour = {30,110, " - Retour", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 12};
+	DynamicLine_t electrovanne_cuve = {30, 90, " - Electrovanne Cuve", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 10};
+	DynamicLine_t electrovanne_eau_courante = {30,110, " - Electrovanne Eau", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 11};
+	DynamicLine_t retour = {30,130, " - Retour", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 12};
 
 	displayTitle();
+
+	ILI9341_Puts(100, 60, "Mode Manuel", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 	displayDynamicLine(electrovanne_cuve);
 	displayDynamicLine(electrovanne_eau_courante);
@@ -184,6 +186,92 @@ void TFT_Mode_Manual_Update(uint8_t id_mode)
 	uint8_t ids_mode [4] = {4, 10, 11, 12};
 	id_mode = (uint8_t) (id_mode + 10);
 	updateSelectedMenu(ids_mode, id_mode);
+}
+
+void TFT_Mode_Parametre()
+{
+	DynamicLine_t modif_taille_cuve = {30, 90, " - Taille Cuve", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 13};
+	DynamicLine_t activation_annonces = {30,110, " - Activation Alertes", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 14};
+	DynamicLine_t retour = {30,130, " - Retour", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 15};
+
+	displayTitle();
+
+	ILI9341_Puts(100, 60, "Pamametres", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
+	displayDynamicLine(modif_taille_cuve);
+	displayDynamicLine(activation_annonces);
+	displayDynamicLine(retour);
+
+	ILI9341_DrawLine(0, 160, 400, 160, ILI9341_COLOR_BLACK);
+
+	displayInformationsSensors();
+}
+
+void TFT_Mode_Parametre_Update(uint8_t id_mode)
+{
+	uint8_t ids_mode [4] = {4, 13, 14, 15};
+	id_mode = (uint8_t) (id_mode + 13);
+	updateSelectedMenu(ids_mode, id_mode);
+}
+
+void TFT_Parametre_Cuve()
+{
+	DynamicLine_t taille_cuve = {130, 110, "", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 16};
+
+	displayTitle();
+
+	ILI9341_DrawFilledRectangle(20, 60, 300, 150, ILI9341_COLOR_WHITE);
+	ILI9341_DrawRectangle(20, 60, 300, 150, ILI9341_COLOR_BLACK);
+
+	ILI9341_Puts(60, 80, "Taille de la cuve : ", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
+	displayDynamicLine(taille_cuve);
+
+	ILI9341_Puts(260, 130, "OK", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
+
+	ILI9341_DrawLine(0, 160, 400, 160, ILI9341_COLOR_BLACK);
+
+	displayInformationsSensors();
+}
+
+void TFT_Parametre_Cuve_Update(uint16_t taille_cuve)
+{
+	char taille_cuve_char [30];
+	sprintf(taille_cuve_char, "%d dm", taille_cuve);
+	updateDynamicLine_Text(Screens_Addresse[16], taille_cuve_char);
+}
+
+void TFT_Parametre_Alertes()
+{
+	DynamicLine_t activation_true = {135, 115, "", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE, 17};
+
+	displayTitle();
+
+	ILI9341_DrawFilledRectangle(20, 60, 300, 150, ILI9341_COLOR_WHITE);
+	ILI9341_DrawRectangle(20, 60, 300, 150, ILI9341_COLOR_BLACK);
+
+	ILI9341_Puts(60, 80, "Activation Alertes : ", &Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
+	displayDynamicLine(activation_true);
+
+	ILI9341_Puts(260, 130, "OK", &Font_11x18, ILI9341_COLOR_WHITE, ILI9341_COLOR_GRAY);
+
+	ILI9341_DrawLine(0, 160, 400, 160, ILI9341_COLOR_BLACK);
+
+	displayInformationsSensors();
+}
+
+void TFT_Parametre_Alertes_Update(bool_e activation)
+{
+	switch (activation)
+	{
+	case TRUE:
+		updateDynamicLine_Text(Screens_Addresse[17], "Oui");
+		break;
+	case FALSE:
+		updateDynamicLine_Text(Screens_Addresse[17], "Non");
+		break;
+	}
 }
 
 void TFT_Annonce (char * ligne1, char * ligne2)

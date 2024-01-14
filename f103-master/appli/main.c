@@ -32,8 +32,8 @@
 #define ID_BUTTON_B				1
 #define ID_BUTTON_E				2
 
-// Cuve Sphérique
-static uint16_t PROFONDEUR_CUVE =  4000; // en mm
+
+static uint16_t PROFONDEUR_CUVE =  40; // en dm
 
 static void process_ms(void);
 static void state_machine(void);
@@ -91,6 +91,8 @@ static void state_machine(void)
 		MODE_MANUEL,
 		PARAMETRES,
 		ANNONCE,
+		MODIF_CUVE,
+		MODIF_ALERTES
 	}state_e;
 
 	static state_e state = INIT;
@@ -110,7 +112,7 @@ static void state_machine(void)
 	static float eau_temperature;
 
 	if (HCSR04_GetDistance(id_sensor, &distance))
-		profondeur_pourcentage = (uint16_t) ((PROFONDEUR_CUVE - distance) * 100 / PROFONDEUR_CUVE);
+		profondeur_pourcentage = (uint16_t) (((PROFONDEUR_CUVE*100) - distance) * 100 / (PROFONDEUR_CUVE*100));
 
 	if (flag_5s)
 	{
@@ -122,6 +124,7 @@ static void state_machine(void)
 	static bool_e entrance_mode_auto;
 	static uint8_t mode_chosing;
 	static uint8_t current_mode;
+	static bool_e activation_alertes;
 
 	switch(state)
 	{
@@ -148,6 +151,7 @@ static void state_machine(void)
 
 			current_mode = 1;
 			entrance_mode_auto = FALSE;
+			activation_alertes = TRUE;
 			previous_state = state;
 			state = ACCUEIL;
 
@@ -203,28 +207,33 @@ static void state_machine(void)
 		case MODE_AUTO:
 			if (entrance_mode_auto)
 			{
-				TFT_Annonce("   Activation", " Mode Automatique");
+				if (activation_alertes)
+					TFT_Annonce("   Activation", " Mode Automatique");
 				entrance_mode_auto = FALSE;
 				state = ANNONCE;
 			}
 
 			if (profondeur_pourcentage < 50 && profondeur_pourcentage > 10)
 			{
-				TFT_Annonce("    Attention", "     Cuve 50%");
+				if (activation_alertes)
+					TFT_Annonce("    Attention", "     Cuve 50%");
 			}
 			else if (profondeur_pourcentage < 10 && profondeur_pourcentage > 0)
 			{
-				TFT_Annonce("   Danger Pompe", "     Cuve 10%");
+				if (activation_alertes)
+					TFT_Annonce("   Danger Pompe", "     Cuve 10%");
 				ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, FALSE);
 				ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, TRUE);
 			}
 			else if (eau_temperature < 5 && eau_temperature > 0)
 			{
-				TFT_Annonce("    Attention", "Temperature < 5 C");
+				if (activation_alertes)
+					TFT_Annonce("    Attention", "Temperature < 5 C");
 			}
 			else if (eau_temperature < 0)
 			{
-				TFT_Annonce("    Attention", "Temperature < 0 C");
+				if (activation_alertes)
+					TFT_Annonce("    Attention", "Temperature < 0 C");
 				ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, FALSE);
 				ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, TRUE);
 			}
@@ -278,13 +287,41 @@ static void state_machine(void)
 			break;
 
 		case PARAMETRES:
+			if (entrance)
+			{
+				mode_chosing = 0;
+				TFT_Mode_Parametre();
+				TFT_Mode_Parametre_Update(mode_chosing);
+				previous_state = PARAMETRES;
+			}
 
-			printf("coucou mode parametre");
-			// modifier la taille de la cuve
-			// modifier les paramètres du mode auto
-			// activer ou desac des alertes
+			if (button_H == BUTTON_EVENT_SHORT_PRESS)
+			{
+				mode_chosing = (uint8_t) ((mode_chosing+2) % 3);
+				TFT_Mode_Parametre_Update(mode_chosing);
+			}
 
-			state = ACCUEIL;
+			else if (button_B == BUTTON_EVENT_SHORT_PRESS)
+			{
+				mode_chosing = (uint8_t) ((mode_chosing+1) % 3);
+				TFT_Mode_Parametre_Update(mode_chosing);
+			}
+
+			else if (button_E == BUTTON_EVENT_SHORT_PRESS)
+			{
+				switch (mode_chosing)
+				{
+					case 0: // Modif Taille Cuve
+						state = MODIF_CUVE;
+						break;
+					case 1: // Modif Activation Alertes
+						state = MODIF_ALERTES;
+						break;
+					case 2: // Retour Acceuil
+						state = ACCUEIL;
+						break;
+				}
+			}
 			break;
 
 		case ANNONCE:
@@ -292,6 +329,60 @@ static void state_machine(void)
 				previous_state = ANNONCE;
 			if (button_E == BUTTON_EVENT_SHORT_PRESS)
 				state = ACCUEIL;
+			break;
+
+		case MODIF_CUVE:
+			if(entrance)
+			{
+				previous_state = MODIF_CUVE;
+				TFT_Parametre_Cuve();
+				TFT_Parametre_Cuve_Update(PROFONDEUR_CUVE);
+			}
+
+			if (button_H == BUTTON_EVENT_SHORT_PRESS)
+			{
+				PROFONDEUR_CUVE ++;
+				TFT_Parametre_Cuve_Update(PROFONDEUR_CUVE);
+			}
+
+			else if (button_B == BUTTON_EVENT_SHORT_PRESS)
+			{
+				PROFONDEUR_CUVE --;
+				TFT_Parametre_Cuve_Update(PROFONDEUR_CUVE);
+			}
+
+			else if (button_E == BUTTON_EVENT_SHORT_PRESS)
+			{
+				state = PARAMETRES;
+			}
+
+			break;
+
+		case MODIF_ALERTES:
+			if(entrance)
+			{
+				previous_state = MODIF_ALERTES;
+				TFT_Parametre_Alertes();
+				TFT_Parametre_Alertes_Update(activation_alertes);
+			}
+
+			if (button_H == BUTTON_EVENT_SHORT_PRESS)
+			{
+				activation_alertes = !activation_alertes;
+				TFT_Parametre_Alertes_Update(activation_alertes);
+			}
+
+			else if (button_B == BUTTON_EVENT_SHORT_PRESS)
+			{
+				activation_alertes = !activation_alertes;
+				TFT_Parametre_Alertes_Update(activation_alertes);
+			}
+
+			else if (button_E == BUTTON_EVENT_SHORT_PRESS)
+			{
+				state = PARAMETRES;
+			}
+
 			break;
 
 		default:
