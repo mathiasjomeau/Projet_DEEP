@@ -19,25 +19,24 @@
  * @enum button_event_e
  * @brief Enumération des différents états possibles d'un bouton.
  */
-typedef enum
-{
-	BUTTON_STATE_INEXISTANT,
-	INIT,
-	WAIT_BUTTON,
-	BUTTON_PRESSED,
-	WAIT_RELEASE
-}button_state_e;
+typedef enum {
+    BUTTON_STATE_INEXISTANT, /**< État inexistant du bouton. */
+    INIT, /**< État d'initialisation du bouton. */
+    WAIT_BUTTON, /**< État d'attente de l'appui sur le bouton. */
+    BUTTON_PRESSED, /**< État de détection d'appui sur le bouton. */
+    WAIT_RELEASE /**< État d'attente du relâchement du bouton après un appui. */
+} button_state_e;
 
 /**
  * @struct button_t
  * @brief Structure représentant un bouton.
  */
-typedef struct{
-		GPIO_TypeDef * GPIO;
-		uint16_t PIN;
-		button_state_e state;
-		button_event_e button_event;
-}button_t;
+typedef struct {
+    GPIO_TypeDef * GPIO; /**< Pointeur vers le GPIO du bouton. */
+    uint16_t PIN; /**< Numéro de broche du bouton. */
+    button_state_e state; /**< État actuel du bouton. */
+    button_event_e button_event; /**< Événement du bouton (court appui, long appui, etc.). */
+} button_t;
 
 static button_t buttons[NB_BUTTONS];
 

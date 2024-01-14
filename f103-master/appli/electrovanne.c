@@ -12,11 +12,15 @@
 
 #define NUMBER_ELECTROVANNE 2
 
-typedef struct{
-		GPIO_TypeDef * GPIO;
-		uint16_t PIN;
-		bool_e state;
-}electrovanne_t;
+/**
+* @struct electrovanne_e
+* @brief Structure définissant une électrovanne
+*/
+typedef struct {
+    GPIO_TypeDef * GPIO; /**< Pointeur vers le GPIO de l'électrovanne. */
+    uint16_t PIN; /**< Numéro de broche de l'électrovanne. */
+    bool_e state; /**< État actuel de l'électrovanne (activée ou désactivée). */
+} electrovanne_t;
 
 electrovanne_t electrovannes[NUMBER_ELECTROVANNE];
 

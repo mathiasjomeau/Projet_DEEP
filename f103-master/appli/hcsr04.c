@@ -34,12 +34,15 @@ void HCSR04_Init(uint8_t * id, GPIO_TypeDef * TRIG_GPIO, uint16_t TRIG_PIN, GPIO
  */
 bool_e HCSR04_GetDistance(uint8_t id_sensor, uint16_t * distance)
 {
-	typedef enum
-	{
-		LAUNCH_MEASURE,
-		WAIT_DURING_MEASURE,
-		WAIT_BEFORE_NEXT_MEASURE
-	}state_e;
+	/**
+	 * @enum state_e
+	 * @brief Enumération des différents états pour la mesure du capteur de distance.
+	 */
+	typedef enum {
+	    LAUNCH_MEASURE, /**< Lancement de la mesure. */
+	    WAIT_DURING_MEASURE, /**< Attente pendant la mesure. */
+	    WAIT_BEFORE_NEXT_MEASURE /**< Attente avant la prochaine mesure. */
+	} state_e;
 
 	bool_e ret = FALSE;
 

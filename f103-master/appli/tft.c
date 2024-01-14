@@ -19,15 +19,15 @@
  * @brief Structure pour définir une ligne dynamique
  * @pre Utiliser uniquement pour des lignes où ses paramètres peuvent changer
  */
-typedef struct{
-	uint16_t position_x;
-	uint16_t position_y;
-	char text[40];
-	FontDef_t * font;
-	uint16_t foreground;
-	uint16_t background;
-	uint8_t id;
-}DynamicLine_t;
+typedef struct {
+    uint16_t position_x; /**< Position X de la ligne sur l'écran. */
+    uint16_t position_y; /**< Position Y de la ligne sur l'écran. */
+    char text[40]; /**< Texte affiché sur la ligne. */
+    FontDef_t *font; /**< Police de caractères utilisée pour le texte. */
+    uint16_t foreground; /**< Couleur du texte. */
+    uint16_t background; /**< Couleur de fond de la ligne. */
+    uint8_t id; /**< Identifiant de la ligne. */
+} DynamicLine_t;
 
 void updateDynamicLine_Text(DynamicLine_t pDynamicLine, char * new_text);
 void updateDynamicLine_Foreground(DynamicLine_t pDynamicLine, uint16_t newForeground);

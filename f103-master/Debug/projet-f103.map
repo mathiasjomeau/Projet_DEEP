@@ -31125,38 +31125,38 @@ LOAD c:/st/stm32cubeide_1.7.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .debug_macro   0x000000000001aee0      0x265 ./lib/hal/src/stm32f1xx_hal_tim_ex.o
  .debug_macro   0x000000000001b145      0x266 ./lib/hal/src/stm32f1xx_hal_uart.o
 
-.debug_line     0x0000000000000000    0x1ab28
+.debug_line     0x0000000000000000    0x1ab2a
  .debug_line    0x0000000000000000      0xa0c ./appli/button.o
  .debug_line    0x0000000000000a0c      0x94f ./appli/electrovanne.o
- .debug_line    0x000000000000135b      0x975 ./appli/hcsr04.o
- .debug_line    0x0000000000001cd0      0xcaa ./appli/main.o
- .debug_line    0x000000000000297a      0x980 ./appli/mcp9701.o
- .debug_line    0x00000000000032fa      0xc2d ./appli/tft.o
- .debug_line    0x0000000000003f27      0xc40 ./lib/bsp/HC-SR04/HCSR04.o
- .debug_line    0x0000000000004b67      0xb37 ./lib/bsp/stm32f1_adc.o
- .debug_line    0x000000000000569e      0xbca ./lib/bsp/stm32f1_extit.o
- .debug_line    0x0000000000006268      0x923 ./lib/bsp/stm32f1_gpio.o
- .debug_line    0x0000000000006b8b      0xc02 ./lib/bsp/stm32f1_spi.o
- .debug_line    0x000000000000778d     0x1050 ./lib/bsp/stm32f1_sys.o
- .debug_line    0x00000000000087dd      0xeeb ./lib/bsp/stm32f1_timer.o
- .debug_line    0x00000000000096c8      0xf1b ./lib/bsp/stm32f1_uart.o
- .debug_line    0x000000000000a5e3      0xe9c ./lib/bsp/stm32f1_weak_it.o
- .debug_line    0x000000000000b47f      0x856 ./lib/bsp/system_stm32f1xx.o
- .debug_line    0x000000000000bcd5      0xa12 ./lib/bsp/systick.o
- .debug_line    0x000000000000c6e7      0x95a ./lib/bsp/tft_ili9341/stm32f1_fonts.o
- .debug_line    0x000000000000d041     0x120c ./lib/bsp/tft_ili9341/stm32f1_ili9341.o
- .debug_line    0x000000000000e24d      0xa4c ./lib/hal/src/stm32f1xx_hal.o
- .debug_line    0x000000000000ec99     0x10a5 ./lib/hal/src/stm32f1xx_hal_adc.o
- .debug_line    0x000000000000fd3e      0xc3a ./lib/hal/src/stm32f1xx_hal_cortex.o
- .debug_line    0x0000000000010978      0xeaa ./lib/hal/src/stm32f1xx_hal_dma.o
- .debug_line    0x0000000000011822      0xaec ./lib/hal/src/stm32f1xx_hal_gpio.o
- .debug_line    0x000000000001230e      0xe60 ./lib/hal/src/stm32f1xx_hal_rcc.o
- .debug_line    0x000000000001316e     0x1e70 ./lib/hal/src/stm32f1xx_hal_spi.o
- .debug_line    0x0000000000014fde      0x7f6 ./lib/hal/src/stm32f1xx_hal_spi_ex.o
- .debug_line    0x00000000000157d4     0x289c ./lib/hal/src/stm32f1xx_hal_tim.o
- .debug_line    0x0000000000018070     0x124b ./lib/hal/src/stm32f1xx_hal_tim_ex.o
- .debug_line    0x00000000000192bb     0x17d8 ./lib/hal/src/stm32f1xx_hal_uart.o
- .debug_line    0x000000000001aa93       0x95 ./lib/startup_stm32f103xb.o
+ .debug_line    0x000000000000135b      0x977 ./appli/hcsr04.o
+ .debug_line    0x0000000000001cd2      0xcaa ./appli/main.o
+ .debug_line    0x000000000000297c      0x980 ./appli/mcp9701.o
+ .debug_line    0x00000000000032fc      0xc2d ./appli/tft.o
+ .debug_line    0x0000000000003f29      0xc40 ./lib/bsp/HC-SR04/HCSR04.o
+ .debug_line    0x0000000000004b69      0xb37 ./lib/bsp/stm32f1_adc.o
+ .debug_line    0x00000000000056a0      0xbca ./lib/bsp/stm32f1_extit.o
+ .debug_line    0x000000000000626a      0x923 ./lib/bsp/stm32f1_gpio.o
+ .debug_line    0x0000000000006b8d      0xc02 ./lib/bsp/stm32f1_spi.o
+ .debug_line    0x000000000000778f     0x1050 ./lib/bsp/stm32f1_sys.o
+ .debug_line    0x00000000000087df      0xeeb ./lib/bsp/stm32f1_timer.o
+ .debug_line    0x00000000000096ca      0xf1b ./lib/bsp/stm32f1_uart.o
+ .debug_line    0x000000000000a5e5      0xe9c ./lib/bsp/stm32f1_weak_it.o
+ .debug_line    0x000000000000b481      0x856 ./lib/bsp/system_stm32f1xx.o
+ .debug_line    0x000000000000bcd7      0xa12 ./lib/bsp/systick.o
+ .debug_line    0x000000000000c6e9      0x95a ./lib/bsp/tft_ili9341/stm32f1_fonts.o
+ .debug_line    0x000000000000d043     0x120c ./lib/bsp/tft_ili9341/stm32f1_ili9341.o
+ .debug_line    0x000000000000e24f      0xa4c ./lib/hal/src/stm32f1xx_hal.o
+ .debug_line    0x000000000000ec9b     0x10a5 ./lib/hal/src/stm32f1xx_hal_adc.o
+ .debug_line    0x000000000000fd40      0xc3a ./lib/hal/src/stm32f1xx_hal_cortex.o
+ .debug_line    0x000000000001097a      0xeaa ./lib/hal/src/stm32f1xx_hal_dma.o
+ .debug_line    0x0000000000011824      0xaec ./lib/hal/src/stm32f1xx_hal_gpio.o
+ .debug_line    0x0000000000012310      0xe60 ./lib/hal/src/stm32f1xx_hal_rcc.o
+ .debug_line    0x0000000000013170     0x1e70 ./lib/hal/src/stm32f1xx_hal_spi.o
+ .debug_line    0x0000000000014fe0      0x7f6 ./lib/hal/src/stm32f1xx_hal_spi_ex.o
+ .debug_line    0x00000000000157d6     0x289c ./lib/hal/src/stm32f1xx_hal_tim.o
+ .debug_line    0x0000000000018072     0x124b ./lib/hal/src/stm32f1xx_hal_tim_ex.o
+ .debug_line    0x00000000000192bd     0x17d8 ./lib/hal/src/stm32f1xx_hal_uart.o
+ .debug_line    0x000000000001aa95       0x95 ./lib/startup_stm32f103xb.o
 
 .debug_str      0x0000000000000000    0x83908
  .debug_str     0x0000000000000000    0x7ba3f ./appli/button.o

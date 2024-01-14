@@ -88,16 +88,20 @@ int main(void)
  */
 static void state_machine(void)
 {
-	typedef enum{
-		INIT,
-		ACCUEIL,
-		MODE_AUTO,
-		MODE_MANUEL,
-		PARAMETRES,
-		ANNONCE,
-		MODIF_CUVE,
-		MODIF_ALERTES
-	}state_e;
+	/**
+	 * @enum state_e
+	 * @brief Enumeration des différents états du programme principale
+	 */
+	typedef enum {
+	    INIT, /**< Initialisation des différentes variables, capteurs et actionneurs. */
+	    ACCUEIL, /**< État d'affichage de l'accueil sur l'écran TFT. */
+	    MODE_AUTO, /**< État du mode automatique du système. */
+	    MODE_MANUEL, /**< État du mode manuel du système. */
+	    PARAMETRES, /**< État d'affichage des paramètres sur l'écran TFT. */
+	    ANNONCE, /**< État d'affichage d'une annonce sur l'écran TFT. */
+	    MODIF_CUVE, /**< État de modification de la taille de la cuve. */
+	    MODIF_ALERTES /**< État de modification des alertes sur l'écran TFT. */
+	} state_e;
 
 	static state_e state = INIT;
 	static state_e previous_state = INIT;
