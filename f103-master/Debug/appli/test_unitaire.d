@@ -24,10 +24,9 @@ appli/test_unitaire.o: ../appli/test_unitaire.c ../appli/test_unitaire.h \
  ../lib/hal/inc/stm32f1xx_hal_wwdg.h ../lib/hal/inc/stm32f1xx_hal_pcd.h \
  ../lib/hal/inc/stm32f1xx_ll_usb.h ../lib/hal/inc/stm32f1xx_hal_pcd_ex.h \
  ../lib/hal/inc/stm32f1xx_hal_hcd.h ../lib/bsp/macro_types.h \
- ../lib/bsp/stm32f1_gpio.h ../lib/bsp/tft_ili9341/stm32f1_ili9341.h \
- ../appli/config.h ../lib/bsp/tft_ili9341/stm32f1_fonts.h \
- ../lib/bsp/stm32f1_adc.h ../lib/bsp/macro_types.h \
- ../lib/bsp/HC-SR04/HCSR04.h ../appli/button.h
+ ../appli/tft.h ../appli/button.h ../lib/bsp/stm32f1_gpio.h \
+ ../appli/electrovanne.h ../appli/hcsr04.h ../lib/bsp/HC-SR04/HCSR04.h \
+ ../appli/config.h ../appli/mcp9701.h
 
 ../appli/test_unitaire.h:
 
@@ -121,18 +120,18 @@ appli/test_unitaire.o: ../appli/test_unitaire.c ../appli/test_unitaire.h \
 
 ../lib/bsp/macro_types.h:
 
+../appli/tft.h:
+
+../appli/button.h:
+
 ../lib/bsp/stm32f1_gpio.h:
 
-../lib/bsp/tft_ili9341/stm32f1_ili9341.h:
+../appli/electrovanne.h:
 
-../appli/config.h:
-
-../lib/bsp/tft_ili9341/stm32f1_fonts.h:
-
-../lib/bsp/stm32f1_adc.h:
-
-../lib/bsp/macro_types.h:
+../appli/hcsr04.h:
 
 ../lib/bsp/HC-SR04/HCSR04.h:
 
-../appli/button.h:
+../appli/config.h:
+
+../appli/mcp9701.h:

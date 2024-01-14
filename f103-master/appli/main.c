@@ -62,8 +62,8 @@ int main(void)
 
 	//Initialisation de l'UART1
 	UART_init(UART1_ID,115200);
-
-	//Indique que les printf sortent vers le p�riph�rique UART2
+	//RX sur le PA9 (voir config.h)
+	//Indique que les printf sortent vers le p�riph�rique UART1
 	SYS_set_std_usart(UART1_ID, UART1_ID, UART1_ID);
 
 	//On ajoute la fonction process_ms à la liste des fonctions appelées automatiquement chaque ms par la routine d'interruption du périphérique SYSTICK
@@ -81,6 +81,23 @@ int main(void)
 		state_machine();
 	}
 
+	/*
+	// Tests Unitaires
+	// Commenter le précédent while au risque d'avoir des conflits
+	// Ne pas prendre en compte les warnings lors de la compilation !
+	printf(" \n");
+	printf("######    TESTS UNITAIRES    ##### \n");
+	printf(" \n");
+
+	TEST_EcranTFT();
+	TEST_Electrovanne();
+
+	while(1)
+	{
+	TEST_MCP9701();
+	TEST_HCSR04();
+	}
+	*/
 }
 
 /**

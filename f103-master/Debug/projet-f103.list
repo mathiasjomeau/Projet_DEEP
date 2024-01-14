@@ -31,15 +31,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  13 .debug_ranges 00001508  00000000  00000000  00054790  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_macro  0001b3ab  00000000  00000000  00055c98  2**0
+ 14 .debug_macro  0001b487  00000000  00000000  00055c98  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_line   0001ab2a  00000000  00000000  00071043  2**0
+ 15 .debug_line   0001ab2a  00000000  00000000  0007111f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_str    00083908  00000000  00000000  0008bb6d  2**0
+ 16 .debug_str    0008391a  00000000  00000000  0008bc49  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .comment      00000053  00000000  00000000  0010f475  2**0
+ 17 .comment      00000053  00000000  00000000  0010f563  2**0
                   CONTENTS, READONLY
- 18 .debug_frame  00007750  00000000  00000000  0010f4c8  2**2
+ 18 .debug_frame  00007750  00000000  00000000  0010f5b8  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -2442,8 +2442,8 @@ int main(void)
  8001800:	f44f 31e1 	mov.w	r1, #115200	; 0x1c200
  8001804:	2000      	movs	r0, #0
  8001806:	f002 ffc5 	bl	8004794 <UART_init>
-
-	//Indique que les printf sortent vers le p�riph�rique UART2
+	//RX sur le PA9 (voir config.h)
+	//Indique que les printf sortent vers le p�riph�rique UART1
 	SYS_set_std_usart(UART1_ID, UART1_ID, UART1_ID);
  800180a:	2200      	movs	r2, #0
  800180c:	2100      	movs	r1, #0
