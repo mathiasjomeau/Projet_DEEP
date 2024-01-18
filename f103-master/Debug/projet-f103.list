@@ -2840,10 +2840,10 @@ static void state_machine(void)
  8001a82:	701a      	strb	r2, [r3, #0]
 			}
 
-			if (current_mode == MODE_AUTO)
+			if (current_mode == 0) // Mode Auto
  8001a84:	4b1f      	ldr	r3, [pc, #124]	; (8001b04 <state_machine+0x2c8>)
  8001a86:	781b      	ldrb	r3, [r3, #0]
- 8001a88:	2b02      	cmp	r3, #2
+ 8001a88:	2b00      	cmp	r3, #0
  8001a8a:	f040 8215 	bne.w	8001eb8 <state_machine+0x67c>
 			{
 				state = MODE_AUTO;
@@ -4090,7 +4090,7 @@ void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_
 	char EC_state_char [40];
 	char eau_temperature_char [30];
 
-	sprintf(water_level_char, "Niveau de la cuve : %d%%", water_level);
+	sprintf(water_level_char, "Niveau de la cuve : %d%%       ", water_level);
  8002310:	89fa      	ldrh	r2, [r7, #14]
  8002312:	f107 0388 	add.w	r3, r7, #136	; 0x88
  8002316:	4941      	ldr	r1, [pc, #260]	; (800241c <TFT_InformationsSensors_Update+0x11c>)
@@ -4200,10 +4200,10 @@ void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_
  800241a:	bdf0      	pop	{r4, r5, r6, r7, pc}
  800241c:	0800efd8 	.word	0x0800efd8
  8002420:	20001184 	.word	0x20001184
- 8002424:	0800f048 	.word	0x0800f048
- 8002428:	0800eff4 	.word	0x0800eff4
- 800242c:	0800f00c 	.word	0x0800f00c
- 8002430:	0800f02c 	.word	0x0800f02c
+ 8002424:	0800f04c 	.word	0x0800f04c
+ 8002428:	0800eff8 	.word	0x0800eff8
+ 800242c:	0800f010 	.word	0x0800f010
+ 8002430:	0800f030 	.word	0x0800f030
 
 08002434 <updateSelectedMenu>:
  * @brief Met à jour le menu sélectionné sur l'écran TFT.
@@ -4486,10 +4486,10 @@ void TFT_Acceuil()
  8002676:	37e0      	adds	r7, #224	; 0xe0
  8002678:	46bd      	mov	sp, r7
  800267a:	bdb0      	pop	{r4, r5, r7, pc}
- 800267c:	0800f050 	.word	0x0800f050
- 8002680:	0800f088 	.word	0x0800f088
- 8002684:	0800f0c0 	.word	0x0800f0c0
- 8002688:	0800f0f8 	.word	0x0800f0f8
+ 800267c:	0800f054 	.word	0x0800f054
+ 8002680:	0800f08c 	.word	0x0800f08c
+ 8002684:	0800f0c4 	.word	0x0800f0c4
+ 8002688:	0800f0fc 	.word	0x0800f0fc
 
 0800268c <TFT_Acceuil_Update>:
  * @param mode Mode à afficher.
@@ -4585,8 +4585,8 @@ void TFT_Acceuil_Update(uint8_t mode, uint8_t current_mode, uint8_t id_mode)
  8002726:	bf00      	nop
  8002728:	03020104 	.word	0x03020104
  800272c:	20001184 	.word	0x20001184
- 8002730:	0800f130 	.word	0x0800f130
- 8002734:	0800f14c 	.word	0x0800f14c
+ 8002730:	0800f134 	.word	0x0800f134
+ 8002734:	0800f150 	.word	0x0800f150
 
 08002738 <TFT_Mode_Manuel>:
 
@@ -4696,11 +4696,11 @@ void TFT_Mode_Manuel()
  800281a:	37a8      	adds	r7, #168	; 0xa8
  800281c:	46bd      	mov	sp, r7
  800281e:	bdb0      	pop	{r4, r5, r7, pc}
- 8002820:	0800f174 	.word	0x0800f174
- 8002824:	0800f1ac 	.word	0x0800f1ac
- 8002828:	0800f1e4 	.word	0x0800f1e4
+ 8002820:	0800f178 	.word	0x0800f178
+ 8002824:	0800f1b0 	.word	0x0800f1b0
+ 8002828:	0800f1e8 	.word	0x0800f1e8
  800282c:	20000038 	.word	0x20000038
- 8002830:	0800f168 	.word	0x0800f168
+ 8002830:	0800f16c 	.word	0x0800f16c
 
 08002834 <TFT_Mode_Manual_Update>:
 /**
@@ -4843,11 +4843,11 @@ void TFT_Mode_Parametre()
  8002946:	37a8      	adds	r7, #168	; 0xa8
  8002948:	46bd      	mov	sp, r7
  800294a:	bdb0      	pop	{r4, r5, r7, pc}
- 800294c:	0800f228 	.word	0x0800f228
- 8002950:	0800f260 	.word	0x0800f260
- 8002954:	0800f298 	.word	0x0800f298
+ 800294c:	0800f22c 	.word	0x0800f22c
+ 8002950:	0800f264 	.word	0x0800f264
+ 8002954:	0800f29c 	.word	0x0800f29c
  8002958:	20000038 	.word	0x20000038
- 800295c:	0800f21c 	.word	0x0800f21c
+ 800295c:	0800f220 	.word	0x0800f220
 
 08002960 <TFT_Mode_Parametre_Update>:
 /**
@@ -4961,10 +4961,10 @@ void TFT_Parametre_Cuve()
  8002a26:	3738      	adds	r7, #56	; 0x38
  8002a28:	46bd      	mov	sp, r7
  8002a2a:	bdb0      	pop	{r4, r5, r7, pc}
- 8002a2c:	0800f2ec 	.word	0x0800f2ec
+ 8002a2c:	0800f2f0 	.word	0x0800f2f0
  8002a30:	20000038 	.word	0x20000038
- 8002a34:	0800f2d0 	.word	0x0800f2d0
- 8002a38:	0800f2e8 	.word	0x0800f2e8
+ 8002a34:	0800f2d4 	.word	0x0800f2d4
+ 8002a38:	0800f2ec 	.word	0x0800f2ec
 
 08002a3c <TFT_Parametre_Cuve_Update>:
 /**
@@ -5005,7 +5005,7 @@ void TFT_Parametre_Cuve_Update(uint16_t taille_cuve)
  8002a7e:	372c      	adds	r7, #44	; 0x2c
  8002a80:	46bd      	mov	sp, r7
  8002a82:	bdf0      	pop	{r4, r5, r6, r7, pc}
- 8002a84:	0800f324 	.word	0x0800f324
+ 8002a84:	0800f328 	.word	0x0800f328
  8002a88:	20001184 	.word	0x20001184
 
 08002a8c <TFT_Parametre_Alertes>:
@@ -5088,10 +5088,10 @@ void TFT_Parametre_Alertes()
  8002b22:	3738      	adds	r7, #56	; 0x38
  8002b24:	46bd      	mov	sp, r7
  8002b26:	bdb0      	pop	{r4, r5, r7, pc}
- 8002b28:	0800f344 	.word	0x0800f344
+ 8002b28:	0800f348 	.word	0x0800f348
  8002b2c:	20000038 	.word	0x20000038
- 8002b30:	0800f32c 	.word	0x0800f32c
- 8002b34:	0800f2e8 	.word	0x0800f2e8
+ 8002b30:	0800f330 	.word	0x0800f330
+ 8002b34:	0800f2ec 	.word	0x0800f2ec
 
 08002b38 <TFT_Parametre_Alertes_Update>:
 /**
@@ -5155,8 +5155,8 @@ void TFT_Parametre_Alertes_Update(bool_e activation)
  8002ba0:	46bd      	mov	sp, r7
  8002ba2:	bdf0      	pop	{r4, r5, r6, r7, pc}
  8002ba4:	20001184 	.word	0x20001184
- 8002ba8:	0800f37c 	.word	0x0800f37c
- 8002bac:	0800f380 	.word	0x0800f380
+ 8002ba8:	0800f380 	.word	0x0800f380
+ 8002bac:	0800f384 	.word	0x0800f384
 
 08002bb0 <TFT_Annonce>:
  * @brief Affiche un écran d'annonce sur l'écran TFT.
@@ -5232,7 +5232,7 @@ void TFT_Annonce (char * ligne1, char * ligne2)
  8002c3a:	bd80      	pop	{r7, pc}
  8002c3c:	2000002c 	.word	0x2000002c
  8002c40:	20000038 	.word	0x20000038
- 8002c44:	0800f2e8 	.word	0x0800f2e8
+ 8002c44:	0800f2ec 	.word	0x0800f2ec
 
 08002c48 <HCSR04_add>:
 
@@ -6443,7 +6443,7 @@ int16_t ADC_getValue(adc_id_e channel)
  80033c0:	46bd      	mov	sp, r7
  80033c2:	bd80      	pop	{r7, pc}
  80033c4:	20000b58 	.word	0x20000b58
- 80033c8:	0800f3bc 	.word	0x0800f3bc
+ 80033c8:	0800f3c0 	.word	0x0800f3c0
  80033cc:	20000b0c 	.word	0x20000b0c
 
 080033d0 <DMA1_Channel1_IRQHandler>:
@@ -7456,8 +7456,8 @@ void SPI_Init(SPI_TypeDef* SPIx)
  8003aae:	bf00      	nop
  8003ab0:	40013000 	.word	0x40013000
  8003ab4:	40003800 	.word	0x40003800
- 8003ab8:	0800f41c 	.word	0x0800f41c
- 8003abc:	0800f43c 	.word	0x0800f43c
+ 8003ab8:	0800f420 	.word	0x0800f420
+ 8003abc:	0800f440 	.word	0x0800f440
  8003ac0:	40021000 	.word	0x40021000
  8003ac4:	40010800 	.word	0x40010800
  8003ac8:	40010c00 	.word	0x40010c00
@@ -7516,8 +7516,8 @@ void SPI_WriteNoRegister(SPI_TypeDef* SPIx, uint8_t data)
  8003b26:	bd80      	pop	{r7, pc}
  8003b28:	40013000 	.word	0x40013000
  8003b2c:	40003800 	.word	0x40003800
- 8003b30:	0800f41c 	.word	0x0800f41c
- 8003b34:	0800f43c 	.word	0x0800f43c
+ 8003b30:	0800f420 	.word	0x0800f420
+ 8003b34:	0800f440 	.word	0x0800f440
  8003b38:	20000c2c 	.word	0x20000c2c
 
 08003b3c <SPI_WriteMultiNoRegister>:
@@ -7575,8 +7575,8 @@ void SPI_WriteMultiNoRegister(SPI_TypeDef* SPIx, uint8_t* data, uint16_t count)
  8003b96:	bf00      	nop
  8003b98:	40013000 	.word	0x40013000
  8003b9c:	40003800 	.word	0x40003800
- 8003ba0:	0800f41c 	.word	0x0800f41c
- 8003ba4:	0800f43c 	.word	0x0800f43c
+ 8003ba0:	0800f420 	.word	0x0800f420
+ 8003ba4:	0800f440 	.word	0x0800f440
  8003ba8:	20000c2c 	.word	0x20000c2c
 
 08003bac <TM_SPI_SetDataSize>:
@@ -7931,7 +7931,7 @@ void _exit(int status __unused) {
  8003dba:	f000 f8db 	bl	8003f74 <_write>
 	while (1) {
  8003dbe:	e7fe      	b.n	8003dbe <_exit+0x12>
- 8003dc0:	0800f478 	.word	0x0800f478
+ 8003dc0:	0800f47c 	.word	0x0800f47c
 
 08003dc4 <_fstat>:
  Status of an open file. For consistency with other minimal implementations in these examples,
@@ -8599,21 +8599,21 @@ void dump_trap_info(uint32_t stack_ptr[], uint32_t lr) {
  80041a6:	bf00      	nop
  80041a8:	20000ce0 	.word	0x20000ce0
  80041ac:	e5e0e5e0 	.word	0xe5e0e5e0
- 80041b0:	0800f4bc 	.word	0x0800f4bc
- 80041b4:	0800f4dc 	.word	0x0800f4dc
- 80041b8:	0800f4f4 	.word	0x0800f4f4
- 80041bc:	0800f510 	.word	0x0800f510
- 80041c0:	0800f524 	.word	0x0800f524
- 80041c4:	0800f544 	.word	0x0800f544
- 80041c8:	0800f564 	.word	0x0800f564
- 80041cc:	0800f574 	.word	0x0800f574
- 80041d0:	0800f588 	.word	0x0800f588
- 80041d4:	0800f59c 	.word	0x0800f59c
- 80041d8:	0800f5b0 	.word	0x0800f5b0
- 80041dc:	0800f5c0 	.word	0x0800f5c0
- 80041e0:	0800f5c4 	.word	0x0800f5c4
+ 80041b0:	0800f4c0 	.word	0x0800f4c0
+ 80041b4:	0800f4e0 	.word	0x0800f4e0
+ 80041b8:	0800f4f8 	.word	0x0800f4f8
+ 80041bc:	0800f514 	.word	0x0800f514
+ 80041c0:	0800f528 	.word	0x0800f528
+ 80041c4:	0800f548 	.word	0x0800f548
+ 80041c8:	0800f568 	.word	0x0800f568
+ 80041cc:	0800f578 	.word	0x0800f578
+ 80041d0:	0800f58c 	.word	0x0800f58c
+ 80041d4:	0800f5a0 	.word	0x0800f5a0
+ 80041d8:	0800f5b4 	.word	0x0800f5b4
+ 80041dc:	0800f5c4 	.word	0x0800f5c4
+ 80041e0:	0800f5c8 	.word	0x0800f5c8
  80041e4:	20005000 	.word	0x20005000
- 80041e8:	0800f5d0 	.word	0x0800f5d0
+ 80041e8:	0800f5d4 	.word	0x0800f5d4
 
 080041ec <BusFault_Handler>:
 
@@ -8653,7 +8653,7 @@ void NMI_Handler(void)
  800420e:	bf00      	nop
  8004210:	bd80      	pop	{r7, pc}
  8004212:	bf00      	nop
- 8004214:	0800f5e8 	.word	0x0800f5e8
+ 8004214:	0800f5ec 	.word	0x0800f5ec
 
 08004218 <SVC_Handler>:
 
@@ -8668,7 +8668,7 @@ void SVC_Handler(void)
  8004222:	bf00      	nop
  8004224:	bd80      	pop	{r7, pc}
  8004226:	bf00      	nop
- 8004228:	0800f5fc 	.word	0x0800f5fc
+ 8004228:	0800f600 	.word	0x0800f600
 
 0800422c <DebugMon_Handler>:
 
@@ -8683,7 +8683,7 @@ void DebugMon_Handler(void)
  8004236:	bf00      	nop
  8004238:	bd80      	pop	{r7, pc}
  800423a:	bf00      	nop
- 800423c:	0800f61c 	.word	0x0800f61c
+ 800423c:	0800f620 	.word	0x0800f620
 
 08004240 <PendSV_Handler>:
 
@@ -8698,7 +8698,7 @@ void PendSV_Handler(void)
  800424a:	bf00      	nop
  800424c:	bd80      	pop	{r7, pc}
  800424e:	bf00      	nop
- 8004250:	0800f638 	.word	0x0800f638
+ 8004250:	0800f63c 	.word	0x0800f63c
  8004254:	00000000 	.word	0x00000000
 
 08004258 <TIMER_run_us>:
@@ -9055,7 +9055,7 @@ void TIMER_run_us(timer_id_e timer_id, uint32_t us, bool_e enable_irq)
  80044d8:	40021000 	.word	0x40021000
  80044dc:	20000008 	.word	0x20000008
  80044e0:	20000ce8 	.word	0x20000ce8
- 80044e4:	0800f900 	.word	0x0800f900
+ 80044e4:	0800f904 	.word	0x0800f904
 
 080044e8 <TIMER_read>:
 
@@ -9718,15 +9718,15 @@ void UART_init(uart_id_e uart_id, uint32_t baudrate)
  80048fe:	46bd      	mov	sp, r7
  8004900:	bd80      	pop	{r7, pc}
  8004902:	bf00      	nop
- 8004904:	0800f660 	.word	0x0800f660
- 8004908:	0800f670 	.word	0x0800f670
- 800490c:	0800f6ac 	.word	0x0800f6ac
+ 8004904:	0800f664 	.word	0x0800f664
+ 8004908:	0800f674 	.word	0x0800f674
+ 800490c:	0800f6b0 	.word	0x0800f6b0
  8004910:	2000102c 	.word	0x2000102c
  8004914:	20001028 	.word	0x20001028
  8004918:	20001038 	.word	0x20001038
  800491c:	20000018 	.word	0x20000018
  8004920:	20000de8 	.word	0x20000de8
- 8004924:	0800f904 	.word	0x0800f904
+ 8004924:	0800f908 	.word	0x0800f908
  8004928:	20000ea8 	.word	0x20000ea8
  800492c:	2000004c 	.word	0x2000004c
  8004930:	20001044 	.word	0x20001044
@@ -9762,8 +9762,8 @@ bool_e UART_data_ready(uart_id_e uart_id)
  800495e:	46bd      	mov	sp, r7
  8004960:	bd80      	pop	{r7, pc}
  8004962:	bf00      	nop
- 8004964:	0800f6ac 	.word	0x0800f6ac
- 8004968:	0800f670 	.word	0x0800f670
+ 8004964:	0800f6b0 	.word	0x0800f6b0
+ 8004968:	0800f674 	.word	0x0800f674
  800496c:	20001038 	.word	0x20001038
 
 08004970 <UART_get_next_byte>:
@@ -9856,12 +9856,12 @@ uint8_t UART_get_next_byte(uart_id_e uart_id)
  8004a06:	46bd      	mov	sp, r7
  8004a08:	bd80      	pop	{r7, pc}
  8004a0a:	bf00      	nop
- 8004a0c:	0800f6ac 	.word	0x0800f6ac
- 8004a10:	0800f670 	.word	0x0800f670
+ 8004a0c:	0800f6b0 	.word	0x0800f6b0
+ 8004a10:	0800f674 	.word	0x0800f674
  8004a14:	20001038 	.word	0x20001038
  8004a18:	2000102c 	.word	0x2000102c
  8004a1c:	20000ea8 	.word	0x20000ea8
- 8004a20:	0800f904 	.word	0x0800f904
+ 8004a20:	0800f908 	.word	0x0800f908
  8004a24:	20001028 	.word	0x20001028
 
 08004a28 <UART_putc>:
@@ -9932,10 +9932,10 @@ void UART_putc(uart_id_e uart_id, uint8_t c)
  8004a92:	46bd      	mov	sp, r7
  8004a94:	bd80      	pop	{r7, pc}
  8004a96:	bf00      	nop
- 8004a98:	0800f6ac 	.word	0x0800f6ac
- 8004a9c:	0800f670 	.word	0x0800f670
+ 8004a98:	0800f6b0 	.word	0x0800f6b0
+ 8004a9c:	0800f674 	.word	0x0800f674
  8004aa0:	20001044 	.word	0x20001044
- 8004aa4:	0800f904 	.word	0x0800f904
+ 8004aa4:	0800f908 	.word	0x0800f908
  8004aa8:	20000de8 	.word	0x20000de8
 
 08004aac <UART_impolite_force_puts_on_uart>:
@@ -10406,7 +10406,7 @@ __weak void WWDG_IRQHandler(void)
  8004da8:	e7fe      	b.n	8004da8 <WWDG_IRQHandler+0x10>
  8004daa:	bf00      	nop
  8004dac:	20000024 	.word	0x20000024
- 8004db0:	0800f73c 	.word	0x0800f73c
+ 8004db0:	0800f740 	.word	0x0800f740
 
 08004db4 <PVD_IRQHandler>:
 }
@@ -10425,7 +10425,7 @@ __weak void PVD_IRQHandler(void)
  8004dc4:	e7fe      	b.n	8004dc4 <PVD_IRQHandler+0x10>
  8004dc6:	bf00      	nop
  8004dc8:	20000024 	.word	0x20000024
- 8004dcc:	0800f744 	.word	0x0800f744
+ 8004dcc:	0800f748 	.word	0x0800f748
 
 08004dd0 <TAMPER_IRQHandler>:
 }
@@ -10444,7 +10444,7 @@ __weak void TAMPER_IRQHandler(void)
  8004de0:	e7fe      	b.n	8004de0 <TAMPER_IRQHandler+0x10>
  8004de2:	bf00      	nop
  8004de4:	20000024 	.word	0x20000024
- 8004de8:	0800f748 	.word	0x0800f748
+ 8004de8:	0800f74c 	.word	0x0800f74c
 
 08004dec <RTC_IRQHandler>:
 }
@@ -10463,7 +10463,7 @@ __weak void RTC_IRQHandler(void)
  8004dfc:	e7fe      	b.n	8004dfc <RTC_IRQHandler+0x10>
  8004dfe:	bf00      	nop
  8004e00:	20000024 	.word	0x20000024
- 8004e04:	0800f750 	.word	0x0800f750
+ 8004e04:	0800f754 	.word	0x0800f754
 
 08004e08 <FLASH_IRQHandler>:
 }
@@ -10482,7 +10482,7 @@ __weak void FLASH_IRQHandler(void)
  8004e18:	e7fe      	b.n	8004e18 <FLASH_IRQHandler+0x10>
  8004e1a:	bf00      	nop
  8004e1c:	20000024 	.word	0x20000024
- 8004e20:	0800f754 	.word	0x0800f754
+ 8004e20:	0800f758 	.word	0x0800f758
 
 08004e24 <RCC_IRQHandler>:
 }
@@ -10501,7 +10501,7 @@ __weak void RCC_IRQHandler(void)
  8004e34:	e7fe      	b.n	8004e34 <RCC_IRQHandler+0x10>
  8004e36:	bf00      	nop
  8004e38:	20000024 	.word	0x20000024
- 8004e3c:	0800f75c 	.word	0x0800f75c
+ 8004e3c:	0800f760 	.word	0x0800f760
 
 08004e40 <DMA1_Channel2_IRQHandler>:
 	dump_printf(msg, "DMA1_Channel1");
@@ -10522,7 +10522,7 @@ __weak void DMA1_Channel2_IRQHandler(void)
  8004e50:	e7fe      	b.n	8004e50 <DMA1_Channel2_IRQHandler+0x10>
  8004e52:	bf00      	nop
  8004e54:	20000024 	.word	0x20000024
- 8004e58:	0800f798 	.word	0x0800f798
+ 8004e58:	0800f79c 	.word	0x0800f79c
 
 08004e5c <DMA1_Channel3_IRQHandler>:
 }
@@ -10541,7 +10541,7 @@ __weak void DMA1_Channel3_IRQHandler(void)
  8004e6c:	e7fe      	b.n	8004e6c <DMA1_Channel3_IRQHandler+0x10>
  8004e6e:	bf00      	nop
  8004e70:	20000024 	.word	0x20000024
- 8004e74:	0800f7a8 	.word	0x0800f7a8
+ 8004e74:	0800f7ac 	.word	0x0800f7ac
 
 08004e78 <DMA1_Channel4_IRQHandler>:
 }
@@ -10560,7 +10560,7 @@ __weak void DMA1_Channel4_IRQHandler(void)
  8004e88:	e7fe      	b.n	8004e88 <DMA1_Channel4_IRQHandler+0x10>
  8004e8a:	bf00      	nop
  8004e8c:	20000024 	.word	0x20000024
- 8004e90:	0800f7b8 	.word	0x0800f7b8
+ 8004e90:	0800f7bc 	.word	0x0800f7bc
 
 08004e94 <DMA1_Channel5_IRQHandler>:
 }
@@ -10579,7 +10579,7 @@ __weak void DMA1_Channel5_IRQHandler(void)
  8004ea4:	e7fe      	b.n	8004ea4 <DMA1_Channel5_IRQHandler+0x10>
  8004ea6:	bf00      	nop
  8004ea8:	20000024 	.word	0x20000024
- 8004eac:	0800f7c8 	.word	0x0800f7c8
+ 8004eac:	0800f7cc 	.word	0x0800f7cc
 
 08004eb0 <DMA1_Channel6_IRQHandler>:
 }
@@ -10598,7 +10598,7 @@ __weak void DMA1_Channel6_IRQHandler(void)
  8004ec0:	e7fe      	b.n	8004ec0 <DMA1_Channel6_IRQHandler+0x10>
  8004ec2:	bf00      	nop
  8004ec4:	20000024 	.word	0x20000024
- 8004ec8:	0800f7d8 	.word	0x0800f7d8
+ 8004ec8:	0800f7dc 	.word	0x0800f7dc
 
 08004ecc <DMA1_Channel7_IRQHandler>:
 }
@@ -10617,7 +10617,7 @@ __weak void DMA1_Channel7_IRQHandler(void)
  8004edc:	e7fe      	b.n	8004edc <DMA1_Channel7_IRQHandler+0x10>
  8004ede:	bf00      	nop
  8004ee0:	20000024 	.word	0x20000024
- 8004ee4:	0800f7e8 	.word	0x0800f7e8
+ 8004ee4:	0800f7ec 	.word	0x0800f7ec
 
 08004ee8 <ADC1_2_IRQHandler>:
 }
@@ -10636,7 +10636,7 @@ __weak void ADC1_2_IRQHandler(void)
  8004ef8:	e7fe      	b.n	8004ef8 <ADC1_2_IRQHandler+0x10>
  8004efa:	bf00      	nop
  8004efc:	20000024 	.word	0x20000024
- 8004f00:	0800f7f8 	.word	0x0800f7f8
+ 8004f00:	0800f7fc 	.word	0x0800f7fc
 
 08004f04 <USB_HP_CAN1_TX_IRQHandler>:
 }
@@ -10655,7 +10655,7 @@ __weak void USB_HP_CAN1_TX_IRQHandler(void)
  8004f14:	e7fe      	b.n	8004f14 <USB_HP_CAN1_TX_IRQHandler+0x10>
  8004f16:	bf00      	nop
  8004f18:	20000024 	.word	0x20000024
- 8004f1c:	0800f800 	.word	0x0800f800
+ 8004f1c:	0800f804 	.word	0x0800f804
 
 08004f20 <USB_LP_CAN1_RX0_IRQHandler>:
 }
@@ -10674,7 +10674,7 @@ __weak void USB_LP_CAN1_RX0_IRQHandler(void)
  8004f30:	e7fe      	b.n	8004f30 <USB_LP_CAN1_RX0_IRQHandler+0x10>
  8004f32:	bf00      	nop
  8004f34:	20000024 	.word	0x20000024
- 8004f38:	0800f810 	.word	0x0800f810
+ 8004f38:	0800f814 	.word	0x0800f814
 
 08004f3c <CAN1_RX1_IRQHandler>:
 }
@@ -10693,7 +10693,7 @@ __weak void CAN1_RX1_IRQHandler(void)
  8004f4c:	e7fe      	b.n	8004f4c <CAN1_RX1_IRQHandler+0x10>
  8004f4e:	bf00      	nop
  8004f50:	20000024 	.word	0x20000024
- 8004f54:	0800f820 	.word	0x0800f820
+ 8004f54:	0800f824 	.word	0x0800f824
 
 08004f58 <CAN1_SCE_IRQHandler>:
 }
@@ -10712,7 +10712,7 @@ __weak void CAN1_SCE_IRQHandler(void)
  8004f68:	e7fe      	b.n	8004f68 <CAN1_SCE_IRQHandler+0x10>
  8004f6a:	bf00      	nop
  8004f6c:	20000024 	.word	0x20000024
- 8004f70:	0800f82c 	.word	0x0800f82c
+ 8004f70:	0800f830 	.word	0x0800f830
 
 08004f74 <TIM1_BRK_IRQHandler>:
 	dump_printf(msg, "EXTI9_5");
@@ -10733,7 +10733,7 @@ __weak void TIM1_BRK_IRQHandler(void)
  8004f84:	e7fe      	b.n	8004f84 <TIM1_BRK_IRQHandler+0x10>
  8004f86:	bf00      	nop
  8004f88:	20000024 	.word	0x20000024
- 8004f8c:	0800f840 	.word	0x0800f840
+ 8004f8c:	0800f844 	.word	0x0800f844
 
 08004f90 <TIM1_TRG_COM_IRQHandler>:
 	dump_printf(msg, "TIM1_UP");
@@ -10754,7 +10754,7 @@ __weak void TIM1_TRG_COM_IRQHandler(void)
  8004fa0:	e7fe      	b.n	8004fa0 <TIM1_TRG_COM_IRQHandler+0x10>
  8004fa2:	bf00      	nop
  8004fa4:	20000024 	.word	0x20000024
- 8004fa8:	0800f854 	.word	0x0800f854
+ 8004fa8:	0800f858 	.word	0x0800f858
 
 08004fac <TIM1_CC_IRQHandler>:
 }
@@ -10773,7 +10773,7 @@ __weak void TIM1_CC_IRQHandler(void)
  8004fbc:	e7fe      	b.n	8004fbc <TIM1_CC_IRQHandler+0x10>
  8004fbe:	bf00      	nop
  8004fc0:	20000024 	.word	0x20000024
- 8004fc4:	0800f864 	.word	0x0800f864
+ 8004fc4:	0800f868 	.word	0x0800f868
 
 08004fc8 <I2C1_EV_IRQHandler>:
 	dump_printf(msg, "TIM4");
@@ -10794,7 +10794,7 @@ __weak void I2C1_EV_IRQHandler(void)
  8004fd8:	e7fe      	b.n	8004fd8 <I2C1_EV_IRQHandler+0x10>
  8004fda:	bf00      	nop
  8004fdc:	20000024 	.word	0x20000024
- 8004fe0:	0800f884 	.word	0x0800f884
+ 8004fe0:	0800f888 	.word	0x0800f888
 
 08004fe4 <I2C1_ER_IRQHandler>:
 }
@@ -10813,7 +10813,7 @@ __weak void I2C1_ER_IRQHandler(void)
  8004ff4:	e7fe      	b.n	8004ff4 <I2C1_ER_IRQHandler+0x10>
  8004ff6:	bf00      	nop
  8004ff8:	20000024 	.word	0x20000024
- 8004ffc:	0800f88c 	.word	0x0800f88c
+ 8004ffc:	0800f890 	.word	0x0800f890
 
 08005000 <I2C2_EV_IRQHandler>:
 }
@@ -10832,7 +10832,7 @@ __weak void I2C2_EV_IRQHandler(void)
  8005010:	e7fe      	b.n	8005010 <I2C2_EV_IRQHandler+0x10>
  8005012:	bf00      	nop
  8005014:	20000024 	.word	0x20000024
- 8005018:	0800f894 	.word	0x0800f894
+ 8005018:	0800f898 	.word	0x0800f898
 
 0800501c <I2C2_ER_IRQHandler>:
 }
@@ -10851,7 +10851,7 @@ __weak void I2C2_ER_IRQHandler(void)
  800502c:	e7fe      	b.n	800502c <I2C2_ER_IRQHandler+0x10>
  800502e:	bf00      	nop
  8005030:	20000024 	.word	0x20000024
- 8005034:	0800f89c 	.word	0x0800f89c
+ 8005034:	0800f8a0 	.word	0x0800f8a0
 
 08005038 <SPI1_IRQHandler>:
 }
@@ -10870,7 +10870,7 @@ __weak void SPI1_IRQHandler(void)
  8005048:	e7fe      	b.n	8005048 <SPI1_IRQHandler+0x10>
  800504a:	bf00      	nop
  800504c:	20000024 	.word	0x20000024
- 8005050:	0800f8a4 	.word	0x0800f8a4
+ 8005050:	0800f8a8 	.word	0x0800f8a8
 
 08005054 <SPI2_IRQHandler>:
 }
@@ -10889,7 +10889,7 @@ __weak void SPI2_IRQHandler(void)
  8005064:	e7fe      	b.n	8005064 <SPI2_IRQHandler+0x10>
  8005066:	bf00      	nop
  8005068:	20000024 	.word	0x20000024
- 800506c:	0800f8ac 	.word	0x0800f8ac
+ 800506c:	0800f8b0 	.word	0x0800f8b0
 
 08005070 <RTC_Alarm_IRQHandler>:
 	dump_printf(msg, "EXTI15_10");
@@ -10910,7 +10910,7 @@ __weak void RTC_Alarm_IRQHandler(void)
  8005080:	e7fe      	b.n	8005080 <RTC_Alarm_IRQHandler+0x10>
  8005082:	bf00      	nop
  8005084:	20000024 	.word	0x20000024
- 8005088:	0800f8d8 	.word	0x0800f8d8
+ 8005088:	0800f8dc 	.word	0x0800f8dc
 
 0800508c <USBWakeUp_IRQHandler>:
 }
@@ -10929,7 +10929,7 @@ __weak void USBWakeUp_IRQHandler(void)
  800509c:	bf00      	nop
  800509e:	bd80      	pop	{r7, pc}
  80050a0:	20000024 	.word	0x20000024
- 80050a4:	0800f8e4 	.word	0x0800f8e4
+ 80050a4:	0800f8e8 	.word	0x0800f8e8
 
 080050a8 <SystemInit>:
   * @note   This function should be used only after reset.
@@ -11172,7 +11172,7 @@ void SystemCoreClockUpdate (void)
  80051e4:	20000028 	.word	0x20000028
  80051e8:	007a1200 	.word	0x007a1200
  80051ec:	003d0900 	.word	0x003d0900
- 80051f0:	0800f908 	.word	0x0800f908
+ 80051f0:	0800f90c 	.word	0x0800f90c
 
 080051f4 <Systick_init>:
 //Tableau de pointeurs sur fonctions qui doivent �tre appel�es p�riodiquement (1ms) par l'IT systick.
@@ -18172,7 +18172,7 @@ if (((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK
  8007a3e:	bf00      	nop
  8007a40:	40022000 	.word	0x40022000
  8007a44:	40021000 	.word	0x40021000
- 8007a48:	0800f908 	.word	0x0800f908
+ 8007a48:	0800f90c 	.word	0x0800f90c
  8007a4c:	20000028 	.word	0x20000028
  8007a50:	20000044 	.word	0x20000044
 
@@ -18320,7 +18320,7 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
  8007afe:	bc90      	pop	{r4, r7}
  8007b00:	4770      	bx	lr
  8007b02:	bf00      	nop
- 8007b04:	0800f8f0 	.word	0x0800f8f0
+ 8007b04:	0800f8f4 	.word	0x0800f8f4
  8007b08:	40021000 	.word	0x40021000
  8007b0c:	007a1200 	.word	0x007a1200
  8007b10:	003d0900 	.word	0x003d0900
@@ -18368,7 +18368,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  8007b44:	4618      	mov	r0, r3
  8007b46:	bd80      	pop	{r7, pc}
  8007b48:	40021000 	.word	0x40021000
- 8007b4c:	0800f918 	.word	0x0800f918
+ 8007b4c:	0800f91c 	.word	0x0800f91c
 
 08007b50 <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -18394,7 +18394,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  8007b6c:	4618      	mov	r0, r3
  8007b6e:	bd80      	pop	{r7, pc}
  8007b70:	40021000 	.word	0x40021000
- 8007b74:	0800f918 	.word	0x0800f918
+ 8007b74:	0800f91c 	.word	0x0800f91c
 
 08007b78 <RCC_Delay>:
   * @brief  This function provides delay (in milliseconds) based on CPU cycles method.
@@ -22373,10 +22373,10 @@ Infinite_Loop:
  800969e:	f04f 33ff 	movne.w	r3, #4294967295
  80096a2:	e621      	b.n	80092e8 <_svfprintf_r+0x48>
  80096a4:	7fefffff 	.word	0x7fefffff
- 80096a8:	08010a38 	.word	0x08010a38
- 80096ac:	08010a3c 	.word	0x08010a3c
- 80096b0:	08010a40 	.word	0x08010a40
- 80096b4:	08010a44 	.word	0x08010a44
+ 80096a8:	08010a3c 	.word	0x08010a3c
+ 80096ac:	08010a40 	.word	0x08010a40
+ 80096b0:	08010a44 	.word	0x08010a44
+ 80096b4:	08010a48 	.word	0x08010a48
  80096b8:	f1b8 3fff 	cmp.w	r8, #4294967295
  80096bc:	f000 81d9 	beq.w	8009a72 <_svfprintf_r+0x7d2>
  80096c0:	9b0c      	ldr	r3, [sp, #48]	; 0x30
@@ -22700,12 +22700,12 @@ Infinite_Loop:
  80099ec:	f040 85d0 	bne.w	800a590 <_svfprintf_r+0x12f0>
  80099f0:	ac29      	add	r4, sp, #164	; 0xa4
  80099f2:	e00b      	b.n	8009a0c <_svfprintf_r+0x76c>
- 80099f4:	08010a48 	.word	0x08010a48
- 80099f8:	08010a59 	.word	0x08010a59
+ 80099f4:	08010a4c 	.word	0x08010a4c
+ 80099f8:	08010a5d 	.word	0x08010a5d
  80099fc:	40300000 	.word	0x40300000
  8009a00:	3fe00000 	.word	0x3fe00000
- 8009a04:	08010a6c 	.word	0x08010a6c
- 8009a08:	08010a7c 	.word	0x08010a7c
+ 8009a04:	08010a70 	.word	0x08010a70
+ 8009a08:	08010a80 	.word	0x08010a80
  8009a0c:	f41a 7f80 	tst.w	sl, #256	; 0x100
  8009a10:	9e28      	ldr	r6, [sp, #160]	; 0xa0
  8009a12:	f040 82b9 	bne.w	8009f88 <_svfprintf_r+0xce8>
@@ -23274,8 +23274,8 @@ Infinite_Loop:
  8009f7a:	460c      	mov	r4, r1
  8009f7c:	e546      	b.n	8009a0c <_svfprintf_r+0x76c>
  8009f7e:	bf00      	nop
- 8009f80:	08010a48 	.word	0x08010a48
- 8009f84:	08010a59 	.word	0x08010a59
+ 8009f80:	08010a4c 	.word	0x08010a4c
+ 8009f84:	08010a5d 	.word	0x08010a5d
  8009f88:	9b0b      	ldr	r3, [sp, #44]	; 0x2c
  8009f8a:	2b65      	cmp	r3, #101	; 0x65
  8009f8c:	f340 824a 	ble.w	800a424 <_svfprintf_r+0x1184>
@@ -23473,8 +23473,8 @@ Infinite_Loop:
  800a15a:	3d10      	subs	r5, #16
  800a15c:	e7b7      	b.n	800a0ce <_svfprintf_r+0xe2e>
  800a15e:	bf00      	nop
- 800a160:	08010a6a 	.word	0x08010a6a
- 800a164:	08010a7c 	.word	0x08010a7c
+ 800a160:	08010a6e 	.word	0x08010a6e
+ 800a164:	08010a80 	.word	0x08010a80
  800a168:	9b08      	ldr	r3, [sp, #32]
  800a16a:	42ab      	cmp	r3, r5
  800a16c:	bfa8      	it	ge
@@ -23758,7 +23758,7 @@ Infinite_Loop:
  800a41a:	ac29      	add	r4, sp, #164	; 0xa4
  800a41c:	e71b      	b.n	800a256 <_svfprintf_r+0xfb6>
  800a41e:	bf00      	nop
- 800a420:	08010a7c 	.word	0x08010a7c
+ 800a420:	08010a80 	.word	0x08010a80
  800a424:	9a08      	ldr	r2, [sp, #32]
  800a426:	9b27      	ldr	r3, [sp, #156]	; 0x9c
  800a428:	2a01      	cmp	r2, #1
@@ -23973,8 +23973,8 @@ Infinite_Loop:
  800a63e:	1e8b      	subs	r3, r1, #2
  800a640:	9307      	str	r3, [sp, #28]
  800a642:	e40b      	b.n	8009e5c <_svfprintf_r+0xbbc>
- 800a644:	08010a7c 	.word	0x08010a7c
- 800a648:	08010a6c 	.word	0x08010a6c
+ 800a644:	08010a80 	.word	0x08010a80
+ 800a648:	08010a70 	.word	0x08010a70
 
 0800a64c <sysconf>:
  800a64c:	2808      	cmp	r0, #8
@@ -24433,10 +24433,10 @@ Infinite_Loop:
  800ab1c:	9307      	str	r3, [sp, #28]
  800ab1e:	e00b      	b.n	800ab38 <_vfprintf_r+0x4d0>
  800ab20:	7fefffff 	.word	0x7fefffff
- 800ab24:	08010a38 	.word	0x08010a38
- 800ab28:	08010a3c 	.word	0x08010a3c
- 800ab2c:	08010a40 	.word	0x08010a40
- 800ab30:	08010a44 	.word	0x08010a44
+ 800ab24:	08010a3c 	.word	0x08010a3c
+ 800ab28:	08010a40 	.word	0x08010a40
+ 800ab2c:	08010a44 	.word	0x08010a44
+ 800ab30:	08010a48 	.word	0x08010a48
  800ab34:	f10d 09e4 	add.w	r9, sp, #228	; 0xe4
  800ab38:	f448 7380 	orr.w	r3, r8, #256	; 0x100
  800ab3c:	9315      	str	r3, [sp, #84]	; 0x54
@@ -24751,12 +24751,12 @@ Infinite_Loop:
  800ae48:	f340 82c6 	ble.w	800b3d8 <_vfprintf_r+0xd70>
  800ae4c:	e00c      	b.n	800ae68 <_vfprintf_r+0x800>
  800ae4e:	bf00      	nop
- 800ae50:	08010a59 	.word	0x08010a59
- 800ae54:	08010a48 	.word	0x08010a48
+ 800ae50:	08010a5d 	.word	0x08010a5d
+ 800ae54:	08010a4c 	.word	0x08010a4c
  800ae58:	40300000 	.word	0x40300000
  800ae5c:	3fe00000 	.word	0x3fe00000
- 800ae60:	08010a8c 	.word	0x08010a8c
- 800ae64:	08010a9c 	.word	0x08010a9c
+ 800ae60:	08010a90 	.word	0x08010a90
+ 800ae64:	08010aa0 	.word	0x08010aa0
  800ae68:	4651      	mov	r1, sl
  800ae6a:	4658      	mov	r0, fp
  800ae6c:	aa26      	add	r2, sp, #152	; 0x98
@@ -25327,8 +25327,8 @@ Infinite_Loop:
  800b3d6:	e527      	b.n	800ae28 <_vfprintf_r+0x7c0>
  800b3d8:	460c      	mov	r4, r1
  800b3da:	e54e      	b.n	800ae7a <_vfprintf_r+0x812>
- 800b3dc:	08010a48 	.word	0x08010a48
- 800b3e0:	08010a59 	.word	0x08010a59
+ 800b3dc:	08010a4c 	.word	0x08010a4c
+ 800b3e0:	08010a5d 	.word	0x08010a5d
  800b3e4:	9b0b      	ldr	r3, [sp, #44]	; 0x2c
  800b3e6:	2b65      	cmp	r3, #101	; 0x65
  800b3e8:	f340 8238 	ble.w	800b85c <_vfprintf_r+0x11f4>
@@ -25525,8 +25525,8 @@ Infinite_Loop:
  800b5b2:	3d10      	subs	r5, #16
  800b5b4:	e7b7      	b.n	800b526 <_vfprintf_r+0xebe>
  800b5b6:	bf00      	nop
- 800b5b8:	08010a6a 	.word	0x08010a6a
- 800b5bc:	08010a9c 	.word	0x08010a9c
+ 800b5b8:	08010a6e 	.word	0x08010a6e
+ 800b5bc:	08010aa0 	.word	0x08010aa0
  800b5c0:	9b08      	ldr	r3, [sp, #32]
  800b5c2:	42ab      	cmp	r3, r5
  800b5c4:	bfa8      	it	ge
@@ -25810,7 +25810,7 @@ Infinite_Loop:
  800b852:	ac29      	add	r4, sp, #164	; 0xa4
  800b854:	e723      	b.n	800b69e <_vfprintf_r+0x1036>
  800b856:	bf00      	nop
- 800b858:	08010a9c 	.word	0x08010a9c
+ 800b858:	08010aa0 	.word	0x08010aa0
  800b85c:	9a08      	ldr	r2, [sp, #32]
  800b85e:	9b27      	ldr	r3, [sp, #156]	; 0x9c
  800b860:	2a01      	cmp	r2, #1
@@ -26035,8 +26035,8 @@ Infinite_Loop:
  800ba96:	e9cd 770c 	strd	r7, r7, [sp, #48]	; 0x30
  800ba9a:	f7ff b942 	b.w	800ad22 <_vfprintf_r+0x6ba>
  800ba9e:	bf00      	nop
- 800baa0:	08010a9c 	.word	0x08010a9c
- 800baa4:	08010a8c 	.word	0x08010a8c
+ 800baa0:	08010aa0 	.word	0x08010aa0
+ 800baa4:	08010a90 	.word	0x08010a90
 
 0800baa8 <__sbprintf>:
  800baa8:	b5f0      	push	{r4, r5, r6, r7, lr}
@@ -26630,13 +26630,13 @@ Infinite_Loop:
  800c048:	509f79fb 	.word	0x509f79fb
  800c04c:	3fd34413 	.word	0x3fd34413
  800c050:	7ff00000 	.word	0x7ff00000
- 800c054:	08010aac 	.word	0x08010aac
- 800c058:	08010ab0 	.word	0x08010ab0
- 800c05c:	08010a6b 	.word	0x08010a6b
+ 800c054:	08010ab0 	.word	0x08010ab0
+ 800c058:	08010ab4 	.word	0x08010ab4
+ 800c05c:	08010a6f 	.word	0x08010a6f
  800c060:	3ff80000 	.word	0x3ff80000
  800c064:	08010bb8 	.word	0x08010bb8
- 800c068:	08010ab9 	.word	0x08010ab9
- 800c06c:	08010aca 	.word	0x08010aca
+ 800c068:	08010abd 	.word	0x08010abd
+ 800c06c:	08010ace 	.word	0x08010ace
  800c070:	9b06      	ldr	r3, [sp, #24]
  800c072:	f8c9 3040 	str.w	r3, [r9, #64]	; 0x40
  800c076:	9b07      	ldr	r3, [sp, #28]
@@ -27517,9 +27517,9 @@ Infinite_Loop:
  800c8f0:	f73f aebb 	bgt.w	800c66a <_dtoa_r+0x8e2>
  800c8f4:	e7b0      	b.n	800c858 <_dtoa_r+0xad0>
  800c8f6:	bf00      	nop
- 800c8f8:	08010ab9 	.word	0x08010ab9
- 800c8fc:	08010a6a 	.word	0x08010a6a
- 800c900:	08010ab0 	.word	0x08010ab0
+ 800c8f8:	08010abd 	.word	0x08010abd
+ 800c8fc:	08010a6e 	.word	0x08010a6e
+ 800c900:	08010ab4 	.word	0x08010ab4
 
 0800c904 <__sflush_r>:
  800c904:	898b      	ldrh	r3, [r1, #12]
@@ -28573,8 +28573,8 @@ Infinite_Loop:
  800d2a0:	4620      	mov	r0, r4
  800d2a2:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
  800d2a6:	bf00      	nop
- 800d2a8:	08010ab9 	.word	0x08010ab9
- 800d2ac:	08010b29 	.word	0x08010b29
+ 800d2a8:	08010abd 	.word	0x08010abd
+ 800d2ac:	08010b2d 	.word	0x08010b2d
 
 0800d2b0 <__hi0bits>:
  800d2b0:	0c02      	lsrs	r2, r0, #16
@@ -28666,8 +28666,8 @@ Infinite_Loop:
  800d36a:	6103      	str	r3, [r0, #16]
  800d36c:	bd10      	pop	{r4, pc}
  800d36e:	bf00      	nop
- 800d370:	08010ab9 	.word	0x08010ab9
- 800d374:	08010b29 	.word	0x08010b29
+ 800d370:	08010abd 	.word	0x08010abd
+ 800d374:	08010b2d 	.word	0x08010b2d
 
 0800d378 <__multiply>:
  800d378:	e92d 4ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
@@ -28785,8 +28785,8 @@ Infinite_Loop:
  800d4b2:	d1a5      	bne.n	800d400 <__multiply+0x88>
  800d4b4:	3f01      	subs	r7, #1
  800d4b6:	e7a1      	b.n	800d3fc <__multiply+0x84>
- 800d4b8:	08010ab9 	.word	0x08010ab9
- 800d4bc:	08010b29 	.word	0x08010b29
+ 800d4b8:	08010abd 	.word	0x08010abd
+ 800d4bc:	08010b2d 	.word	0x08010b2d
 
 0800d4c0 <__pow5mult>:
  800d4c0:	e92d 43f8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, lr}
@@ -28918,8 +28918,8 @@ Infinite_Loop:
  800d60a:	d8f9      	bhi.n	800d600 <__lshift+0xc0>
  800d60c:	e7ea      	b.n	800d5e4 <__lshift+0xa4>
  800d60e:	bf00      	nop
- 800d610:	08010ab9 	.word	0x08010ab9
- 800d614:	08010b29 	.word	0x08010b29
+ 800d610:	08010abd 	.word	0x08010abd
+ 800d614:	08010b2d 	.word	0x08010b2d
 
 0800d618 <__mcmp>:
  800d618:	4603      	mov	r3, r0
@@ -29049,8 +29049,8 @@ Infinite_Loop:
  800d762:	3f01      	subs	r7, #1
  800d764:	e7e8      	b.n	800d738 <__mdiff+0xe8>
  800d766:	bf00      	nop
- 800d768:	08010ab9 	.word	0x08010ab9
- 800d76c:	08010b29 	.word	0x08010b29
+ 800d768:	08010abd 	.word	0x08010abd
+ 800d76c:	08010b2d 	.word	0x08010b2d
 
 0800d770 <__d2b>:
  800d770:	e92d 41f3 	stmdb	sp!, {r0, r1, r4, r5, r6, r7, r8, lr}
@@ -29121,8 +29121,8 @@ Infinite_Loop:
  800d81a:	6031      	str	r1, [r6, #0]
  800d81c:	e7e1      	b.n	800d7e2 <__d2b+0x72>
  800d81e:	bf00      	nop
- 800d820:	08010ab9 	.word	0x08010ab9
- 800d824:	08010b29 	.word	0x08010b29
+ 800d820:	08010abd 	.word	0x08010abd
+ 800d824:	08010b2d 	.word	0x08010b2d
 
 0800d828 <_realloc_r>:
  800d828:	e92d 4ff7 	stmdb	sp!, {r0, r1, r2, r4, r5, r6, r7, r8, r9, sl, fp, lr}
@@ -30119,7 +30119,7 @@ Infinite_Loop:
  800e222:	2302      	movs	r3, #2
  800e224:	e7c9      	b.n	800e1ba <_vfiprintf_r+0x3ce>
  800e226:	bf00      	nop
- 800e228:	08010a48 	.word	0x08010a48
+ 800e228:	08010a4c 	.word	0x08010a4c
  800e22c:	46a3      	mov	fp, r4
  800e22e:	2500      	movs	r5, #0
  800e230:	9b01      	ldr	r3, [sp, #4]
@@ -30445,7 +30445,7 @@ Infinite_Loop:
  800e562:	bf00      	nop
  800e564:	08010c8c 	.word	0x08010c8c
  800e568:	08010c9c 	.word	0x08010c9c
- 800e56c:	08010a59 	.word	0x08010a59
+ 800e56c:	08010a5d 	.word	0x08010a5d
  800e570:	4639      	mov	r1, r7
  800e572:	4648      	mov	r0, r9
  800e574:	aa0e      	add	r2, sp, #56	; 0x38
@@ -30785,7 +30785,7 @@ Infinite_Loop:
  800e898:	2000      	movs	r0, #0
  800e89a:	e7df      	b.n	800e85c <__register_exitproc+0x38>
  800e89c:	20000888 	.word	0x20000888
- 800e8a0:	08010a34 	.word	0x08010a34
+ 800e8a0:	08010a38 	.word	0x08010a38
 
 0800e8a4 <__assert_func>:
  800e8a4:	b51f      	push	{r0, r1, r2, r3, r4, lr}

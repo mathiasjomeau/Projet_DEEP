@@ -128,7 +128,7 @@ void TFT_InformationsSensors_Update(uint16_t water_level, bool_e EC_state, bool_
 	char EC_state_char [40];
 	char eau_temperature_char [30];
 
-	sprintf(water_level_char, "Niveau de la cuve : %d%%", water_level);
+	sprintf(water_level_char, "Niveau de la cuve : %d%%       ", water_level);
 	updateDynamicLine_Text(Screens_Addresse[4], water_level_char);
 
 	char * state [2] = {"Fermee", "Ouverte"}; // Etats des Electrovannes possible

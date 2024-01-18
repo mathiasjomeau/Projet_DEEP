@@ -228,7 +228,7 @@ static void state_machine(void)
 				state = mode[mode_chosing];
 			}
 
-			if (current_mode == MODE_AUTO)
+			if (current_mode == 0) // Mode Auto
 			{
 				state = MODE_AUTO;
 			}
@@ -272,7 +272,7 @@ static void state_machine(void)
 				ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, FALSE);
 				ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, TRUE);
 			}
-			else //Si toutes conditions sont optimales, on modifie l'états des electrovannes
+			else //Si toutes les conditions sont optimall s, on modifie l'états des electrovannes
 			{
 				ELECTROVANNE_Set(ID_ELECTROVANNE_CUVE, TRUE);
 				ELECTROVANNE_Set(ID_ELECTROVANNE_EAU, FALSE);
